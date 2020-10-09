@@ -11,14 +11,108 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:cha0s2nd-vscode-xrm.helloWorld"
+    "onCommand:cha0s2nd-vscode-xrm.auth.login",
+    "workspaceContains:**/*.js",
+    "workspaceContains:**/*.html"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "when": "resourceLangId == javascript"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "group": "z_commands",
+          "when": "resourceLangId == javascript"
+        },
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deployAll",
+          "group": "z_commands",
+          "when": "resourceLangId == json"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "group": "navigation",
+          "when": "resourceLangId == javascript"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "group": "z_commands",
+          "when": "resourceLangId == javascript"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "group": "z_commands",
+          "when": "resourceLangId == javascript"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "group": "z_commands",
+          "when": "resourceLangId == javascript"
+        }
+      ]
+    },
+    "configuration": [
+      {
+        "title": "XRM Tools",
+        "properties": {
+          "cha0s2nd-vscode-xrm.organization.discoveryUrl": {
+            "title": "Organization Discovery Url",
+            "type": "string",
+            "default": "https://globaldisco.crm.dynamics.com",
+            "description": "Organization Discovery Url: the url to call to get your available organizations",
+            "scope": "resource"
+          }
+        }
+      }
+    ],
     "commands": [
       {
-        "command": "cha0s2nd-vscode-xrm.helloWorld",
-        "title": "Hello World"
+        "command": "cha0s2nd-vscode-xrm.auth.login",
+        "title": "Login",
+        "category": "XRM Tools"
+      },
+      {
+        "command": "cha0s2nd-vscode-xrm.auth.logout",
+        "title": "Logout",
+        "category": "XRM Tools"
+      },
+      {
+        "command": "cha0s2nd-vscode-xrm.organization.change",
+        "title": "Change Organization",
+        "category": "XRM Tools"
+      },
+      {
+        "command": "cha0s2nd-vscode-xrm.solution.change",
+        "title": "Change Solution",
+        "category": "XRM Tools"
+      },
+      {
+        "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+        "title": "Deploy Web Resource",
+        "category": "XRM Tools",
+        "icon": {
+          "light": "./media/view-source-light.svg",
+          "dark": "./media/view-source-dark.svg"
+        }
+      },
+      {
+        "command": "cha0s2nd-vscode-xrm.webresource.deployAll",
+        "title": "Deploy All Web Resources",
+        "category": "XRM Tools"
       }
     ]
   },
@@ -30,11 +124,16 @@
     "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js"
   },
+  "dependencies": {
+    "request": "2.88.0",
+    "request-promise": "4.2.5"
+  },
   "devDependencies": {
-    "@types/vscode": "^1.50.0",
+    "@types/vscode": "^1.14.0",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.0.0",
     "@types/node": "^12.11.7",
+    "@types/request-promise": "^4.1.41",
     "eslint": "^7.9.0",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
