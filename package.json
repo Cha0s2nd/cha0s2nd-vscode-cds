@@ -72,7 +72,7 @@
           "cha0s2nd-vscode-xrm.organization.discoveryUrl": {
             "title": "Organization Discovery Url",
             "type": "string",
-            "default": "https://globaldisco.crm.dynamics.com",
+            "default": "https://disco.crm4.dynamics.com/api/discovery/v9.1/",
             "description": "Organization Discovery Url: the url to call to get your available organizations",
             "scope": "resource"
           }
@@ -126,7 +126,8 @@
   },
   "dependencies": {
     "request": "2.88.0",
-    "request-promise": "4.2.5"
+    "request-promise": "4.2.5",
+    "adal-node": "^0.2.1"
   },
   "devDependencies": {
     "@types/vscode": "^1.14.0",

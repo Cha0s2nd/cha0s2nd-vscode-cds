@@ -18,7 +18,7 @@ export default class OrganizationManager {
   }
 
   private async getAvailableOrganizations(): Promise<IOrganization[]> {
-    const response = await rp(vscode.workspace.getConfiguration('cha0s2nd-vscode-xrm.organization', null).get('discoveryUrl') + '/api/discovery/v1.0/Instances', {
+    const response = await rp(vscode.workspace.getConfiguration('cha0s2nd-vscode-xrm.organization', null).get('discoveryUrl') + 'Instances', {
       headers: {
         'Content-Type': 'application/ json',
         'Prefer': 'odata.include-annotations="*"',
