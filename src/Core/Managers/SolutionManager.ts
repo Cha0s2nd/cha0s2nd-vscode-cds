@@ -11,16 +11,16 @@ export default class SolutionManager {
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-    this.statusBarItem.command = 'cha0s2nd-vscode-xrm.solution.change';
+    this.statusBarItem.command = 'cha0s2nd-vscode-cds.solution.change';
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.solution.get', async () => { return await this.getSolution(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.solution.change', async () => { return await this.changeSolution(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.get', async () => { return await this.getSolution(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.change', async () => { return await this.changeSolution(); }));
   }
 
   private async getAvailableSolutions(): Promise<ISolution[]> {
-    const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-xrm.organization.get');
+    const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
 
     const response = await rp(org!.Url + '/api/data/v' + org!.Version.substring(0, 1) + '.0/solutions?$select=_organizationid_value,uniquename,friendlyname&$filter=ismanaged eq false and isvisible eq true', {
       headers: {
@@ -28,7 +28,7 @@ export default class SolutionManager {
         'Prefer': 'odata.include-annotations="*"',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-xrm.auth.organizationToken.get')
+        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.organizationToken.get')
       },
       json: true
     });
@@ -52,7 +52,7 @@ export default class SolutionManager {
   }
 
   private async getSolution(): Promise<ISolution | undefined> {
-    return this.context.workspaceState.get<ISolution>('cha0s2nd-vscode-xrm.solution') || await this.changeSolution();
+    return this.context.workspaceState.get<ISolution>('cha0s2nd-vscode-cds.solution') || await this.changeSolution();
   }
 
   private async changeSolution(): Promise<ISolution | undefined> {
@@ -65,7 +65,7 @@ export default class SolutionManager {
 
     if (solution) {
       this.updateStatusBar(solution);
-      this.context.workspaceState.update('cha0s2nd-vscode-xrm.solution', solution);
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', solution);
       return solution;
     }
   }

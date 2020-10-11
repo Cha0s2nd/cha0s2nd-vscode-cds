@@ -10,7 +10,7 @@ export async function activate(context: vscode.ExtensionContext) {
   new SolutionManager(context).registerCommands();
   new ProjectManager(context).registerCommands();
 
-  await vscode.commands.executeCommand('cha0s2nd-vscode-xrm.auth.login');
+  await vscode.commands.executeCommand('cha0s2nd-vscode-cds.auth.login');
 }
 
 export function deactivate() { }

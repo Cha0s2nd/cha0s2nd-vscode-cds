@@ -11,7 +11,7 @@ export default class ProjectManager {
   }
 
   public registerCommands() {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.project.get', async () => { return this.getProject(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.project.get', async () => { return this.getProject(); }));
   }
 
   private async getProject(): Promise<any> {

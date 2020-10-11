@@ -9,22 +9,22 @@ export default class OrganizationManager {
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-    this.statusBarItem.command = 'cha0s2nd-vscode-xrm.organization.change';
+    this.statusBarItem.command = 'cha0s2nd-vscode-cds.organization.change';
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.organization.change', async () => { return this.changeOrganization(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.organization.get', async () => { return this.getOrganization(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.organization.change', async () => { return this.changeOrganization(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.organization.get', async () => { return this.getOrganization(); }));
   }
 
   private async getAvailableOrganizations(): Promise<IOrganization[]> {
-    const response = await rp(vscode.workspace.getConfiguration('cha0s2nd-vscode-xrm.organization', null).get('discoveryUrl') + 'Instances', {
+    const response = await rp(vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.organization', null).get('discoveryUrl') + 'Instances', {
       headers: {
         'Content-Type': 'application/ json',
         'Prefer': 'odata.include-annotations="*"',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-xrm.auth.token.get')
+        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.token.get')
       },
       json: true
     });
@@ -39,7 +39,7 @@ export default class OrganizationManager {
   }
 
   private async getOrganization(): Promise<IOrganization | undefined> {
-    return this.context.workspaceState.get<IOrganization>('cha0s2nd-vscode-xrm.organization') || await this.changeOrganization();
+    return this.context.workspaceState.get<IOrganization>('cha0s2nd-vscode-cds.organization') || await this.changeOrganization();
   }
 
   private async changeOrganization(): Promise<IOrganization | undefined> {
@@ -52,8 +52,8 @@ export default class OrganizationManager {
 
     if (org) {
       this.updateStatusBar(org);
-      this.context.workspaceState.update('cha0s2nd-vscode-xrm.organization', org);
-      await vscode.commands.executeCommand('cha0s2nd-vscode-xrm.solution.change');
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', org);
+      await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.change');
       return org;
     }
   }

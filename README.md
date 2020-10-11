@@ -1,6 +1,6 @@
-# cha0s2nd-vscode-xrm README
+# cha0s2nd-vscode-cds README
 
-This is the README for your extension "cha0s2nd-vscode-xrm". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "cha0s2nd-vscode-cds". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

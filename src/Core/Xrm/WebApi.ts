@@ -122,14 +122,14 @@ export default class WebApi {
   }
 
   public static async request(url: string, method: string, body: any) {
-    const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-xrm.organization.get');
+    const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
     return rp.post(org!.Url + '/api/data/v' + org!.Version.substring(0, 1) + '.0/', {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Prefer': 'odata.include-annotations="*", return=representation',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-xrm.auth.organizationToken.get')
+        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.organizationToken.get')
       },
       json: true,
       method: method,

@@ -13,9 +13,9 @@ export default class WebResourceManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.webresource.getDetails', async (resources: vscode.Uri[]) => { return this.getWebResourceDetails(resources); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.webresource.deploy', async (resource: vscode.Uri) => { return this.deployWebResource(resource); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.webresource.deployAll', async (resources: vscode.Uri[]) => { return this.deployAllWebResources(resources); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.getDetails', async (resources: vscode.Uri[]) => { return this.getWebResourceDetails(resources); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.deploy', async (resource: vscode.Uri) => { return this.deployWebResource(resource); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.deployAll', async (resources: vscode.Uri[]) => { return this.deployAllWebResources(resources); }));
   }
 
   private async getWebResourceDetailsFromJson(): Promise<IWebResource[] | undefined> {
@@ -58,7 +58,7 @@ export default class WebResourceManager {
 
   private async getWebResourceDetailsFromProject(): Promise<IWebResource[]> {
     const webResources = new Array<IWebResource>();
-    const project = await vscode.commands.executeCommand<any>('cha0s2nd-vscode-xrm.project.get');
+    const project = await vscode.commands.executeCommand<any>('cha0s2nd-vscode-cds.project.get');
     for (let itemGroup of project.Project.ItemGroup.filter((ig: any) => ig.CRMWebResource)) {
       webResources.push({
         Description: '',
@@ -101,7 +101,7 @@ export default class WebResourceManager {
   }
 
   private async postWebResource(webResource: IWebResource) {
-    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-xrm.solution.get');
+    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
     try {
       const response = await WebApi.post('webresourceSet', {
         name: webResource.UniqueName,

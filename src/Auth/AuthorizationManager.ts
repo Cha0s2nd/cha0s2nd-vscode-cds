@@ -1,4 +1,4 @@
-import { AuthenticationContext } from 'adal-node';
+import { AuthenticationContext, ErrorResponse, TokenResponse } from 'adal-node';
 import * as vscode from 'vscode';
 import IOrganization from '../Entities/IOrganization';
 import ISolution from '../Entities/ISolution';
@@ -11,7 +11,6 @@ export default class AuthorizationManager {
   private password: string = "";
   private token: string = "";
   private discoveryToken: string = "";
-  private organizationToken: string = "";
   private context: vscode.ExtensionContext;
 
   constructor(context: vscode.ExtensionContext) {
@@ -22,10 +21,11 @@ export default class AuthorizationManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.auth.login', async () => { return this.login(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.auth.token.set', async () => { return this.configureToken(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.auth.token.get', async () => { return this.getToken(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-xrm.auth.logout', async () => { return this.logout(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.login', async () => { return this.login(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.token.set', async () => { return this.configureToken(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.discoveryToken.get', async (codeResponse) => { return this.getDiscoveryToken(codeResponse); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.organizationToken.get', async (organization: IOrganization) => { return this.getOrganizationToken(organization); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.logout', async () => { return this.logout(); }));
   }
 
   private parseQuery(uri: vscode.Uri) {
@@ -42,7 +42,7 @@ export default class AuthorizationManager {
       uriEventListener = this.uriHandler.event(async (uri: vscode.Uri) => {
         try {
           const query = this.parseQuery(uri);
-          const token = await this.getOrganizationToken(query.code);
+          const token = await this.getDiscoveryToken(query.code);
           resolve(token);
         } catch (err) {
           reject(err);
@@ -126,36 +126,19 @@ export default class AuthorizationManager {
     return this.password;
   }
 
-  public async getToken(): Promise<string> {
-    return new Promise<string>(async (resolve, reject) => {
-      if (this.token) {
-        resolve(this.token);
-      }
-      else {
-        try {
-          const session = await vscode.authentication.getSession("microsoft", ["openid"], { createIfNone: true });
-          this.token = session.accessToken;
-          resolve(this.token);
-        }
-        catch (ex) {
-          reject(ex)
-        }
-      }
-    });
-  }
-
-  public async getDiscoveryToken(): Promise<string> {
+  public async getDiscoveryToken(codeResponse: any | undefined): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
       if (this.discoveryToken) {
         resolve(this.discoveryToken);
       }
       else {
-        const authenticationContext = new AuthenticationContext(vscode.workspace.getConfiguration('vs-xrm-tools.authorization', null).get('tokenUrl') || '');
-        authenticationContext.acquireTokenWithUsernamePassword(
-          vscode.workspace.getConfiguration('vs-xrm-tools.organization', null).get('discoveryUrl') || '',
-          await this.openUsernameInput(),
-          await this.openPasswordInput(),
-          '2ad88395-b77d-4561-9441-d0e40824f9bc', // default client id
+        const authenticationContext = new AuthenticationContext(vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.authorization', null).get('tokenUrl') || '');
+        authenticationContext.acquireTokenWithAuthorizationCode(
+          codeResponse.code,
+          codeResponse.redirectUri,
+          vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.organization', null).get('discoveryUrl') || '',
+          vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.auth', null).get('appId') || '',
+          'I7Oq-ro644~Kj~BtAk5~XW6.7TN~ZH20b_',
           (error: Error, tokenResponse: any) => {
             if (error) {
               vscode.window.showErrorMessage(error.message);
@@ -175,12 +158,12 @@ export default class AuthorizationManager {
         resolve(this.token);
       }
       else {
-        const authenticationContext = new AuthenticationContext(vscode.workspace.getConfiguration('vs-xrm-tools.authorization', null).get('tokenUrl') || '');
+        const authenticationContext = new AuthenticationContext(vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.auth', null).get('tokenUrl') || '');
         authenticationContext.acquireTokenWithUsernamePassword(
           organization.Url,
           await this.openUsernameInput(),
           await this.openPasswordInput(),
-          '2ad88395-b77d-4561-9441-d0e40824f9bc', // default client id
+          vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.auth', null).get('appId') || '',
           (error: Error, tokenResponse: any) => {
             if (error) {
               vscode.window.showErrorMessage(error.message);
@@ -202,28 +185,25 @@ export default class AuthorizationManager {
   }
 
   public async login(): Promise<void> {
-    vscode.env.openExternal(vscode.Uri.parse(`https://login.microsoftonline.com/oauth2/v2.0/authorize?response_type=code&client_id=2ad88395-b77d-4561-9441-d0e40824f9bc&response_mode=query&redirect_uri=${encodeURIComponent('vscode://cha0s2nd-vscode-xrm')}&scope=openid&prompt=select_account`));
+    vscode.env.openExternal(vscode.Uri.parse(`${vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.auth', null).get('authUrl') || ''}?response_type=code&client_id=4651f5dc-bf6a-4da7-96f5-505f98e24622&response_mode=query&redirect_uri=${encodeURIComponent(`${vscode.env.uriScheme}://Cha0s2nd.cha0s2nd-vscode-cds`)}&scope=openid&prompt=select_account`));
 
-    const timeoutPromise = new Promise<string>((_: () => void, reject) => {
-      const wait = setTimeout(() => {
-        clearTimeout(wait);
-        reject('Login timed out.');
-      }, 1000 * 60 * 5);
-    });
+    try {
+      const token = await this.waitForCodeResponse();
 
-    const code = await Promise.race([this.waitForCodeResponse(), timeoutPromise]);
-
-    const token = await this.getToken();
-    const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-xrm.organization.get');
-    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-xrm.solution.get');
-    if (token && org && solution) {
-      vscode.window.showInformationMessage('Logged in to "' + org.FriendlyName + '" using the "' + solution.FriendlyName + '" solution');
+      const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
+      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
+      if (token && org && solution) {
+        vscode.window.showInformationMessage('Logged in to "' + org.FriendlyName + '" using the "' + solution.FriendlyName + '" solution');
+      }
+    }
+    catch (error) {
+      console.error("Login failed: " + error);
     }
   }
 
   public async logout(): Promise<void> {
-    this.context.workspaceState.update('cha0s2nd-vscode-xrm.organization', null);
-    this.context.workspaceState.update('cha0s2nd-vscode-xrm.auth.token', null);
-    this.context.workspaceState.update('cha0s2nd-vscode-xrm.auth.refreshToken', null);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', null);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', null);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.refreshToken', null);
   }
 }

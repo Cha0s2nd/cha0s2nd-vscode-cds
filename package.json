@@ -1,6 +1,6 @@
 {
-  "name": "cha0s2nd-vscode-xrm",
-  "displayName": "XRM Tools (CRM Dynamics 365)",
+  "name": "cha0s2nd-vscode-cds",
+  "displayName": "CDS Tools (CRM Dynamics 365)",
   "description": "Tools to assist in developing custom solutions in CRM",
   "publisher": "Cha0s2nd",
   "version": "0.0.1",
@@ -11,7 +11,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:cha0s2nd-vscode-xrm.auth.login",
+    "onCommand:cha0s2nd-vscode-cds.auth.login",
     "workspaceContains:**/*.js",
     "workspaceContains:**/*.html"
   ],
@@ -20,46 +20,46 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "when": "resourceLangId == javascript"
         }
       ],
       "explorer/context": [
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceLangId == javascript"
         },
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deployAll",
+          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
           "when": "resourceLangId == json"
         }
       ],
       "editor/title": [
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "navigation",
           "when": "resourceLangId == javascript"
         }
       ],
       "editor/title/context": [
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceLangId == javascript"
         }
       ],
       "editor/context": [
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceLangId == javascript"
         }
       ],
       "view/item/context": [
         {
-          "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceLangId == javascript"
         }
@@ -67,9 +67,29 @@
     },
     "configuration": [
       {
-        "title": "XRM Tools",
+        "title": "CDS Tools",
         "properties": {
-          "cha0s2nd-vscode-xrm.organization.discoveryUrl": {
+          "cha0s2nd-vscode-cds.auth.appId": {
+            "title": "App Id",
+            "type": "string",
+            "default": "8baff5d8-eb25-4ea5-bcf9-b667499e2226",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.auth.authUrl": {
+            "title": "Organization Authorization Url",
+            "type": "string",
+            "default": "https://login.microsoftonline.com/common/oauth2/authorize",
+            "description": "Organization Authorization Url: the url to call to get an authorization code",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.auth.tokenUrl": {
+            "title": "Organization Token Url",
+            "type": "string",
+            "default": "hhttps://login.microsoftonline.com/common/oauth2/token",
+            "description": "Organization Token Url: the url to call to get an access token",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.organization.discoveryUrl": {
             "title": "Organization Discovery Url",
             "type": "string",
             "default": "https://disco.crm4.dynamics.com/api/discovery/v9.1/",
@@ -81,38 +101,38 @@
     ],
     "commands": [
       {
-        "command": "cha0s2nd-vscode-xrm.auth.login",
+        "command": "cha0s2nd-vscode-cds.auth.login",
         "title": "Login",
-        "category": "XRM Tools"
+        "category": "CDS Tools"
       },
       {
-        "command": "cha0s2nd-vscode-xrm.auth.logout",
+        "command": "cha0s2nd-vscode-cds.auth.logout",
         "title": "Logout",
-        "category": "XRM Tools"
+        "category": "CDS Tools"
       },
       {
-        "command": "cha0s2nd-vscode-xrm.organization.change",
+        "command": "cha0s2nd-vscode-cds.organization.change",
         "title": "Change Organization",
-        "category": "XRM Tools"
+        "category": "CDS Tools"
       },
       {
-        "command": "cha0s2nd-vscode-xrm.solution.change",
+        "command": "cha0s2nd-vscode-cds.solution.change",
         "title": "Change Solution",
-        "category": "XRM Tools"
+        "category": "CDS Tools"
       },
       {
-        "command": "cha0s2nd-vscode-xrm.webresource.deploy",
+        "command": "cha0s2nd-vscode-cds.webresource.deploy",
         "title": "Deploy Web Resource",
-        "category": "XRM Tools",
+        "category": "CDS Tools",
         "icon": {
           "light": "./media/view-source-light.svg",
           "dark": "./media/view-source-dark.svg"
         }
       },
       {
-        "command": "cha0s2nd-vscode-xrm.webresource.deployAll",
+        "command": "cha0s2nd-vscode-cds.webresource.deployAll",
         "title": "Deploy All Web Resources",
-        "category": "XRM Tools"
+        "category": "CDS Tools"
       }
     ]
   },
