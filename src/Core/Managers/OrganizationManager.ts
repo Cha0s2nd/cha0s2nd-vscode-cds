@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as rp from 'request-promise';
+import * as Constants from "../Constants/Constants";
 import IOrganization from "../../Entities/IOrganization";
 
 export default class OrganizationManager {
@@ -18,13 +19,13 @@ export default class OrganizationManager {
   }
 
   private async getAvailableOrganizations(): Promise<IOrganization[]> {
-    const response = await rp(vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.organization', null).get('discoveryUrl') + 'Instances', {
+    const response = await rp(`${Constants.DISCOVERY_URL}/api/discovery/v1.0/Instances`, {
       headers: {
         'Content-Type': 'application/ json',
         'Prefer': 'odata.include-annotations="*"',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.token.get')
+        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.discoveryToken.get')
       },
       json: true
     });
@@ -39,7 +40,13 @@ export default class OrganizationManager {
   }
 
   private async getOrganization(): Promise<IOrganization | undefined> {
-    return this.context.workspaceState.get<IOrganization>('cha0s2nd-vscode-cds.organization') || await this.changeOrganization();
+    const org = this.context.workspaceState.get<IOrganization>('cha0s2nd-vscode-cds.organization') || await this.changeOrganization();
+
+    if (org) {
+      this.updateStatusBar(org);
+    }
+
+    return org;
   }
 
   private async changeOrganization(): Promise<IOrganization | undefined> {

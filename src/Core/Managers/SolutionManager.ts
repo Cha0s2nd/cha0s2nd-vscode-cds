@@ -28,7 +28,7 @@ export default class SolutionManager {
         'Prefer': 'odata.include-annotations="*"',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.organizationToken.get')
+        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.organizationToken.get', org)
       },
       json: true
     });
@@ -36,11 +36,11 @@ export default class SolutionManager {
     if (response) {
       return response.value.map((solution: any) => {
         return {
-          uniqueName: solution.uniquename,
-          friendlyName: solution.friendlyname,
-          solutionId: solution.solutionid,
-          organizationId: solution['_organizationid_value'],
-          organizationName: solution['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
+          UniqueName: solution.uniquename,
+          FriendlyName: solution.friendlyname,
+          SolutionId: solution.solutionid,
+          OrganizationId: solution['_organizationid_value'],
+          OrganizationName: solution['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
           label: solution.friendlyname,
           description: solution.uniquename,
           alwaysShow: true
@@ -52,7 +52,13 @@ export default class SolutionManager {
   }
 
   private async getSolution(): Promise<ISolution | undefined> {
-    return this.context.workspaceState.get<ISolution>('cha0s2nd-vscode-cds.solution') || await this.changeSolution();
+    const solution = this.context.workspaceState.get<ISolution>('cha0s2nd-vscode-cds.solution') || await this.changeSolution();
+
+    if (solution) {
+      this.updateStatusBar(solution);
+    }
+
+    return solution;
   }
 
   private async changeSolution(): Promise<ISolution | undefined> {

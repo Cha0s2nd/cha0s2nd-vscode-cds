@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import IWebResource from '../../Entities/IWebResource';
-import IOrganization from '../../Entities/IOrganization';
 import { WebResourceTypes } from '../Enums/WebResourceTypes';
 import ISolution from '../../Entities/ISolution';
 import WebApi from '../xrm/WebApi';
@@ -53,24 +52,6 @@ export default class WebResourceManager {
       });
     }
 
-    return webResources;
-  }
-
-  private async getWebResourceDetailsFromProject(): Promise<IWebResource[]> {
-    const webResources = new Array<IWebResource>();
-    const project = await vscode.commands.executeCommand<any>('cha0s2nd-vscode-cds.project.get');
-    for (let itemGroup of project.Project.ItemGroup.filter((ig: any) => ig.CRMWebResource)) {
-      webResources.push({
-        Description: '',
-        ModifiedOn: new Date(),
-        ModifiedOnLocal: new Date(),
-        SolutionId: '00000000-0000-0000-0000-000000000000',
-        DisplayName: itemGroup.DisplayName,
-        File: vscode.Uri.file(itemGroup['@Include']),
-        UniqueName: itemGroup.UniqueName,
-        WebResourceType: WebResourceTypes[itemGroup.WebResourceType as keyof typeof WebResourceTypes]
-      });
-    }
     return webResources;
   }
 

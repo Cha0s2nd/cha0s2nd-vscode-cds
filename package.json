@@ -11,7 +11,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:cha0s2nd-vscode-cds.auth.login",
+    "workspaceContains:**/*.ts",
     "workspaceContains:**/*.js",
     "workspaceContains:**/*.html"
   ],
@@ -69,31 +69,10 @@
       {
         "title": "CDS Tools",
         "properties": {
-          "cha0s2nd-vscode-cds.auth.appId": {
-            "title": "App Id",
+          "cha0s2nd-vscode-cds.auth.sampleSetting": {
+            "title": "Sample Setting",
             "type": "string",
-            "default": "8baff5d8-eb25-4ea5-bcf9-b667499e2226",
-            "scope": "resource"
-          },
-          "cha0s2nd-vscode-cds.auth.authUrl": {
-            "title": "Organization Authorization Url",
-            "type": "string",
-            "default": "https://login.microsoftonline.com/common/oauth2/authorize",
-            "description": "Organization Authorization Url: the url to call to get an authorization code",
-            "scope": "resource"
-          },
-          "cha0s2nd-vscode-cds.auth.tokenUrl": {
-            "title": "Organization Token Url",
-            "type": "string",
-            "default": "hhttps://login.microsoftonline.com/common/oauth2/token",
-            "description": "Organization Token Url: the url to call to get an access token",
-            "scope": "resource"
-          },
-          "cha0s2nd-vscode-cds.organization.discoveryUrl": {
-            "title": "Organization Discovery Url",
-            "type": "string",
-            "default": "https://disco.crm4.dynamics.com/api/discovery/v9.1/",
-            "description": "Organization Discovery Url: the url to call to get your available organizations",
+            "default": "This is a sample value",
             "scope": "resource"
           }
         }
