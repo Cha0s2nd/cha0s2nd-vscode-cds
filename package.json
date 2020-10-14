@@ -11,9 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/*.ts",
-    "workspaceContains:**/*.js",
-    "workspaceContains:**/*.html"
+    "workspaceContains:**/cds-tools.json",
+    "onCommand:cha0s2nd-vscode-cds.auth.login"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -21,14 +20,14 @@
       "commandPalette": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "when": "resourceLangId == javascript"
+          "when": "resourceLangId == javascript || resourceLangId == typescript"
         }
       ],
       "explorer/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript"
+          "when": "resourceLangId == javascript || resourceLangId == typescript"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
@@ -40,28 +39,28 @@
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "navigation",
-          "when": "resourceLangId == javascript"
+          "when": "resourceLangId == javascript || resourceLangId == typescript"
         }
       ],
       "editor/title/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript"
+          "when": "resourceLangId == javascript || resourceLangId == typescript"
         }
       ],
       "editor/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript"
+          "when": "resourceLangId == javascript || resourceLangId == typescript"
         }
       ],
       "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript"
+          "when": "resourceLangId == javascript || resourceLangId == typescript"
         }
       ]
     },
@@ -111,6 +110,11 @@
       {
         "command": "cha0s2nd-vscode-cds.webresource.deployAll",
         "title": "Deploy All Web Resources",
+        "category": "CDS Tools"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.webresource.download",
+        "title": "Download and Map Web Resources",
         "category": "CDS Tools"
       }
     ]

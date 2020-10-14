@@ -8,13 +8,11 @@ export default class WebApi {
     let url: string = entitySet + '(' + id + ')';
 
     if (columnSet && columnSet.length > 0) {
-      query.push('$select=');
-      query.push(columnSet.join(','));
+      query.push('$select=' + encodeURIComponent(columnSet.join(',')));
     }
 
     if (filter) {
-      query.push('$filter=');
-      query.push(filter);
+      query.push('$filter=' + encodeURIComponent(filter));
     }
 
     if (additionalQuery) {
@@ -33,18 +31,15 @@ export default class WebApi {
     let url: string = entitySet;
 
     if (columnSet && columnSet.length > 0) {
-      query.push('$select=');
-      query.push(columnSet.join(','));
+      query.push('$select=' + encodeURIComponent(columnSet.join(',')));
     }
 
     if (filter) {
-      query.push('$filter=');
-      query.push(filter);
+      query.push('$filter=' + encodeURIComponent(filter));
     }
 
     if (top) {
-      query.push('$top=');
-      query.push(top.toString());
+      query.push('$top=' + encodeURIComponent(top.toString()));
     }
 
     if (additionalQuery) {
@@ -65,18 +60,15 @@ export default class WebApi {
     let entities: any[] = [];
 
     if (columnSet && columnSet.length > 0) {
-      query.push('$select=');
-      query.push(columnSet.join(','));
+      query.push('$select=' + encodeURIComponent(columnSet.join(',')));
     }
 
     if (filter) {
-      query.push('$filter=');
-      query.push(filter);
+      query.push('$filter=' + encodeURIComponent(filter));
     }
 
     if (top) {
-      query.push('$top=');
-      query.push(top.toString());
+      query.push('$top=' + encodeURIComponent(top.toString()));
     }
 
     if (additionalQuery) {
@@ -123,7 +115,8 @@ export default class WebApi {
 
   public static async request(url: string, method: string, body: any) {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    return rp.post(org!.Url + '/api/data/v' + org!.Version.substring(0, 1) + '.0/', {
+    return rp(url, {
+      baseUrl: org!.Url + '/api/data/v' + org!.Version.substring(0, 3) + '/',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Prefer': 'odata.include-annotations="*", return=representation',
