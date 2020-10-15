@@ -54,30 +54,33 @@ export default class SolutionManager {
   private async getSolution(): Promise<ISolution | undefined> {
     const solution = this.context.workspaceState.get<ISolution>('cha0s2nd-vscode-cds.solution') || await this.changeSolution();
 
-    if (solution) {
-      this.updateStatusBar(solution);
-    }
+    this.updateStatusBar(solution);
 
     return solution;
   }
 
-  private async changeSolution(): Promise<ISolution | undefined> {
-    const solution = await vscode.window.showQuickPick<ISolution>(
-      await this.getAvailableSolutions(), {
-      ignoreFocusOut: true,
-      canPickMany: false,
-      placeHolder: 'Solution',
-    });
-
-    if (solution) {
-      this.updateStatusBar(solution);
-      this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', solution);
-      return solution;
+  private async changeSolution(solution?: ISolution): Promise<ISolution | undefined> {
+    if (solution === undefined) {
+      solution = await vscode.window.showQuickPick<ISolution>(
+        await this.getAvailableSolutions(), {
+        ignoreFocusOut: true,
+        canPickMany: false,
+        placeHolder: 'Solution',
+      });
     }
+
+    this.updateStatusBar(solution);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', solution);
+    return solution;
   }
 
-  private updateStatusBar(solution: ISolution): void {
-    this.statusBarItem.text = solution.FriendlyName;
-    this.statusBarItem.show();
+  private updateStatusBar(solution?: ISolution): void {
+    if (solution) {
+      this.statusBarItem.text = solution.FriendlyName;
+      this.statusBarItem.show();
+    }
+    else {
+      this.statusBarItem.hide();
+    }
   }
 }

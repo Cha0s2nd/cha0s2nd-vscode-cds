@@ -14,7 +14,7 @@ export default class AuthorizationManager {
   private discoveryTokenExpiryDate: Date;
   private context: vscode.ExtensionContext;
 
-  private static authCode: string;
+  private authCode: string = '';
   private authState: string = '';
   private inputBoxOpen: boolean = false;
 
@@ -86,8 +86,8 @@ export default class AuthorizationManager {
   private async getAuthCode() {
     return new Promise<string>(async (resolve: (code: string) => void, reject) => {
       try {
-        if (AuthorizationManager.authCode) {
-          resolve(AuthorizationManager.authCode);
+        if (this.authCode) {
+          resolve(this.authCode);
         }
 
         this.authState = Math.random().toString(36).slice(2);
@@ -101,9 +101,9 @@ export default class AuthorizationManager {
           }, 1000 * 60 * 5);
         });
 
-        const code = await Promise.race([this.waitForCodeResponse(), timeoutPromise]);
+        this.authCode = await Promise.race([this.waitForCodeResponse(), timeoutPromise]);
 
-        resolve(code);
+        resolve(this.authCode);
       }
       catch (ex) {
         reject(ex);
@@ -114,13 +114,35 @@ export default class AuthorizationManager {
   public async getDiscoveryToken(): Promise<IAuthToken> {
     return new Promise<IAuthToken>(async (resolve, reject) => {
       try {
-        // if (this.discoveryToken && this.isTokenAboutToExpire(this.discoveryToken) && !this.hasTokenExpired(this.discoveryToken)) {
-        //   // TODO: add refresh token api call
-        //   this.tokenExpiryDate = new Date();
-        //   this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.discoveryToken);
-        // }
-        // else if
-        if (!this.discoveryToken || this.hasTokenExpired(this.discoveryToken)) {
+        if (this.discoveryToken && this.isTokenAboutToExpire(this.discoveryToken) && !this.hasTokenExpired(this.discoveryToken)) {
+          const params: string[] = [];
+          params.push('resource=' + encodeURIComponent(Constants.DISCOVERY_URL));
+          params.push('grant_type=refresh_token');
+          params.push('scope=' + encodeURIComponent(Constants.SCOPES.join(' ')));
+          params.push('redirect_uri=' + encodeURIComponent(Constants.REDIRECT_URL));
+          params.push('client_id=' + encodeURIComponent(Constants.CLIENT_ID));
+          params.push('client_secret=' + encodeURIComponent(Constants.CLIENT_SECRET));
+          params.push('refresh_token=' + encodeURIComponent(this.discoveryToken?.refresh_token));
+
+          this.token = <IAuthToken>await rp.post(Constants.TOKEN_URL, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.join('&')
+          }).then(response => JSON.parse(response));
+
+          this.authCode = '';
+          this.tokenExpiryDate = new Date();
+          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
+          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
+        }
+        else if (!this.discoveryToken || this.hasTokenExpired(this.discoveryToken)) {
+          if (await vscode.window.showInformationMessage("You will now be redirected to a browser to log into the Discovery service.", {
+            modal: true
+          }, "Continue") !== "Continue") {
+            throw new Error("User canceled login");
+          }
+
           const code = await this.getAuthCode();
 
           const params: string[] = [];
@@ -139,6 +161,7 @@ export default class AuthorizationManager {
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
+          this.authCode = '';
           this.discoveryTokenExpiryDate = new Date();
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', this.discoveryToken);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryTokenExpiryDate', this.discoveryTokenExpiryDate);
@@ -155,14 +178,35 @@ export default class AuthorizationManager {
   public async getOrganizationToken(organization: IOrganization): Promise<IAuthToken> {
     return new Promise<IAuthToken>(async (resolve, reject) => {
       try {
-        // if (this.token && this.isTokenAboutToExpire(this.token) && !this.hasTokenExpired(this.token)) {
-        //   // TODO: add refresh token api call
-        //   this.tokenExpiryDate = new Date();
-        //   this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
-        //   this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.lastTokenDate', this.tokenExpiryDate);
-        // }
-        // else if
-        if (!this.token || this.hasTokenExpired(this.token)) {
+        if (this.token && this.isTokenAboutToExpire(this.token) && !this.hasTokenExpired(this.token)) {
+          const params: string[] = [];
+          params.push('resource=' + encodeURIComponent(organization.Url));
+          params.push('grant_type=refresh_token');
+          params.push('scope=' + encodeURIComponent(Constants.SCOPES.join(' ')));
+          params.push('redirect_uri=' + encodeURIComponent(Constants.REDIRECT_URL));
+          params.push('client_id=' + encodeURIComponent(Constants.CLIENT_ID));
+          params.push('client_secret=' + encodeURIComponent(Constants.CLIENT_SECRET));
+          params.push('refresh_token=' + encodeURIComponent(this.token.refresh_token));
+
+          this.token = <IAuthToken>await rp.post(Constants.TOKEN_URL, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.join('&')
+          }).then(response => JSON.parse(response));
+
+          this.authCode = '';
+          this.tokenExpiryDate = new Date();
+          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
+          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
+        }
+        else if (!this.token || this.hasTokenExpired(this.token)) {
+          if (await vscode.window.showInformationMessage("You will now be redirected to a browser to log into the Organization.", {
+            modal: true
+          }, "Continue") !== "Continue") {
+            throw new Error("User canceled login");
+          }
+
           const code = await this.getAuthCode();
 
           const params: string[] = [];
@@ -181,6 +225,7 @@ export default class AuthorizationManager {
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
+          this.authCode = '';
           this.tokenExpiryDate = new Date();
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
@@ -252,11 +297,14 @@ export default class AuthorizationManager {
       }
     }
     catch (error) {
-      console.error("Login failed: " + error);
+      vscode.window.showErrorMessage("Login failed: " + error);
     }
   }
 
   public async logout(): Promise<void> {
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', null);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', null);
+
     this.discoveryToken = null;
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', null);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryTokenExpiryDate', null);
@@ -264,10 +312,7 @@ export default class AuthorizationManager {
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', null);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', null);
 
-    this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', null);
-    this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', null);
-
-    AuthorizationManager.authCode = '';
+    this.authCode = '';
 
     vscode.window.showInformationMessage("Successfully logged out of cds");
   }

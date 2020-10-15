@@ -42,31 +42,37 @@ export default class OrganizationManager {
   private async getOrganization(): Promise<IOrganization | undefined> {
     const org = this.context.workspaceState.get<IOrganization>('cha0s2nd-vscode-cds.organization') || await this.changeOrganization();
 
-    if (org) {
-      this.updateStatusBar(org);
-    }
+    this.updateStatusBar(org);
 
     return org;
   }
 
-  private async changeOrganization(): Promise<IOrganization | undefined> {
-    const org = await vscode.window.showQuickPick<IOrganization>(
-      await this.getAvailableOrganizations(), {
-      ignoreFocusOut: true,
-      canPickMany: false,
-      placeHolder: 'Organization',
-    });
-
-    if (org) {
-      this.updateStatusBar(org);
-      this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', org);
-      await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.change');
-      return org;
+  private async changeOrganization(organization?: IOrganization): Promise<IOrganization | undefined> {
+    if (organization === undefined) {
+      organization = await vscode.window.showQuickPick<IOrganization>(
+        await this.getAvailableOrganizations(), {
+        ignoreFocusOut: true,
+        canPickMany: false,
+        placeHolder: 'Organization',
+      });
     }
+
+    this.updateStatusBar(organization);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', organization);
+    if (organization) {
+      await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.change');
+    }
+
+    return organization;
   }
 
-  private updateStatusBar(organization: IOrganization): void {
-    this.statusBarItem.text = organization.FriendlyName;
-    this.statusBarItem.show();
+  private updateStatusBar(organization?: IOrganization): void {
+    if (organization) {
+      this.statusBarItem.text = organization.FriendlyName;
+      this.statusBarItem.show();
+    }
+    else {
+      this.statusBarItem.hide();
+    }
   }
 }
