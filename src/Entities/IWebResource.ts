@@ -9,5 +9,5 @@ export default interface IWebResource {
   SolutionId: string;
   ModifiedOn: Date;
   ModifiedOnLocal: Date;
-  File: Uri;
+  File: string;
 }
