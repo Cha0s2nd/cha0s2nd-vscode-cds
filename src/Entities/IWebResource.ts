@@ -6,8 +6,6 @@ export default interface IWebResource {
   UniqueName: string;
   WebResourceType: WebResourceTypes;
   Description: string;
-  SolutionId: string;
-  ModifiedOn: Date;
-  ModifiedOnLocal: Date;
   File: string;
+  Content?: string;
 }

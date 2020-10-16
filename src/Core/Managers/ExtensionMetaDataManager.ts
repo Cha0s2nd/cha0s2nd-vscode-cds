@@ -23,15 +23,15 @@ export default class ExtensionMetaDataManager {
           const document = await vscode.workspace.openTextDocument(file.path);
           const content = document.getText();
           try {
-            return <IExtensionMetaData>JSON.parse(content);
+            let metaData = <IExtensionMetaData>JSON.parse(content);
+            metaData.FileLocation = file.fsPath.replace('cds-tools.json', '');
+            return metaData;
           }
           catch {
-            const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
-
             return {
-              Solution: solution?.UniqueName || 'Default Solution',
+              FileLocation: file.fsPath.replace('cds-tools.json', ''),
               WebResources: {
-                Folder: '/WebResources',
+                Folder: '\\WebResources',
                 Files: []
               }
             };
@@ -46,9 +46,17 @@ export default class ExtensionMetaDataManager {
       for (let workspaceFolder of vscode.workspace.workspaceFolders) {
         const files = await vscode.workspace.findFiles(new vscode.RelativePattern(workspaceFolder.uri.path, '**/cds-tools.json'));
         for (let file of files) {
+          metaData.FileLocation = undefined;
           var buffer = Buffer.from(JSON.stringify(metaData), 'utf-8');
           var array = new Uint8Array(buffer);
           await vscode.workspace.fs.writeFile(file, array);
+          const edits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', file, { tabSize: vscode.workspace.getConfiguration().get("editor.tabSize") || 2, insertSpaces: vscode.workspace.getConfiguration().get("editor.insertSpaces") || true });
+          if (edits !== undefined) {
+            let formatEdit = new vscode.WorkspaceEdit();
+            formatEdit.set(file, edits);
+            vscode.workspace.applyEdit(formatEdit);
+            vscode.workspace.saveAll();
+          }
         }
       }
     }

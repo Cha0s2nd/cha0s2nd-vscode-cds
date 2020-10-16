@@ -122,7 +122,7 @@ export default class WebApi {
         'Prefer': 'odata.include-annotations="*", return=representation',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.organizationToken.get')
+        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.organizationToken.get', org)
       },
       json: true,
       method: method,

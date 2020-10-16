@@ -103,8 +103,8 @@
         "title": "Deploy Web Resource",
         "category": "CDS Tools",
         "icon": {
-          "light": "./media/view-source-light.svg",
-          "dark": "./media/view-source-dark.svg"
+          "light": "media/light/upload.png",
+          "dark": "media/dark/upload.png"
         }
       },
       {
