@@ -1,7 +1,5 @@
-import { isDate } from "util";
 import * as vscode from "vscode";
 import IExtensionMetaData from "../../Entities/IExtensionMetaData";
-import ISolution from "../../Entities/ISolution";
 
 export default class ExtensionMetaDataManager {
   private context: vscode.ExtensionContext;
@@ -33,6 +31,12 @@ export default class ExtensionMetaDataManager {
               WebResources: {
                 Folder: '\\WebResources',
                 Files: []
+              },
+              Solution: {
+                Folder: '',
+                ZipFolder: '',
+                ExportManaged: false,
+                ExportUnManaged: false
               }
             };
           }

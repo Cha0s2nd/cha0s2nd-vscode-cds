@@ -5,5 +5,11 @@ export default interface IExtensionMetaData {
   WebResources: {
     Folder: string,
     Files: IWebResource[]
+  },
+  Solution: {
+    Folder: string,
+    ZipFolder: string,
+    ExportManaged: boolean,
+    ExportUnManaged: boolean
   }
 }
