@@ -42,7 +42,7 @@ export default class WebResourceManager {
             return [];
           }
 
-          details = details.concat(await this.getWebResourceDetailsFromSolution(resources.slice(i, batchSize)));
+          details = details.concat(await this.getWebResourceDetailsFromSolution(resources.slice(i, i + batchSize)));
 
           progress.report({
             message: `Completed: ${i}/${resources.length}`
