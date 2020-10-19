@@ -116,6 +116,11 @@
         "command": "cha0s2nd-vscode-cds.webresource.download",
         "title": "Download and Map Web Resources",
         "category": "CDS Tools"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.entities.generate",
+        "title": "Generate Entities",
+        "category": "CDS Tools"
       }
     ]
   },

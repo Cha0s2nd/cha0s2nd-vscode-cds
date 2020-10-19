@@ -1,13 +1,15 @@
 import * as vscode from 'vscode';
 import AuthorizationManager from './Auth/AuthorizationManager';
+import EntityGenerationManager from './Core/Managers/EntityGeneratorManager';
 import ExtensionMetaDataManager from './Core/Managers/ExtensionMetaDataManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 
 export async function activate(context: vscode.ExtensionContext) {
-  new ExtensionMetaDataManager(context).registerCommands();
   new AuthorizationManager(context).registerCommands();
+  new EntityGenerationManager(context).registerCommands();
+  new ExtensionMetaDataManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
