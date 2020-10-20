@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
-import * as rp from 'request-promise';
 import * as child_process from 'child_process';
+import * as uuid from 'node-uuid';
 import IOrganization from "../../Entities/IOrganization";
 import ISolution from '../../Entities/ISolution';
 import IExtensionMetaData from '../../Entities/IExtensionMetaData';
 import WebApi from '../xrm/WebApi';
-import { fileURLToPath } from 'url';
+import { clear } from 'console';
+import { Buffer } from 'buffer';
 
 export default class SolutionManager {
   private context: vscode.ExtensionContext;
@@ -21,6 +22,8 @@ export default class SolutionManager {
   public registerCommands(): void {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.get', async () => { return await this.getSolution(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.change', async () => { return await this.changeSolution(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.importManaged', async () => { return await this.importSolution(true); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.importUnManaged', async () => { return await this.importSolution(false); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.export', async () => { return await this.exportSolution(); }));
   }
 
@@ -98,10 +101,10 @@ export default class SolutionManager {
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
         title: "Downloading Managed Solution ..."
-      }, (progress) => this.downloadSolution(true));
+      }, (progress) => this.downloadSolution(true, metaData));
 
       if (fileUri) {
-        this.extractSolution(true, fileUri);
+        this.extractSolution(true, fileUri, metaData);
       }
     }
 
@@ -110,20 +113,18 @@ export default class SolutionManager {
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
         title: "Downloading Unmanaged Solution ..."
-      }, (progress) => this.downloadSolution(false));
+      }, (progress) => this.downloadSolution(false, metaData));
 
       if (fileUri) {
-        this.extractSolution(false, fileUri);
+        this.extractSolution(false, fileUri, metaData);
       }
     }
   }
 
-  private async downloadSolution(isManaged: boolean): Promise<vscode.Uri | undefined> {
+  private async downloadSolution(isManaged: boolean, metaData?: IExtensionMetaData): Promise<vscode.Uri | undefined> {
     const solution = await this.getSolution();
 
     if (solution) {
-      const metaData = await vscode.commands.executeCommand<IExtensionMetaData>('cha0s2nd-vscode-cds.metadata.get');
-
       const response = await WebApi.post('ExportSolution',
         {
           SolutionName: solution.UniqueName,
@@ -161,13 +162,11 @@ export default class SolutionManager {
     }
   }
 
-  private async extractSolution(isManaged: boolean, fileUri: vscode.Uri): Promise<void> {
+  private async extractSolution(isManaged: boolean, fileUri: vscode.Uri, metaData?: IExtensionMetaData): Promise<void> {
     const solution = await this.getSolution();
 
     if (solution) {
       try {
-        const metaData = await vscode.commands.executeCommand<IExtensionMetaData>('cha0s2nd-vscode-cds.metadata.get');
-
         const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(metaData?.CrmUtilFolder || '', '**/SolutionPackager.exe'));
 
         if (spFiles.length < 1) {
@@ -179,26 +178,195 @@ export default class SolutionManager {
         }
 
         for (let sp of spFiles) {
-          const terminal = vscode.window.createTerminal("CDS Solution: Export");
+          const output = vscode.window.createOutputChannel("CDS Solution: Export");
+          output.show();
 
-          terminal.show();
+          await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false,
+            title: "Extracting Solution..."
+          }, async (progress) => {
+            return new Promise((resolve, reject) => {
+              const process = child_process.spawn(sp.fsPath, [
+                '/action:Extract',
+                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}`,
+                `/zipfile:${fileUri.fsPath}`,
+                '/allowWrite:Yes',
+                '/allowDelete:Yes',
+                '/clobber',
+                '/errorlevel:Verbose',
+                '/nologo'
+              ]);
 
-          terminal.sendText([
-            `${sp.fsPath}`,
-            '/action:Extract',
-            `/folder:"${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}"`,
-            `/zipfile:"${fileUri.fsPath}"`,
-            '/allowWrite:Yes',
-            '/allowDelete:Yes',
-            '/clobber',
-            '/errorlevel:Verbose',
-            '/nologo'
-          ].join(' '));
+              process.stdout.on('data', async (data) => {
+                output.appendLine(data.toString());
+              });
+
+              process.stderr.on('data', async (data) => {
+                output.appendLine(data.toString());
+              });
+
+              process.addListener('exit', async (code) => {
+                output.appendLine(`Solution Packager exited with code '${code}'`);
+                await vscode.workspace.fs.delete(fileUri);
+                resolve();
+              });
+            });
+          });
         }
       }
       catch (error) {
         vscode.window.showErrorMessage(error);
       }
     }
+  }
+
+  private async importSolution(isManaged: boolean): Promise<void> {
+    const metaData = await vscode.commands.executeCommand<IExtensionMetaData>('cha0s2nd-vscode-cds.metadata.get');
+
+    const fileUri = await this.packSolution(isManaged, metaData);
+    if (fileUri) {
+      await vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        cancellable: false,
+        title: "Importing Solution..."
+      }, async (progress) => await this.uploadSolution(isManaged, fileUri, metaData));
+    }
+  }
+
+  private async uploadSolution(isManaged: boolean, fileUri: vscode.Uri, metaData?: IExtensionMetaData): Promise<void> {
+    const solution = await this.getSolution();
+
+    if (solution) {
+      try {
+        const jobId = uuid.v4();
+        const content = await vscode.workspace.fs.readFile(fileUri);
+
+        await WebApi.post('ImportSolution',
+          {
+            OverwriteUnmanagedCustomizations: true,
+            PublishWorkflows: true,
+            CustomizationFile: Buffer.from(content).toString('base64'),
+            ImportJobId: jobId
+          }
+        );
+
+        return new Promise((resolve, reject) => {
+          const interval = setInterval(async () => {
+            const job = await WebApi.retrieve(
+              'asyncoperation',
+              jobId,
+              [
+                'statuscode',
+                'message',
+                'friendlymessage'
+              ]);
+
+            switch (job.statuscode) {
+              case 30:
+                clearInterval(interval);
+                resolve();
+                break;
+
+              case 32: // Cancelled
+              case 31:
+                clearInterval(interval);
+                reject(`${job.message}: ${job.friendlymessage}`);
+                break;
+            }
+          }, 1000 * 5);
+
+          const wait = setTimeout(() => {
+            clearTimeout(wait);
+            clearInterval(interval);
+            reject('Importing Solution timed out.');
+          }, 1000 * 60 * 15);
+        });
+      }
+      catch (error) {
+        vscode.window.showErrorMessage(error);
+      }
+    }
+  }
+
+  private async packSolution(isManaged: boolean, metaData?: IExtensionMetaData): Promise<vscode.Uri | undefined> {
+    const solution = await this.getSolution();
+
+    if (solution) {
+      try {
+        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(metaData?.CrmUtilFolder || '', '**/SolutionPackager.exe'));
+
+        if (spFiles.length < 1) {
+          throw new Error("No CrmSvcUtil.exe file found, please refine the CrmSvcUtilFolder setting.");
+        }
+
+        if (spFiles.length > 1) {
+          throw new Error("Multiple CrmSvcUtil.exe files found, please refine the CrmSvcUtilFolder setting.");
+        }
+
+        for (let sp of spFiles) {
+          const output = vscode.window.createOutputChannel("CDS Solution: Import");
+          output.show();
+
+          return await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false,
+            title: "Packing Solution..."
+          }, async (progress) => {
+            let version = await this.getPackagedSolutionVersion(metaData);
+
+            while (version.indexOf('.') >= 0) {
+              version = version.replace(".", "_");
+            }
+
+            const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${version}${isManaged ? '_managed' : ''}.zip`;
+            const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
+
+            return new Promise((resolve, reject) => {
+              const process = child_process.spawn(sp.fsPath, [
+                '/action:Pack',
+                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}`,
+                `/zipfile:${fileUri.fsPath}`,
+                `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
+                '/errorlevel:Verbose',
+                '/nologo'
+              ]);
+
+              process.stdout.on('data', async (data) => {
+                output.appendLine(data.toString());
+              });
+
+              process.stderr.on('data', async (data) => {
+                output.appendLine(data.toString());
+              });
+
+              process.addListener('exit', async (code) => {
+                output.appendLine(`Solution Packager exited with code '${code}'`);
+                resolve(fileUri);
+              });
+            });
+          });
+        }
+      }
+      catch (error) {
+        vscode.window.showErrorMessage(error);
+      }
+    }
+  }
+
+  private async getPackagedSolutionVersion(metaData?: IExtensionMetaData): Promise<string> {
+    const solution = await this.getSolution();
+    const solutionFile = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '', solution?.UniqueName || '', 'Other\\Solution.xml');
+
+    const document = await vscode.workspace.openTextDocument(solutionFile.path);
+    const content = document.getText();
+
+    const versionTag = content.match('(?:<Version>){1}([0-9]\.?){4}(?:</Version>){1}')?.shift();
+
+    if (versionTag) {
+      return versionTag?.replace('<Version>', '').replace('</Version>', '');
+    }
+
+    throw new Error("Could not read Solution Version");
   }
 }

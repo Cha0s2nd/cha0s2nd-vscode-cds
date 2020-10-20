@@ -128,6 +128,16 @@
         "category": "CDS Web Resources"
       },
       {
+        "command": "cha0s2nd-vscode-cds.solution.importManaged",
+        "title": "Import as Managed",
+        "category": "CDS Solution"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.solution.importUnManaged",
+        "title": "Import as Unmanaged",
+        "category": "CDS Solution"
+      },
+      {
         "command": "cha0s2nd-vscode-cds.solution.export",
         "title": "Export",
         "category": "CDS Solution"
@@ -144,7 +154,8 @@
   },
   "dependencies": {
     "request": "2.88.0",
-    "request-promise": "4.2.5"
+    "request-promise": "4.2.5",
+    "node-uuid": "^1.4.8"
   },
   "devDependencies": {
     "@types/vscode": "^1.14.0",
@@ -152,6 +163,7 @@
     "@types/mocha": "^8.0.0",
     "@types/node": "^12.11.7",
     "@types/request-promise": "^4.1.41",
+    "@types/node-uuid": "^0.0.28",
     "eslint": "^7.9.0",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
