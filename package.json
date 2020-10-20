@@ -100,13 +100,13 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.organization.change",
-        "title": "Change Organization",
-        "category": "CDS"
+        "title": "Change",
+        "category": "CDS Organization"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.change",
-        "title": "Change Solution",
-        "category": "CDS"
+        "title": "Change",
+        "category": "CDS Solution"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.deploy",
@@ -126,6 +126,11 @@
         "command": "cha0s2nd-vscode-cds.webresource.download",
         "title": "Download and Map",
         "category": "CDS Web Resources"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.solution.export",
+        "title": "Export",
+        "category": "CDS Solution"
       }
     ]
   },
