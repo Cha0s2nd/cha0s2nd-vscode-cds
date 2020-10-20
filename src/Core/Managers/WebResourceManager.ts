@@ -69,7 +69,7 @@ export default class WebResourceManager {
             increment: count += 100 / resources.length,
           });
 
-          const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.FileLocation || ''), metaData?.WebResources.Folder || '', resource.name);
+          const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.WebResources.Folder || '', resource.name);
 
           var buffer = Buffer.from(resource.content, 'base64');
           var array = new Uint8Array(buffer);
@@ -134,7 +134,7 @@ export default class WebResourceManager {
     const metaData = await vscode.commands.executeCommand<IExtensionMetaData>('cha0s2nd-vscode-cds.metadata.get');
 
     for (let resource of resources) {
-      const webResource = metaData?.WebResources.Files.find((file: IWebResource) => vscode.Uri.joinPath(vscode.Uri.file(metaData?.FileLocation || ''), metaData?.WebResources.Folder || '', file.File).fsPath === resource.fsPath);
+      const webResource = metaData?.WebResources.Files.find((file: IWebResource) => vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.WebResources.Folder || '', file.File).fsPath === resource.fsPath);
 
       if (webResource) {
         const document = await vscode.workspace.openTextDocument(resource.path);
@@ -178,7 +178,7 @@ export default class WebResourceManager {
             increment: count += 100 / metaData.WebResources.Files.length,
           });
 
-          const file = vscode.Uri.joinPath(vscode.Uri.file(metaData.FileLocation || ''), metaData.WebResources.Folder, webResource.File);
+          const file = vscode.Uri.joinPath(vscode.Uri.file(metaData.Folder || ''), metaData.WebResources.Folder, webResource.File);
           const document = await vscode.workspace.openTextDocument(file.path);
           webResource.Content = Buffer.from(document.getText()).toString('base64');
 
