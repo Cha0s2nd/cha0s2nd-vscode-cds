@@ -32,7 +32,7 @@
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceLangId == json"
+          "when": "resourceFilename == cds-tools.json"
         }
       ],
       "editor/title": [
@@ -81,27 +81,37 @@
       {
         "command": "cha0s2nd-vscode-cds.auth.login",
         "title": "Login",
-        "category": "CDS Tools"
+        "category": "CDS Auth"
       },
       {
         "command": "cha0s2nd-vscode-cds.auth.logout",
         "title": "Logout",
-        "category": "CDS Tools"
+        "category": "CDS Auth"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.auth.discoveryToken.set",
+        "title": "Configure Discovery Token",
+        "category": "CDS Auth"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.auth.organizationToken.set",
+        "title": "Configure Organization Token",
+        "category": "CDS Auth"
       },
       {
         "command": "cha0s2nd-vscode-cds.organization.change",
         "title": "Change Organization",
-        "category": "CDS Tools"
+        "category": "CDS"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.change",
         "title": "Change Solution",
-        "category": "CDS Tools"
+        "category": "CDS"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.deploy",
-        "title": "Deploy Web Resource",
-        "category": "CDS Tools",
+        "title": "Deploy",
+        "category": "CDS Web Resources",
         "icon": {
           "light": "media/light/upload.png",
           "dark": "media/dark/upload.png"
@@ -109,13 +119,13 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-        "title": "Deploy All Web Resources",
-        "category": "CDS Tools"
+        "title": "Deploy All",
+        "category": "CDS Web Resources"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.download",
-        "title": "Download and Map Web Resources",
-        "category": "CDS Tools"
+        "title": "Download and Map",
+        "category": "CDS Web Resources"
       }
     ]
   },
@@ -129,8 +139,7 @@
   },
   "dependencies": {
     "request": "2.88.0",
-    "request-promise": "4.2.5",
-    "adal-node": "^0.2.1"
+    "request-promise": "4.2.5"
   },
   "devDependencies": {
     "@types/vscode": "^1.14.0",
