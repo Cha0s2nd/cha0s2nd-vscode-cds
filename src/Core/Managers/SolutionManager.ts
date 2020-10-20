@@ -125,39 +125,44 @@ export default class SolutionManager {
     const solution = await this.getSolution();
 
     if (solution) {
-      const response = await WebApi.post('ExportSolution',
-        {
-          SolutionName: solution.UniqueName,
-          ExportAutoNumberingSettings: false,
-          ExportCalendarSettings: false,
-          ExportCustomizationSettings: false,
-          ExportEmailTrackingSettings: false,
-          ExportExternalApplications: false,
-          ExportGeneralSettings: false,
-          ExportIsvConfig: false,
-          ExportMarketingSettings: false,
-          ExportOutlookSynchronizationSettings: false,
-          ExportRelationshipRoles: false,
-          ExportSales: false,
-          Managed: isManaged
+      try {
+        const response = await WebApi.post('ExportSolution',
+          {
+            SolutionName: solution.UniqueName,
+            ExportAutoNumberingSettings: false,
+            ExportCalendarSettings: false,
+            ExportCustomizationSettings: false,
+            ExportEmailTrackingSettings: false,
+            ExportExternalApplications: false,
+            ExportGeneralSettings: false,
+            ExportIsvConfig: false,
+            ExportMarketingSettings: false,
+            ExportOutlookSynchronizationSettings: false,
+            ExportRelationshipRoles: false,
+            ExportSales: false,
+            Managed: isManaged
+          }
+        );
+
+        if (response) {
+          let version = solution.Version;
+
+          while (version.indexOf('.') >= 0) {
+            version = version.replace(".", "_");
+          }
+
+          const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${version}${isManaged ? '_managed' : ''}.zip`;
+          const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
+
+          var buffer = Buffer.from(response.ExportSolutionFile, 'base64');
+          var array = new Uint8Array(buffer);
+          await vscode.workspace.fs.writeFile(fileUri, array);
+
+          return fileUri;
         }
-      );
-
-      if (response) {
-        let version = solution.Version;
-
-        while (version.indexOf('.') >= 0) {
-          version = version.replace(".", "_");
-        }
-
-        const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${version}${isManaged ? '_managed' : ''}.zip`;
-        const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
-
-        var buffer = Buffer.from(response.ExportSolutionFile, 'base64');
-        var array = new Uint8Array(buffer);
-        await vscode.workspace.fs.writeFile(fileUri, array);
-
-        return fileUri;
+      }
+      catch (error) {
+        vscode.window.showErrorMessage(error);
       }
     }
   }
@@ -242,6 +247,12 @@ export default class SolutionManager {
         const jobId = uuid.v4();
         const content = await vscode.workspace.fs.readFile(fileUri);
 
+        const wait = setTimeout(() => {
+          clearTimeout(wait);
+          vscode.workspace.fs.delete(fileUri);
+          throw new Error('Importing Solution timed out.');
+        }, 1000 * 60 * 15);
+
         await WebApi.post('ImportSolution',
           {
             OverwriteUnmanagedCustomizations: true,
@@ -251,37 +262,7 @@ export default class SolutionManager {
           }
         );
 
-        return new Promise((resolve, reject) => {
-          const interval = setInterval(async () => {
-            const job = await WebApi.retrieve(
-              'asyncoperation',
-              jobId,
-              [
-                'statuscode',
-                'message',
-                'friendlymessage'
-              ]);
-
-            switch (job.statuscode) {
-              case 30:
-                clearInterval(interval);
-                resolve();
-                break;
-
-              case 32: // Cancelled
-              case 31:
-                clearInterval(interval);
-                reject(`${job.message}: ${job.friendlymessage}`);
-                break;
-            }
-          }, 1000 * 5);
-
-          const wait = setTimeout(() => {
-            clearTimeout(wait);
-            clearInterval(interval);
-            reject('Importing Solution timed out.');
-          }, 1000 * 60 * 15);
-        });
+        await vscode.workspace.fs.delete(fileUri);
       }
       catch (error) {
         vscode.window.showErrorMessage(error);
