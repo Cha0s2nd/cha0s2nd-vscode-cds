@@ -60,6 +60,7 @@ export default class ExtensionMetaDataManager {
           var buffer = Buffer.from(JSON.stringify(metaData), 'utf-8');
           var array = new Uint8Array(buffer);
           await vscode.workspace.fs.writeFile(file, array);
+
           const edits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', file, { tabSize: vscode.workspace.getConfiguration().get("editor.tabSize") || 2, insertSpaces: vscode.workspace.getConfiguration().get("editor.insertSpaces") || true });
           if (edits !== undefined) {
             let formatEdit = new vscode.WorkspaceEdit();
