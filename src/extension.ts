@@ -8,10 +8,10 @@ import WebResourceManager from './Core/Managers/WebResourceManager';
 
 export async function activate(context: vscode.ExtensionContext) {
   new AuthorizationManager(context).registerCommands();
-  new EntityGenerationManager(context).registerCommands();
   new ExtensionMetaDataManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
+  new EntityGenerationManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
 
   if (await context.workspaceState.get('cha0s2nd-vscode-cds.auth.token')) {

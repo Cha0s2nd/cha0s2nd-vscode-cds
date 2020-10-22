@@ -14,17 +14,9 @@ export default class EntityGeneratorManager {
     }
 
     private async generate(entitySet: string) {
-        const entity: IEntity = JSON.parse(await WebApi.get(entitySet));
 
-        if (entity) {
-            let optionSet = {};
 
-            for(var option = 0; option < entity.OptionSet.Options.length; option ++){
-                
-            }
-            
-
-        }
+console.log("Hi daar slaai blaar");
 
     }
 }
