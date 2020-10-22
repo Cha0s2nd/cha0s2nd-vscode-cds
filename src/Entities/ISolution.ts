@@ -6,4 +6,5 @@ export default interface ISolution extends QuickPickItem {
   SolutionId: string;
   OrganizationId: string;
   OrganizationName: string;
+  Version: string;
 }

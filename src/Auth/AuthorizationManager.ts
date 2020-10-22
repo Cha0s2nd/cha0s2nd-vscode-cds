@@ -33,6 +33,8 @@ export default class AuthorizationManager {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.login', async () => { return this.login(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.discoveryToken.get', async () => { return (await this.getDiscoveryToken()).access_token; }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.organizationToken.get', async (organization: IOrganization) => { return (await this.getOrganizationToken(organization)).access_token; }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.discoveryToken.set', async () => { await this.configureDiscoveryToken(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.organizationToken.set', async () => { await this.configureOrganizationToken(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.logout', async () => { return this.logout(); }));
   }
 
@@ -170,6 +172,8 @@ export default class AuthorizationManager {
         resolve(this.discoveryToken);
       }
       catch (ex) {
+        this.discoveryToken = null;
+        this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', null);
         reject(ex);
       }
     });
@@ -234,6 +238,8 @@ export default class AuthorizationManager {
         resolve(this.token);
       }
       catch (ex) {
+        this.token = null;
+        this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', null);
         reject(ex);
       }
     });
@@ -283,9 +289,32 @@ export default class AuthorizationManager {
     return null;
   }
 
-  public async configureToken() {
-    this.token = await this.openTokenInput();
-    await this.login();
+  public async configureDiscoveryToken() {
+    const token = await this.openTokenInput();
+
+    if (token) {
+      this.discoveryToken = token;
+      this.authCode = '';
+      this.tokenExpiryDate = new Date();
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', this.token);
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryTokenExpiryDate', this.tokenExpiryDate);
+
+      await this.login();
+    }
+  }
+
+  public async configureOrganizationToken() {
+    const token = await this.openTokenInput();
+
+    if (token) {
+      this.token = token;
+      this.authCode = '';
+      this.tokenExpiryDate = new Date();
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
+
+      await this.login();
+    }
   }
 
   public async login(): Promise<void> {

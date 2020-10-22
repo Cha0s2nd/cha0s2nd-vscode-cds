@@ -1,7 +1,5 @@
-import { isDate } from "util";
 import * as vscode from "vscode";
 import IExtensionMetaData from "../../Entities/IExtensionMetaData";
-import ISolution from "../../Entities/ISolution";
 
 export default class ExtensionMetaDataManager {
   private context: vscode.ExtensionContext;
@@ -15,30 +13,42 @@ export default class ExtensionMetaDataManager {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.metadata.set', async (metaData: IExtensionMetaData) => { return this.saveMetaDataToFile(metaData); }));
   }
 
-  private async getMetaDataFromFile(): Promise<IExtensionMetaData | undefined> {
+  private async getMetaDataFromFile(): Promise<IExtensionMetaData> {
+    let metaData: IExtensionMetaData = {
+      Folder: '',
+      CrmUtilFolder: '',
+      WebResources: {
+        Folder: '\\WebResources',
+        Files: []
+      },
+      Solution: {
+        Folder: '',
+        ZipFolder: '',
+        ExportManaged: false,
+        ExportUnManaged: false
+      }
+    };
+
     if (vscode.workspace.workspaceFolders) {
       for (let workspaceFolder of vscode.workspace.workspaceFolders) {
         const files = await vscode.workspace.findFiles(new vscode.RelativePattern(workspaceFolder.uri.path, '**/cds-tools.json'));
         for (let file of files) {
-          const document = await vscode.workspace.openTextDocument(file.path);
-          const content = document.getText();
           try {
-            let metaData = <IExtensionMetaData>JSON.parse(content);
-            metaData.FileLocation = file.fsPath.replace('cds-tools.json', '');
-            return metaData;
+            const document = await vscode.workspace.openTextDocument(file.path);
+            const content = document.getText();
+
+            metaData = <IExtensionMetaData>JSON.parse(content);
           }
-          catch {
-            return {
-              FileLocation: file.fsPath.replace('cds-tools.json', ''),
-              WebResources: {
-                Folder: '\\WebResources',
-                Files: []
-              }
-            };
+          catch (error) {
+            vscode.window.showErrorMessage(error);
           }
+
+          metaData.Folder = file.fsPath.replace('cds-tools.json', '');
         }
       }
     }
+
+    return metaData;
   }
 
   private async saveMetaDataToFile(metaData: IExtensionMetaData): Promise<void> {
@@ -46,10 +56,11 @@ export default class ExtensionMetaDataManager {
       for (let workspaceFolder of vscode.workspace.workspaceFolders) {
         const files = await vscode.workspace.findFiles(new vscode.RelativePattern(workspaceFolder.uri.path, '**/cds-tools.json'));
         for (let file of files) {
-          metaData.FileLocation = undefined;
+          metaData.Folder = undefined;
           var buffer = Buffer.from(JSON.stringify(metaData), 'utf-8');
           var array = new Uint8Array(buffer);
           await vscode.workspace.fs.writeFile(file, array);
+
           const edits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', file, { tabSize: vscode.workspace.getConfiguration().get("editor.tabSize") || 2, insertSpaces: vscode.workspace.getConfiguration().get("editor.insertSpaces") || true });
           if (edits !== undefined) {
             let formatEdit = new vscode.WorkspaceEdit();
