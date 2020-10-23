@@ -155,7 +155,8 @@
   "dependencies": {
     "request": "2.88.0",
     "request-promise": "4.2.5",
-    "node-uuid": "^1.4.8"
+    "node-uuid": "^1.4.8",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@types/vscode": "^1.14.0",
@@ -164,6 +165,7 @@
     "@types/node": "^12.11.7",
     "@types/request-promise": "^4.1.41",
     "@types/node-uuid": "^0.0.28",
+    "@types/xml2js": "^0.4.5",
     "eslint": "^7.9.0",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",

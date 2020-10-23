@@ -5,8 +5,8 @@ import IOrganization from "../../Entities/IOrganization";
 import ISolution from '../../Entities/ISolution';
 import IExtensionMetaData from '../../Entities/IExtensionMetaData';
 import WebApi from '../xrm/WebApi';
-import { clear } from 'console';
 import { Buffer } from 'buffer';
+import { parseStringPromise } from 'xml2js';
 
 export default class SolutionManager {
   private context: vscode.ExtensionContext;
@@ -104,7 +104,8 @@ export default class SolutionManager {
       }, (progress) => this.downloadSolution(true, metaData));
 
       if (fileUri) {
-        this.extractSolution(true, fileUri, metaData);
+        await this.extractSolution(true, fileUri, metaData);
+        await vscode.workspace.fs.delete(fileUri);
       }
     }
 
@@ -116,7 +117,8 @@ export default class SolutionManager {
       }, (progress) => this.downloadSolution(false, metaData));
 
       if (fileUri) {
-        this.extractSolution(false, fileUri, metaData);
+        await this.extractSolution(false, fileUri, metaData);
+        await vscode.workspace.fs.delete(fileUri);
       }
     }
   }
@@ -151,7 +153,7 @@ export default class SolutionManager {
             version = version.replace(".", "_");
           }
 
-          const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${version}${isManaged ? '_managed' : ''}.zip`;
+          const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
           const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
 
           var buffer = Buffer.from(response.ExportSolutionFile, 'base64');
@@ -194,8 +196,9 @@ export default class SolutionManager {
             return new Promise((resolve, reject) => {
               const process = child_process.spawn(sp.fsPath, [
                 '/action:Extract',
-                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}`,
+                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}\\${isManaged ? 'managed' : 'unmanaged'}`,
                 `/zipfile:${fileUri.fsPath}`,
+                `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
                 '/allowWrite:Yes',
                 '/allowDelete:Yes',
                 '/clobber',
@@ -213,7 +216,6 @@ export default class SolutionManager {
 
               process.addListener('exit', async (code) => {
                 output.appendLine(`Solution Packager exited with code '${code}'`);
-                await vscode.workspace.fs.delete(fileUri);
                 resolve();
               });
             });
@@ -231,11 +233,8 @@ export default class SolutionManager {
 
     const fileUri = await this.packSolution(isManaged, metaData);
     if (fileUri) {
-      await vscode.window.withProgress({
-        location: vscode.ProgressLocation.Notification,
-        cancellable: false,
-        title: "Importing Solution..."
-      }, async (progress) => await this.uploadSolution(isManaged, fileUri, metaData));
+      await this.uploadSolution(isManaged, fileUri, metaData);
+      await vscode.workspace.fs.delete(fileUri);
     }
   }
 
@@ -247,22 +246,78 @@ export default class SolutionManager {
         const jobId = uuid.v4();
         const content = await vscode.workspace.fs.readFile(fileUri);
 
-        const wait = setTimeout(() => {
-          clearTimeout(wait);
-          vscode.workspace.fs.delete(fileUri);
-          throw new Error('Importing Solution timed out.');
-        }, 1000 * 60 * 15);
+        await vscode.window.withProgress({
+          location: vscode.ProgressLocation.Notification,
+          cancellable: false,
+          title: "Importing Solution"
+        }, async (progress) => {
+          return new Promise(async (resolve, reject) => {
+            progress.report({
+              message: 'Uploading Solution package...'
+            });
 
-        await WebApi.post('ImportSolution',
-          {
-            OverwriteUnmanagedCustomizations: true,
-            PublishWorkflows: true,
-            CustomizationFile: Buffer.from(content).toString('base64'),
-            ImportJobId: jobId
-          }
-        );
+            const wait = setTimeout(() => {
+              clearTimeout(wait);
+              reject('Importing Solution timed out.');
+            }, 1000 * 60 * 15);
 
-        await vscode.workspace.fs.delete(fileUri);
+            await WebApi.post('ImportSolution',
+              {
+                OverwriteUnmanagedCustomizations: true,
+                PublishWorkflows: true,
+                CustomizationFile: Buffer.from(content).toString('base64'),
+                ImportJobId: jobId
+              }
+            );
+
+            const interval = setInterval(async (jobId, progress) => {
+              const job = await WebApi.retrieve(
+                'importjobs',
+                jobId,
+                [
+                  'importjobid',
+                  'solutionid',
+                  'progress',
+                  'completedon',
+                  'data'
+                ]
+              );
+
+              progress.report({
+                message: 'Applying Changes...',
+                increment: job.progress
+              });
+
+              if (job.completedon) {
+                clearInterval(interval);
+
+                const data = await parseStringPromise(job.data);
+
+                if (data.importexportxml.$.succeeded === 'success') {
+                  resolve();
+                }
+                else {
+                  if ("Yes" === await vscode.window.showErrorMessage("The Solution Import failed, would you like to save the result containing the details of the failure?", {
+                    modal: true
+                  }, "Yes", "No")) {
+                    const saveLocation = await vscode.window.showSaveDialog({
+                      title: 'CDS Solution: Import Result',
+                      filters: { 'XML': ['xml'] }
+                    });
+
+                    if (saveLocation) {
+                      var buffer = Buffer.from(job.data, 'utf-8');
+                      var array = new Uint8Array(buffer);
+                      await vscode.workspace.fs.writeFile(saveLocation, array);
+                    }
+                  }
+
+                  reject('Importing Solution failed');
+                }
+              }
+            }, 1000 * 5, jobId, progress);
+          });
+        });
       }
       catch (error) {
         vscode.window.showErrorMessage(error);
@@ -294,19 +349,13 @@ export default class SolutionManager {
             cancellable: false,
             title: "Packing Solution..."
           }, async (progress) => {
-            let version = await this.getPackagedSolutionVersion(metaData);
-
-            while (version.indexOf('.') >= 0) {
-              version = version.replace(".", "_");
-            }
-
-            const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${version}${isManaged ? '_managed' : ''}.zip`;
+            const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
             const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
 
             return new Promise((resolve, reject) => {
               const process = child_process.spawn(sp.fsPath, [
                 '/action:Pack',
-                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}`,
+                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}\\${isManaged ? 'managed' : 'unmanaged'}`,
                 `/zipfile:${fileUri.fsPath}`,
                 `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
                 '/errorlevel:Verbose',
@@ -333,21 +382,5 @@ export default class SolutionManager {
         vscode.window.showErrorMessage(error);
       }
     }
-  }
-
-  private async getPackagedSolutionVersion(metaData?: IExtensionMetaData): Promise<string> {
-    const solution = await this.getSolution();
-    const solutionFile = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '', solution?.UniqueName || '', 'Other\\Solution.xml');
-
-    const document = await vscode.workspace.openTextDocument(solutionFile.path);
-    const content = document.getText();
-
-    const versionTag = content.match('(?:<Version>){1}([0-9]\.?){4}(?:</Version>){1}')?.shift();
-
-    if (versionTag) {
-      return versionTag?.replace('<Version>', '').replace('</Version>', '');
-    }
-
-    throw new Error("Could not read Solution Version");
   }
 }

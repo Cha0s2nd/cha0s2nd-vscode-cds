@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as uuid from 'node-uuid';
 import * as Constants from '../Core/Constants/Constants';
 import AuthUriHandler from './AuthUriHandler';
 import { IAuthToken } from '../Entities';
@@ -87,7 +88,7 @@ export default class AuthorizationManager {
   private async getAuthCode() {
     return new Promise<string>(async (resolve: (code: string) => void, reject) => {
       try {
-        this.authState = Math.random().toString(36).slice(2);
+        this.authState = vscode.env.uriScheme + '_' + uuid.v4();
 
         await vscode.env.openExternal(vscode.Uri.parse(`${Constants.AUTH_URL}?response_type=code&client_id=${Constants.CLIENT_ID}&response_mode=query&redirect_uri=${encodeURIComponent(Constants.REDIRECT_URL)}&scope=${encodeURIComponent(Constants.SCOPES.join(' '))}&prompt=select_account&state=${this.authState}`));
 
