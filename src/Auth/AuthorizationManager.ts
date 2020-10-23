@@ -14,7 +14,6 @@ export default class AuthorizationManager {
   private discoveryTokenExpiryDate: Date;
   private context: vscode.ExtensionContext;
 
-  private authCode: string = '';
   private authState: string = '';
   private inputBoxOpen: boolean = false;
 
@@ -88,10 +87,6 @@ export default class AuthorizationManager {
   private async getAuthCode() {
     return new Promise<string>(async (resolve: (code: string) => void, reject) => {
       try {
-        if (this.authCode) {
-          resolve(this.authCode);
-        }
-
         this.authState = Math.random().toString(36).slice(2);
 
         await vscode.env.openExternal(vscode.Uri.parse(`${Constants.AUTH_URL}?response_type=code&client_id=${Constants.CLIENT_ID}&response_mode=query&redirect_uri=${encodeURIComponent(Constants.REDIRECT_URL)}&scope=${encodeURIComponent(Constants.SCOPES.join(' '))}&prompt=select_account&state=${this.authState}`));
@@ -103,9 +98,7 @@ export default class AuthorizationManager {
           }, 1000 * 60 * 5);
         });
 
-        this.authCode = await Promise.race([this.waitForCodeResponse(), timeoutPromise]);
-
-        resolve(this.authCode);
+        resolve(await Promise.race([this.waitForCodeResponse(), timeoutPromise]));
       }
       catch (ex) {
         reject(ex);
@@ -133,7 +126,6 @@ export default class AuthorizationManager {
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
-          this.authCode = '';
           this.tokenExpiryDate = new Date();
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
@@ -163,7 +155,6 @@ export default class AuthorizationManager {
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
-          this.authCode = '';
           this.discoveryTokenExpiryDate = new Date();
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', this.discoveryToken);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryTokenExpiryDate', this.discoveryTokenExpiryDate);
@@ -199,7 +190,6 @@ export default class AuthorizationManager {
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
-          this.authCode = '';
           this.tokenExpiryDate = new Date();
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
@@ -229,7 +219,6 @@ export default class AuthorizationManager {
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
-          this.authCode = '';
           this.tokenExpiryDate = new Date();
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
@@ -294,7 +283,6 @@ export default class AuthorizationManager {
 
     if (token) {
       this.discoveryToken = token;
-      this.authCode = '';
       this.tokenExpiryDate = new Date();
       this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', this.token);
       this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryTokenExpiryDate', this.tokenExpiryDate);
@@ -308,7 +296,6 @@ export default class AuthorizationManager {
 
     if (token) {
       this.token = token;
-      this.authCode = '';
       this.tokenExpiryDate = new Date();
       this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
       this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
@@ -340,8 +327,6 @@ export default class AuthorizationManager {
     this.token = null;
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', null);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', null);
-
-    this.authCode = '';
 
     vscode.window.showInformationMessage("Successfully logged out of cds");
   }
