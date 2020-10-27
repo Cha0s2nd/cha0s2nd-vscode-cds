@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as rp from 'request-promise';
 import * as Constants from "../Constants/Constants";
 import IOrganization from "../../Entities/IOrganization";
+import { IAuthToken } from '../../Entities';
 
 export default class OrganizationManager {
   private context: vscode.ExtensionContext;
@@ -25,7 +26,7 @@ export default class OrganizationManager {
         'Prefer': 'odata.include-annotations="*"',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.auth.discoveryToken.get')
+        'Authorization': 'Bearer ' + (await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.discoveryToken.get'))?.access_token
       },
       json: true
     });

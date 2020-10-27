@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import * as uuid from 'node-uuid';
 import * as Constants from '../Core/Constants/Constants';
-import AuthUriHandler from './AuthUriHandler';
-import { IAuthToken } from '../Entities';
 import * as rp from 'request-promise';
 import IOrganization from '../Entities/IOrganization';
 import ISolution from '../Entities/ISolution';
+import AuthUriHandler from './AuthUriHandler';
+import { IAuthToken } from '../Entities';
 
 export default class AuthorizationManager {
   private uriHandler: AuthUriHandler;
@@ -31,8 +31,8 @@ export default class AuthorizationManager {
 
   public registerCommands(): void {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.login', async () => { return this.login(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.discoveryToken.get', async () => { return (await this.getDiscoveryToken()).access_token; }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.organizationToken.get', async (organization: IOrganization) => { return (await this.getOrganizationToken(organization)).access_token; }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.discoveryToken.get', async () => { return (await this.getDiscoveryToken()); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.organizationToken.get', async (organization: IOrganization) => { return (await this.getOrganizationToken(organization)); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.discoveryToken.set', async () => { await this.configureDiscoveryToken(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.organizationToken.set', async () => { await this.configureOrganizationToken(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.logout', async () => { return this.logout(); }));

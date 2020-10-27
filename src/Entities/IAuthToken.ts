@@ -1,5 +1,6 @@
 export interface IAuthToken {
   access_token: string,
+  id_token?: string,
   expires_in: number,
   expires_on: Date,
   not_before: Date,
