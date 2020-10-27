@@ -30,12 +30,32 @@
           "when": "resourceLangId == javascript || resourceLangId == typescript"
         },
         {
+          "command": "cha0s2nd-vscode-cds.webresource.download",
+          "group": "z_commands",
+          "when": "resourceFilename == cds-tools.json"
+        },
+        {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
           "when": "resourceFilename == cds-tools.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
+          "command": "cha0s2nd-vscode-cds.solution.importManaged",
+          "group": "z_commands",
+          "when": "resourceFilename == cds-tools.json"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.solution.importUnmanaged",
+          "group": "z_commands",
+          "when": "resourceFilename == cds-tools.json"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.solution.export",
+          "group": "z_commands",
+          "when": "resourceFilename == cds-tools.json"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
@@ -46,6 +66,11 @@
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
+          "group": "z_commands",
+          "when": "resourceFilename == spkl.json"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
@@ -71,11 +96,6 @@
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.solution.export",
-          "group": "z_commands",
-          "when": "resourceFilename == spkl.json"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         }
@@ -153,17 +173,17 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.organization.change",
-        "title": "Change",
+        "title": "Change Organization",
         "category": "CDS Organization"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.change",
-        "title": "Change",
+        "title": "Change Solution",
         "category": "CDS Solution"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.deploy",
-        "title": "Deploy",
+        "title": "Deploy CRM Web Resource",
         "category": "CDS Web Resources",
         "icon": {
           "light": "media/light/upload.png",
@@ -172,44 +192,44 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-        "title": "Deploy All",
+        "title": "Deploy All CRM Web Resources",
         "category": "CDS Web Resources"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.download",
-        "title": "Download and Map",
+        "title": "Download and Map CRM Web Resources",
         "category": "CDS Web Resources"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.importManaged",
-        "title": "Import as Managed",
+        "title": "Import CRM Solution as Managed",
         "category": "CDS Solution"
       },
       {
-        "command": "cha0s2nd-vscode-cds.solution.importUnManaged",
-        "title": "Import as Unmanaged",
+        "command": "cha0s2nd-vscode-cds.solution.importUnmanaged",
+        "title": "Import CRM Solution as Unmanaged",
         "category": "CDS Solution"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.export",
-        "title": "Export",
+        "title": "Export CRM Solution",
         "category": "CDS Solution"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
-        "title": "Deploy Webresources",
+        "title": "Deploy Web Resources",
         "category": "CDS Spkl",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.download",
-        "title": "Download Webresources",
+        "title": "Download Web Resources",
         "category": "CDS Spkl",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
-        "title": "Get Webresources",
+        "title": "Get Web Resources",
         "category": "CDS Spkl",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
