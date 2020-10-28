@@ -50,10 +50,6 @@ export default class AuthorizationManager {
     return new Date().getTime() > new Date().setTime(this.tokenExpiryDate.getTime() + token.expires_in * 1000);
   }
 
-  private isTokenAboutToExpire(token: IAuthToken): boolean {
-    return new Date().getTime() > new Date().setTime(this.tokenExpiryDate.getTime() - (5 * 60 * 1000) + (token.expires_in * 1000));
-  }
-
   private async waitForCodeResponse(): Promise<string> {
     let uriEventListener: vscode.Disposable;
     return new Promise((resolve: (code: string) => void, reject) => {
@@ -110,7 +106,7 @@ export default class AuthorizationManager {
   public async getDiscoveryToken(): Promise<IAuthToken> {
     return new Promise<IAuthToken>(async (resolve, reject) => {
       try {
-        if (this.discoveryToken && this.isTokenAboutToExpire(this.discoveryToken) && !this.hasTokenExpired(this.discoveryToken)) {
+        if (this.discoveryToken && this.hasTokenExpired(this.discoveryToken)) {
           const params: string[] = [];
           params.push('resource=' + encodeURIComponent(Constants.DISCOVERY_URL));
           params.push('grant_type=refresh_token');
@@ -174,7 +170,7 @@ export default class AuthorizationManager {
   public async getOrganizationToken(organization: IOrganization): Promise<IAuthToken> {
     return new Promise<IAuthToken>(async (resolve, reject) => {
       try {
-        if (this.token && this.isTokenAboutToExpire(this.token) && !this.hasTokenExpired(this.token)) {
+        if (this.token && this.hasTokenExpired(this.token)) {
           const params: string[] = [];
           params.push('resource=' + encodeURIComponent(organization.Url));
           params.push('grant_type=refresh_token');
