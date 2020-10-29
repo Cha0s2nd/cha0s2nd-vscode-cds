@@ -32,8 +32,21 @@ export default class OrganizationManager {
     });
 
     if (response) {
-      return response.value.map((org: IOrganization) => {
-        return { ...org, label: org.friendlyName, description: org.uniqueName, detail: org.url, alwaysShow: true };
+      return response.value.map((org: any) => {
+        return {
+          id: org.Id,
+          uniqueName: org.UniqueName,
+          urlName: org.UrlName,
+          friendlyName: org.FriendlyName,
+          version: org.Version,
+          url: org.Url,
+          apiUrl: org.ApiUrl,
+          lastUpdated: org.LastUpdated,
+          label: org.FriendlyName,
+          description: org.UniqueName,
+          detail: org.Url,
+          alwaysShow: true
+        };
       });
     }
 

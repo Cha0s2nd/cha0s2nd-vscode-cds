@@ -5,7 +5,6 @@ export default interface IOrganization extends QuickPickItem {
   uniqueName: string;
   urlName: string;
   friendlyName: string;
-  state: 0;
   version: string;
   url: string;
   apiUrl: string;

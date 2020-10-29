@@ -180,11 +180,11 @@ export default class SolutionManager {
         const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
 
         if (spFiles.length < 1) {
-          throw new Error("No CrmSvcUtil.exe file found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
         }
 
         if (spFiles.length > 1) {
-          throw new Error("Multiple CrmSvcUtil.exe files found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
         }
 
         for (let sp of spFiles) {
@@ -303,7 +303,7 @@ export default class SolutionManager {
                   }, "Yes", "No")) {
                     const saveLocation = await vscode.window.showSaveDialog({
                       title: 'CDS Solution: Import Result',
-                      filters: { 'XML': ['xml'] }
+                      filters: { 'Xml': ['xml'] }
                     });
 
                     if (saveLocation) {
@@ -334,11 +334,11 @@ export default class SolutionManager {
         const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
 
         if (spFiles.length < 1) {
-          throw new Error("No CrmSvcUtil.exe file found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
         }
 
         if (spFiles.length > 1) {
-          throw new Error("Multiple CrmSvcUtil.exe files found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
         }
 
         for (let sp of spFiles) {
