@@ -172,7 +172,7 @@ export default class AuthorizationManager {
       try {
         if (this.token && this.hasTokenExpired(this.token)) {
           const params: string[] = [];
-          params.push('resource=' + encodeURIComponent(organization.Url));
+          params.push('resource=' + encodeURIComponent(organization.url));
           params.push('grant_type=refresh_token');
           params.push('scope=' + encodeURIComponent(Constants.SCOPES.join(' ')));
           params.push('redirect_uri=' + encodeURIComponent(Constants.REDIRECT_URL));
@@ -201,7 +201,7 @@ export default class AuthorizationManager {
           const code = await this.getAuthCode();
 
           const params: string[] = [];
-          params.push('resource=' + encodeURIComponent(organization.Url));
+          params.push('resource=' + encodeURIComponent(organization.url));
           params.push('grant_type=authorization_code');
           params.push('scope=' + encodeURIComponent(Constants.SCOPES.join(' ')));
           params.push('redirect_uri=' + encodeURIComponent(Constants.REDIRECT_URL));
@@ -306,7 +306,7 @@ export default class AuthorizationManager {
       const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
       const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
       if (org && solution) {
-        vscode.window.showInformationMessage('Logged in to "' + org.FriendlyName + '" using the "' + solution.FriendlyName + '" solution');
+        vscode.window.showInformationMessage('Logged in to "' + org.friendlyName + '" using the "' + solution.friendlyName + '" solution');
       }
     }
     catch (error) {

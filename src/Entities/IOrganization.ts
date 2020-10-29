@@ -1,13 +1,13 @@
 import { QuickPickItem } from "vscode";
 
 export default interface IOrganization extends QuickPickItem {
-  Id: string;
-  UniqueName: string;
-  UrlName: string;
-  FriendlyName: string;
-  State: 0;
-  Version: string;
-  Url: string;
-  ApiUrl: string;
-  LastUpdated: Date;
+  id: string;
+  uniqueName: string;
+  urlName: string;
+  friendlyName: string;
+  state: 0;
+  version: string;
+  url: string;
+  apiUrl: string;
+  lastUpdated: Date;
 };

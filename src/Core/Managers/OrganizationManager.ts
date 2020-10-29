@@ -33,7 +33,7 @@ export default class OrganizationManager {
 
     if (response) {
       return response.value.map((org: IOrganization) => {
-        return { ...org, label: org.FriendlyName, description: org.UniqueName, detail: org.Url, alwaysShow: true };
+        return { ...org, label: org.friendlyName, description: org.uniqueName, detail: org.url, alwaysShow: true };
       });
     }
 
@@ -69,7 +69,7 @@ export default class OrganizationManager {
 
   private updateStatusBar(organization?: IOrganization): void {
     if (organization) {
-      this.statusBarItem.text = organization.FriendlyName;
+      this.statusBarItem.text = organization.friendlyName;
       this.statusBarItem.show();
     }
     else {

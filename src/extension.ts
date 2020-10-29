@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 import AuthorizationManager from './Auth/AuthorizationManager';
-import ExtensionMetaDataManager from './Core/Managers/ExtensionMetaDataManager';
+import DependancyManager from './Core/Managers/DependancyManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 
 export async function activate(context: vscode.ExtensionContext) {
-  new ExtensionMetaDataManager(context).registerCommands();
+  new DependancyManager(context).checkForCrmUtils();
+
   new AuthorizationManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();

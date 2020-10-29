@@ -133,18 +133,60 @@
       {
         "title": "CDS Tools",
         "properties": {
+          "cha0s2nd-vscode-cds.webresources.folder": {
+            "title": "Web Resources Folder",
+            "description": "The folder path to the Web Resources",
+            "type": "string",
+            "default": "WebResources",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.webresources.metadata": {
+            "title": "Web Resources Metadata",
+            "description": "The metadata associated with the project Web Resources",
+            "type": "array",
+            "default": [],
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.solution.folder": {
+            "title": "Solution Folder",
+            "description": "The folder to extract the Solution to and package the Solution from",
+            "type": "string",
+            "default": "Solution",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.solution.zipfolder": {
+            "title": "Solution Zip Folder",
+            "description": "The temp folder to create the exported and packaged zip files",
+            "type": "string",
+            "default": "",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.solution.exportManaged": {
+            "title": "Export Managed",
+            "description": "Export the Solution as Managed",
+            "type": "boolean",
+            "default": false,
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.solution.exportUnmanaged": {
+            "title": "Export Unmanaged",
+            "description": "Export the Solution as Unmanaged",
+            "type": "boolean",
+            "default": true,
+            "scope": "resource"
+          },
           "cha0s2nd-vscode-cds.spkl.enabled": {
             "title": "Enable Spkl support",
             "description": "Enable the use of auto generated Spkl commands via the terminal: https://github.com/scottdurow/SparkleXrm/wiki/spkl",
             "type": "boolean",
-            "default": "false",
+            "default": false,
             "scope": "resource"
           },
           "cha0s2nd-vscode-cds.spkl.useCachedConnections": {
             "title": "Use Spkl build-in connection manager",
             "description": "Use the build-in spkl connections stored in the Credentials.xml file",
             "type": "boolean",
-            "default": "false",
+            "default": false,
             "scope": "resource"
           }
         }
