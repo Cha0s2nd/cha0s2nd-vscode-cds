@@ -3,7 +3,6 @@ import * as child_process from 'child_process';
 import * as uuid from 'node-uuid';
 import IOrganization from "../../Entities/IOrganization";
 import ISolution from '../../Entities/ISolution';
-import IExtensionMetaData from '../../Entities/IExtensionMetaData';
 import WebApi from '../xrm/WebApi';
 import { Buffer } from 'buffer';
 import { parseStringPromise } from 'xml2js';
@@ -44,12 +43,12 @@ export default class SolutionManager {
     if (response) {
       return response.map((solution: any) => {
         return {
-          UniqueName: solution.uniquename,
-          FriendlyName: solution.friendlyname,
-          SolutionId: solution.solutionid,
-          OrganizationId: solution['_organizationid_value'],
-          OrganizationName: solution['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
-          Version: solution.version,
+          uniqueName: solution.uniquename,
+          friendlyName: solution.friendlyname,
+          solutionId: solution.solutionid,
+          organizationId: solution['_organizationid_value'],
+          organizationName: solution['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
+          version: solution.version,
           label: solution.friendlyname,
           description: solution.uniquename,
           alwaysShow: true
@@ -85,7 +84,7 @@ export default class SolutionManager {
 
   private updateStatusBar(solution?: ISolution): void {
     if (solution) {
-      this.statusBarItem.text = solution.FriendlyName;
+      this.statusBarItem.text = solution.friendlyName;
       this.statusBarItem.show();
     }
     else {
@@ -94,43 +93,41 @@ export default class SolutionManager {
   }
 
   private async exportSolution(): Promise<void> {
-    const metaData = await vscode.commands.executeCommand<IExtensionMetaData>('cha0s2nd-vscode-cds.metadata.get');
-
-    if (metaData?.Solution.ExportManaged) {
+    if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportManaged')) {
       const fileUri = await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
         title: "Downloading Managed Solution ..."
-      }, (progress) => this.downloadSolution(true, metaData));
+      }, (progress) => this.downloadSolution(true));
 
       if (fileUri) {
-        await this.extractSolution(true, fileUri, metaData);
+        await this.extractSolution(true, fileUri);
         await vscode.workspace.fs.delete(fileUri);
       }
     }
 
-    if (metaData?.Solution.ExportUnManaged) {
+    if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportUnmanaged')) {
       const fileUri = await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
         title: "Downloading Unmanaged Solution ..."
-      }, (progress) => this.downloadSolution(false, metaData));
+      }, (progress) => this.downloadSolution(false));
 
       if (fileUri) {
-        await this.extractSolution(false, fileUri, metaData);
+        await this.extractSolution(false, fileUri);
         await vscode.workspace.fs.delete(fileUri);
       }
     }
   }
 
-  private async downloadSolution(isManaged: boolean, metaData?: IExtensionMetaData): Promise<vscode.Uri | undefined> {
+  private async downloadSolution(isManaged: boolean): Promise<vscode.Uri | undefined> {
     const solution = await this.getSolution();
 
     if (solution) {
       try {
         const response = await WebApi.post('ExportSolution',
           {
-            SolutionName: solution.UniqueName,
+            SolutionName: solution.uniqueName,
             ExportAutoNumberingSettings: false,
             ExportCalendarSettings: false,
             ExportCustomizationSettings: false,
@@ -147,14 +144,17 @@ export default class SolutionManager {
         );
 
         if (response) {
-          let version = solution.Version;
+          let version = solution.version;
 
           while (version.indexOf('.') >= 0) {
             version = version.replace(".", "_");
           }
 
-          const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
-          const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
+          const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+          const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder');
+
+          const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
+          const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
 
           var buffer = Buffer.from(response.ExportSolutionFile, 'base64');
           var array = new Uint8Array(buffer);
@@ -169,19 +169,22 @@ export default class SolutionManager {
     }
   }
 
-  private async extractSolution(isManaged: boolean, fileUri: vscode.Uri, metaData?: IExtensionMetaData): Promise<void> {
+  private async extractSolution(isManaged: boolean, fileUri: vscode.Uri): Promise<void> {
     const solution = await this.getSolution();
+
+    const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+    const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder');
 
     if (solution) {
       try {
-        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(metaData?.CrmUtilFolder || '', '**/SolutionPackager.exe'));
+        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
 
         if (spFiles.length < 1) {
-          throw new Error("No CrmSvcUtil.exe file found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
         }
 
         if (spFiles.length > 1) {
-          throw new Error("Multiple CrmSvcUtil.exe files found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
         }
 
         for (let sp of spFiles) {
@@ -196,7 +199,7 @@ export default class SolutionManager {
             return new Promise((resolve, reject) => {
               const process = child_process.spawn(sp.fsPath, [
                 '/action:Extract',
-                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}\\${isManaged ? 'managed' : 'unmanaged'}`,
+                `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
                 `/zipfile:${fileUri.fsPath}`,
                 `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
                 '/allowWrite:Yes',
@@ -229,16 +232,14 @@ export default class SolutionManager {
   }
 
   private async importSolution(isManaged: boolean): Promise<void> {
-    const metaData = await vscode.commands.executeCommand<IExtensionMetaData>('cha0s2nd-vscode-cds.metadata.get');
-
-    const fileUri = await this.packSolution(isManaged, metaData);
+    const fileUri = await this.packSolution(isManaged);
     if (fileUri) {
-      await this.uploadSolution(isManaged, fileUri, metaData);
+      await this.uploadSolution(isManaged, fileUri);
       await vscode.workspace.fs.delete(fileUri);
     }
   }
 
-  private async uploadSolution(isManaged: boolean, fileUri: vscode.Uri, metaData?: IExtensionMetaData): Promise<void> {
+  private async uploadSolution(isManaged: boolean, fileUri: vscode.Uri): Promise<void> {
     const solution = await this.getSolution();
 
     if (solution) {
@@ -302,7 +303,7 @@ export default class SolutionManager {
                   }, "Yes", "No")) {
                     const saveLocation = await vscode.window.showSaveDialog({
                       title: 'CDS Solution: Import Result',
-                      filters: { 'XML': ['xml'] }
+                      filters: { 'Xml': ['xml'] }
                     });
 
                     if (saveLocation) {
@@ -325,19 +326,19 @@ export default class SolutionManager {
     }
   }
 
-  private async packSolution(isManaged: boolean, metaData?: IExtensionMetaData): Promise<vscode.Uri | undefined> {
+  private async packSolution(isManaged: boolean): Promise<vscode.Uri | undefined> {
     const solution = await this.getSolution();
 
     if (solution) {
       try {
-        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(metaData?.CrmUtilFolder || '', '**/SolutionPackager.exe'));
+        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
 
         if (spFiles.length < 1) {
-          throw new Error("No CrmSvcUtil.exe file found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
         }
 
         if (spFiles.length > 1) {
-          throw new Error("Multiple CrmSvcUtil.exe files found, please refine the CrmSvcUtilFolder setting.");
+          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
         }
 
         for (let sp of spFiles) {
@@ -349,13 +350,17 @@ export default class SolutionManager {
             cancellable: false,
             title: "Packing Solution..."
           }, async (progress) => {
-            const zipFileName = `${metaData?.Solution.ZipFolder}\\${solution.UniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
-            const fileUri = vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), zipFileName);
+            const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+            const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder');
+            const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder');
+
+            const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
+            const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
 
             return new Promise((resolve, reject) => {
               const process = child_process.spawn(sp.fsPath, [
                 '/action:Pack',
-                `/folder:${vscode.Uri.joinPath(vscode.Uri.file(metaData?.Folder || ''), metaData?.Solution.Folder || '').fsPath}\\${solution.UniqueName}\\${isManaged ? 'managed' : 'unmanaged'}`,
+                `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
                 `/zipfile:${fileUri.fsPath}`,
                 `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
                 '/errorlevel:Verbose',

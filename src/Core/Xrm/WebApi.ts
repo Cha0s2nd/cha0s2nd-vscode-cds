@@ -117,7 +117,7 @@ export default class WebApi {
   public static async request(url: string, method: string, body: any) {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
     return rp(url, {
-      baseUrl: org!.Url + '/api/data/v' + org!.Version.substring(0, 3) + '/',
+      baseUrl: org!.url + '/api/data/v' + org!.version.substring(0, 3) + '/',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Prefer': 'odata.include-annotations="*", return=representation',

@@ -1,10 +1,10 @@
 import { QuickPickItem } from "vscode";
 
 export default interface ISolution extends QuickPickItem {
-  UniqueName: string;
-  FriendlyName: string;
-  SolutionId: string;
-  OrganizationId: string;
-  OrganizationName: string;
-  Version: string;
+  uniqueName: string;
+  friendlyName: string;
+  solutionId: string;
+  organizationId: string;
+  organizationName: string;
+  version: string;
 }
