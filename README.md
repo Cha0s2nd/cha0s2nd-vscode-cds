@@ -1,6 +1,6 @@
-# Cha0s Data Tools (Dynamics CRM)
+# Cha0s Data Tools (Dynamics 365)
 
-An extension to lessen the woes of working with Dynamics CRM cusomizations. The idea was to make uploading and publising webresources a breeze (something that I magnaged to do), and eventially manage the entire dev process.
+An extension to lessen the woes of working with Dynamics 365 (CRM) and Common Data Services customizations. The idea was to make uploading and publising webresources a breeze (something that I magnaged to do), and eventially manage the entire dev process.
 
 #### This extension is currently in beta, more features are being added and with it more bugs
 
@@ -55,7 +55,7 @@ It's new, will update as soon as they become known
 
 ## Release Notes
 
-### 0.0.1
+### 0.0.2
 
 Initial release
 
