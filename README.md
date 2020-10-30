@@ -1,65 +1,62 @@
-# cha0s2nd-vscode-cds README
+# Cha0s Data Tools (Dynamics CRM)
 
-This is the README for your extension "cha0s2nd-vscode-cds". After writing up a brief description, we recommend including the following sections.
+An extension to lessen the woes of working with Dynamics CRM cusomizations. The idea was to make uploading and publising webresources a breeze (something that I magnaged to do), and eventially manage the entire dev process.
+
+#### This extension is currently in beta, more features are being added and with it more bugs
+
+I've included support for [spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl), currently the only way to do plugin deployments and earlybound entities with this extension.
+
+Currently not supported but planned for future:
+    Update Assemblies
+    Deploy Plugin Steps (SDK Message Processing Steps)
+    Deploy Workflows
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Deploy web resources in bulk or individually.
 
-For example if there is an image subfolder under your extension project workspace:
 
-\!\[feature X\]\(images/feature-x.png\)
+Export/Extract Solutions
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+
+Import Solutions
+
+
+Spkl commands
+
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+SolutionPackager.exe is required to used the solution features:
+Either the [spkl](https://www.nuget.org/packages/spkl/) or [microsoft.crmsdk.coretools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget packages need to be installed to obtain it.
+
+## Getting Started
+
+1. Create a base C# class library project.
+2. Install the [microsoft.crmsdk.coretools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget package.
+3. Customize the local file locations.
+4. Download and map web resources.
 
 ## Extension Settings
 
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `cha0s2nd-vscode-cds.webresources.folder`: The folder containing the local Solution web resources
+* `cha0s2nd-vscode-cds.solution.folder`: The folder containing the local extracted Solution files
+* `cha0s2nd-vscode-cds.solution.zipfolder`: This is a optional setting to specify where the temp zip file will be dumped when importing or exporting.
+* `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Managed
+* `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Unmanaged
+* `cha0s2nd-vscode-cds.spkl.enabled`: This enabled the use of [spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl)
+* `cha0s2nd-vscode-cds.spkl.useCachedConnections`: This is to enable the use of the build in spkl connections, if disabled it uses the connection cache with the extension login.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+It's new, will update as soon as they become known
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Initial release
 
 -----------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**

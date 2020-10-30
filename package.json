@@ -3,6 +3,10 @@
   "displayName": "CDS Tools (CRM Dynamics 365)",
   "description": "Tools to assist in developing custom solutions in CRM",
   "publisher": "Cha0s2nd",
+  "repository": {
+    "url": "https://github.com/Cha0s2nd/cha0s2nd-vscode-cds"
+  },
+  "preview": true,
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.50.0"
