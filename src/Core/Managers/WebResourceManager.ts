@@ -286,42 +286,42 @@ export default class WebResourceManager {
       let webResourceType = WebResourceTypes.None;
 
       switch (path.extname(webResource.file)) {
-        case 'css':
+        case '.css':
           webResourceType = WebResourceTypes.CSS;
           break;
-        case 'gif':
+        case '.gif':
           webResourceType = WebResourceTypes.GIF;
           break;
-        case 'html':
-        case 'htm':
+        case '.html':
+        case '.htm':
           webResourceType = WebResourceTypes.HTML;
           break;
-        case 'ico':
+        case '.ico':
           webResourceType = WebResourceTypes.ICO;
           break;
-        case 'jpg':
-        case 'jpeg':
+        case '.jpg':
+        case '.jpeg':
           webResourceType = WebResourceTypes.JPG;
           break;
-        case 'js':
+        case '.js':
           webResourceType = WebResourceTypes.JScript;
           break;
-        case 'png':
+        case '.png':
           webResourceType = WebResourceTypes.PNG;
           break;
-        case 'resx':
+        case '.resx':
           webResourceType = WebResourceTypes.RESX;
           break;
-        case 'svg':
+        case '.svg':
           webResourceType = WebResourceTypes.SVG;
           break;
-        case 'xap':
+        case '.xap':
           webResourceType = WebResourceTypes.XAP;
           break;
-        case 'xml':
+        case '.xml':
           webResourceType = WebResourceTypes.XML;
           break;
-        case 'xsl':
+        case '.xsl':
           webResourceType = WebResourceTypes.XSL;
           break;
         default:
