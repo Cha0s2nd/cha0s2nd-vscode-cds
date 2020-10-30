@@ -11,7 +11,9 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/cds-tools.json",
+    "workspaceContains:**/spkl.json",
+    "workspaceContains:**/CrmSvcUtils.exe",
+    "workspaceContains:**/cds-*.json",
     "onCommand:cha0s2nd-vscode-cds.auth.login"
   ],
   "main": "./out/extension.js",
@@ -20,39 +22,24 @@
       "commandPalette": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "when": "resourceLangId == javascript || resourceLangId == typescript"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
       "explorer/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == typescript"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.download",
           "group": "z_commands",
-          "when": "resourceFilename == cds-tools.json"
+          "when": "resourceFilename == cds-webresources.json"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceFilename == cds-tools.json"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.solution.importManaged",
-          "group": "z_commands",
-          "when": "resourceFilename == cds-tools.json"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.solution.importUnmanaged",
-          "group": "z_commands",
-          "when": "resourceFilename == cds-tools.json"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.solution.export",
-          "group": "z_commands",
-          "when": "resourceFilename == cds-tools.json"
+          "when": "resourceFilename == cds-webresources.json"
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
@@ -104,28 +91,28 @@
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "navigation",
-          "when": "resourceLangId == javascript || resourceLangId == typescript"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
       "editor/title/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == typescript"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
       "editor/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == typescript"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
       "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == typescript"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ]
     },
@@ -138,13 +125,6 @@
             "description": "The folder path to the Web Resources",
             "type": "string",
             "default": "WebResources",
-            "scope": "resource"
-          },
-          "cha0s2nd-vscode-cds.webresources.metadata": {
-            "title": "Web Resources Metadata",
-            "description": "The metadata associated with the project Web Resources",
-            "type": "array",
-            "default": [],
             "scope": "resource"
           },
           "cha0s2nd-vscode-cds.solution.folder": {
