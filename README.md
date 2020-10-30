@@ -10,6 +10,8 @@ Currently not supported but planned for future:
     Update Assemblies
     Deploy Plugin Steps (SDK Message Processing Steps)
     Deploy Workflows
+    Generate Earlybounds for javascript & typescript
+    Generate C# Earlybounds
 
 ## Features
 

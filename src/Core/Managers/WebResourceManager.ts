@@ -134,7 +134,7 @@ export default class WebResourceManager {
     try {
       const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
       const webResourceFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder');
-      const webResourceMeta = vscode.workspace.getConfiguration().get<IWebResource[]>('cha0s2nd-vscode-cds.webresources.metadata');
+      const webResourceMeta = await this.getWebResourceMetadata();
       const webResources = new Array<IWebResource>();
 
       const resources = await vscode.window.withProgress({
@@ -203,7 +203,7 @@ export default class WebResourceManager {
         }
       }
 
-      vscode.workspace.getConfiguration().update('cha0s2nd-vscode-cds.webresources.metadata', webResources);
+      this.setWebResourceDetails(webResources);
     }
     catch (error) {
       vscode.window.showErrorMessage(error);
@@ -255,7 +255,7 @@ export default class WebResourceManager {
   }
 
   private async deployAllWebResources() {
-    const webResourceMeta = vscode.workspace.getConfiguration().get<IWebResource[]>('cha0s2nd-vscode-cds.webresources.metadata') || [];
+    const webResourceMeta = await this.getWebResourceMetadata();
 
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
