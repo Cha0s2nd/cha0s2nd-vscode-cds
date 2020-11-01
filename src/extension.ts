@@ -19,6 +19,8 @@ export async function activate(context: vscode.ExtensionContext) {
       await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.get');
     }
   }
+
+  console.log("CDS, Ready!");
 }
 
 export function deactivate(context: vscode.ExtensionContext) {
