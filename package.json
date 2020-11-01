@@ -3,11 +3,12 @@
   "displayName": "Cha0s Data Tools (Dynamics 365)",
   "description": "Tools to assist in developing custom solutions in Dynamics 365 and Commons Data Services",
   "publisher": "Cha0s2nd",
+  "icon": "media/icon.png",
   "repository": {
     "url": "https://github.com/Cha0s2nd/cha0s2nd-vscode-cds"
   },
   "preview": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.50.0"
   },
@@ -43,7 +44,7 @@
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceFilename == cds-webresources.json"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl || resourceFilename == cds-webresources.json"
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
@@ -63,7 +64,7 @@
         {
           "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
           "group": "z_commands",
-          "when": "resourceFilename == spkl.json"
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl || resourceFilename == spkl.json"
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
@@ -96,12 +97,22 @@
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "navigation",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
+          "group": "navigation",
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
       "editor/title/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
+          "group": "navigation",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
@@ -110,12 +121,22 @@
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
+          "group": "navigation",
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
       "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
+          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
+          "group": "navigation",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ]
@@ -180,37 +201,37 @@
       {
         "command": "cha0s2nd-vscode-cds.auth.login",
         "title": "Login",
-        "category": "CDS Auth"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.auth.logout",
         "title": "Logout",
-        "category": "CDS Auth"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.auth.discoveryToken.set",
         "title": "Configure Discovery Token",
-        "category": "CDS Auth"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.auth.organizationToken.set",
         "title": "Configure Organization Token",
-        "category": "CDS Auth"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.organization.change",
         "title": "Change Organization",
-        "category": "CDS Organization"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.change",
         "title": "Change Solution",
-        "category": "CDS Solution"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.deploy",
         "title": "Deploy CRM Web Resource",
-        "category": "CDS Web Resources",
+        "category": "Cha0s Data",
         "icon": {
           "light": "media/light/upload.png",
           "dark": "media/dark/upload.png"
@@ -219,80 +240,80 @@
       {
         "command": "cha0s2nd-vscode-cds.webresource.deployAll",
         "title": "Deploy All CRM Web Resources",
-        "category": "CDS Web Resources"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.webresource.download",
         "title": "Download and Map CRM Web Resources",
-        "category": "CDS Web Resources"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.importManaged",
         "title": "Import CRM Solution as Managed",
-        "category": "CDS Solution"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.importUnmanaged",
         "title": "Import CRM Solution as Unmanaged",
-        "category": "CDS Solution"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.solution.export",
         "title": "Export CRM Solution",
-        "category": "CDS Solution"
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
-        "title": "Deploy Web Resources",
-        "category": "CDS Spkl",
+        "title": "Deploy Web Resources using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.download",
-        "title": "Download Web Resources",
-        "category": "CDS Spkl",
+        "title": "Download Web Resources using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
-        "title": "Get Web Resources",
-        "category": "CDS Spkl",
+        "title": "Get Web Resources using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
-        "title": "Instrument",
-        "category": "CDS Spkl",
+        "title": "Instrument using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.plugins.deploy",
-        "title": "Deploy Plugins",
-        "category": "CDS Spkl",
+        "title": "Deploy Plugins using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.workflows.deploy",
-        "title": "Deploy Workflows",
-        "category": "CDS Spkl",
+        "title": "Deploy Workflows using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.solution.import",
-        "title": "Import Solution",
-        "category": "CDS Spkl",
+        "title": "Import Solution using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.solution.export",
-        "title": "Export Solution",
-        "category": "CDS Spkl",
+        "title": "Export Solution using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
-        "title": "Generate Early Bound Types",
-        "category": "CDS Spkl",
+        "title": "Generate Early Bound Types using Spkl",
+        "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
       }
     ]
