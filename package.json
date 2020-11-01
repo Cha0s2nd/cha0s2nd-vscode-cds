@@ -129,6 +129,11 @@
         "category": "CDS Entity"
       },
       {
+        "command": "cha0s2nd-vscode-cds.entity.generateTs",
+        "title": "Generate Typescript",
+        "category": "CDS Entity"
+      },
+      {
         "command": "cha0s2nd-vscode-cds.webresource.deploy",
         "title": "Deploy",
         "category": "CDS Web Resources",
