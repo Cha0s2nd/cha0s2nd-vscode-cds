@@ -188,7 +188,7 @@ export default class SolutionManager {
         }
 
         for (let sp of spFiles) {
-          const output = vscode.window.createOutputChannel("CDS Solution: Export");
+          const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution Export");
           output.show();
 
           await vscode.window.withProgress({
@@ -302,7 +302,7 @@ export default class SolutionManager {
                     modal: true
                   }, "Yes", "No")) {
                     const saveLocation = await vscode.window.showSaveDialog({
-                      title: 'CDS Solution: Import Result',
+                      title: 'Cha0s Data Tools: Solution Import Result',
                       filters: { 'Xml': ['xml'] }
                     });
 
@@ -342,7 +342,7 @@ export default class SolutionManager {
         }
 
         for (let sp of spFiles) {
-          const output = vscode.window.createOutputChannel("CDS Solution: Import");
+          const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution Import");
           output.show();
 
           return await vscode.window.withProgress({

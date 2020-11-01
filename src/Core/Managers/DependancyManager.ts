@@ -8,7 +8,7 @@ export default class DependancyManager {
     constructor(context: vscode.ExtensionContext) {
         this.context = context;
 
-        this.output = vscode.window.createOutputChannel("CDS Tools: Dependancies");
+        this.output = vscode.window.createOutputChannel("Cha0s Data Tools: Dependencies");
     }
 
     public async checkForCrmUtils() {
@@ -20,25 +20,7 @@ export default class DependancyManager {
             }
         }
         else {
-            // this.output.show();
-
-            // const process = child_process.spawn('dotnet', [
-            //     'add',
-            //     'package',
-            //     'microsoft.crmsdk.coretools'
-            // ]);
-
-            // process.stdout.on('data', async (data) => {
-            //     this.output.appendLine(data.toString());
-            // });
-
-            // process.stderr.on('data', async (data) => {
-            //     this.output.appendLine(data.toString());
-            // });
-
-            // process.addListener('exit', async (code) => {
-            //     this.output.appendLine(`Solution Packager exited with code '${code}'`);
-            // });
+            vscode.window.showWarningMessage('SolutionPackager.exe could not be located, please ensure you have the correct nuget packages installed for at least one of the projects.');
         }
     }
 }

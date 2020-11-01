@@ -125,6 +125,9 @@ export default class WebResourceManager {
       if (index > -1) {
         webResourceMeta.splice(index, 1, resource);
       }
+      else {
+        webResourceMeta.push(resource);
+      }
     }
 
     this.saveWebResourceMetadata(webResourceMeta);
@@ -196,12 +199,6 @@ export default class WebResourceManager {
           });
         }
       });
-
-      for (let resource of webResourceMeta || []) {
-        if (!webResources.find(wr => wr.uniqueName === resource.uniqueName)) {
-          webResources.push(resource);
-        }
-      }
 
       this.setWebResourceDetails(webResources);
     }
