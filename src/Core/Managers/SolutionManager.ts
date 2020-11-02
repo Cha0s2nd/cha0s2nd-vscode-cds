@@ -151,7 +151,7 @@ export default class SolutionManager {
           }
 
           const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-          const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder');
+          const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
 
           const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
           const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
@@ -173,7 +173,7 @@ export default class SolutionManager {
     const solution = await this.getSolution();
 
     const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder');
+    const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder') || '';
 
     if (solution) {
       try {
@@ -351,8 +351,8 @@ export default class SolutionManager {
             title: "Packing Solution..."
           }, async (progress) => {
             const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-            const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder');
-            const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder');
+            const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder') || '';
+            const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
 
             const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
             const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);

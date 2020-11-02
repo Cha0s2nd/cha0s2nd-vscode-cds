@@ -17,38 +17,43 @@ Currently not supported but planned for future:
 
 Deploy web resources in bulk or individually.
 
+![deploy-webresources](media/samples/deploy-webresources.gif)
 
 Export/Extract Solutions
 
+![deploy-webresources](media/samples/export-solution.gif)
 
 Import Solutions
 
+![deploy-webresources](media/samples/import-solution.gif)
 
 Spkl commands
 
+![deploy-webresources](media/samples/spkl.gif)
 
 ## Requirements
 
 SolutionPackager.exe is required to use the solution features.
-Either the [spkl](https://www.nuget.org/packages/spkl/) or [microsoft.crmsdk.coretools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget packages need to be installed to obtain it.
+Either the [Spkl](https://www.nuget.org/packages/spkl/) or [Microsoft.CrmSdk.CoreTools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget packages need to be installed in one of the projects to obtain it.
 
 ## Getting Started
 
+Please refer to the [getting started wiki page](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/wiki/Getting-Started) for more detail.
+
+The following 4 simple steps should get you running:
 1. Create a base C# class library project.
-2. Install the [microsoft.crmsdk.coretools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget package.
+2. Install the [Microsoft.CrmSdk.CoreTools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget package.
 3. Customize the local file locations.
 4. Download and map web resources.
 
 ## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
 * `cha0s2nd-vscode-cds.webresources.folder`: The folder containing the local Solution web resources
 * `cha0s2nd-vscode-cds.solution.folder`: The folder containing the local extracted Solution files
 * `cha0s2nd-vscode-cds.solution.zipfolder`: This is a optional setting to specify where the temp zip file will be dumped when importing or exporting.
 * `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Managed
 * `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Unmanaged
-* `cha0s2nd-vscode-cds.spkl.enabled`: This enabled the use of [spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl)
+* `cha0s2nd-vscode-cds.spkl.enabled`: This enabled the use of [pkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl)
 * `cha0s2nd-vscode-cds.spkl.useCachedConnections`: This is to enable the use of the build in spkl connections, if disabled it uses the connection cache with the extension login.
 
 ## Known Issues
@@ -57,7 +62,7 @@ It's new, will update as soon as they become known
 
 ## Release Notes
 
-### 0.0.4
+### 0.0.5
 
 Initial release
 

@@ -16,7 +16,7 @@ export default class DependancyManager {
 
         if (files.length > 0) {
             for (let file of files) {
-                this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder', vscode.Uri.joinPath(file, '..').fsPath);
+                this.context.globalState.update('cha0s2nd-vscode-cds.crmUtilFolder', vscode.Uri.joinPath(file, '..').fsPath);
             }
         }
         else {
