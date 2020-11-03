@@ -1,14 +1,14 @@
 {
   "name": "cha0s2nd-vscode-cds",
   "displayName": "Cha0s Data Tools (Dynamics 365)",
-  "description": "Tools to assist in developing custom solutions in Dynamics 365 and Commons Data Services",
+  "description": "Tools to assist in developing custom solutions in Dynamics 365 and Common Data Services",
   "publisher": "Cha0s2nd",
   "icon": "media/icon.png",
   "repository": {
     "url": "https://github.com/Cha0s2nd/cha0s2nd-vscode-cds"
   },
   "preview": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.50.0"
   },
