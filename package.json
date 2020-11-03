@@ -152,6 +152,27 @@
             "default": "WebResources",
             "scope": "resource"
           },
+          "cha0s2nd-vscode-cds.earlybound.namespace": {
+            "title": "Early-bound Namespace",
+            "description": "The Namespace to use for early-bound entities",
+            "type": "string",
+            "default": null,
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.earlybound.filename": {
+            "title": "Early-bound Filename",
+            "description": "The Name of the output file for early-bound entities",
+            "type": "string",
+            "default": "Entities.cs",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.earlybound.generateActions": {
+            "title": "Early-bound Generate Actions",
+            "description": "Generate request and response classes for custom actions",
+            "type": "string",
+            "default": true,
+            "scope": "resource"
+          },
           "cha0s2nd-vscode-cds.solution.folder": {
             "title": "Solution Folder",
             "description": "The folder to extract the Solution to and package the Solution from",
@@ -245,6 +266,11 @@
       {
         "command": "cha0s2nd-vscode-cds.webresource.download",
         "title": "Download and Map CRM Web Resources",
+        "category": "Cha0s Data"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.earlybound.generate",
+        "title": "Generate Early-bound Entities",
         "category": "Cha0s Data"
       },
       {

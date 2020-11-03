@@ -92,6 +92,22 @@ export default class SolutionManager {
     }
   }
 
+  private async getSolutionPackager(): Promise<vscode.Uri | undefined> {
+    const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
+
+    if (spFiles.length < 1) {
+      throw new Error("No SolutionPackager.exe file found, please ensure the required NuGet packages are installed.");
+    }
+
+    if (spFiles.length > 1) {
+      throw new Error("Multiple SolutionPackager.exe files found, please ensure the required NuGet packages are installed correctly.");
+    }
+
+    for (let sp of spFiles) {
+      return sp;
+    }
+  }
+
   private async exportSolution(): Promise<void> {
     if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportManaged')) {
       const fileUri = await vscode.window.withProgress({
@@ -177,17 +193,9 @@ export default class SolutionManager {
 
     if (solution) {
       try {
-        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
+        const sp = await this.getSolutionPackager();
 
-        if (spFiles.length < 1) {
-          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
-        }
-
-        if (spFiles.length > 1) {
-          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
-        }
-
-        for (let sp of spFiles) {
+        if (sp) {
           const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution Export");
           output.show();
 
@@ -331,17 +339,9 @@ export default class SolutionManager {
 
     if (solution) {
       try {
-        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
+        const sp = await this.getSolutionPackager();
 
-        if (spFiles.length < 1) {
-          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
-        }
-
-        if (spFiles.length > 1) {
-          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
-        }
-
-        for (let sp of spFiles) {
+        if (sp) {
           const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution Import");
           output.show();
 

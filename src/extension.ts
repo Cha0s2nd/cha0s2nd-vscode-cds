@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import AuthorizationManager from './Auth/AuthorizationManager';
 import DependancyManager from './Core/Managers/DependancyManager';
+import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
@@ -14,6 +15,7 @@ export async function activate(context: vscode.ExtensionContext) {
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
+  new EarlyBoundManager(context).registerCommands();
 
   // Spkl (by Scott Durow) support: https://github.com/scottdurow/SparkleXrm/wiki/spkl
   new SpklManager(context).registerCommands();
