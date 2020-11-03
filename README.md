@@ -7,11 +7,11 @@ An extension to lessen the woes of working with Dynamics 365 (CRM) and Common Da
 I've included support for [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl), currently the only way to do plugin deployments and earlybound entities with this extension.
 
 Currently not supported but planned for future:
- * Update Assemblies
- * Deploy Plugin Steps (SDK Message Processing Steps)
-  * Deploy Workflows
-   * Generate Earlybounds for javascript & typescript
-  * Generate C# Earlybounds
+* Update Assemblies
+* Deploy Plugin Steps (SDK Message Processing Steps)
+* Deploy Workflows
+* Generate Earlybounds for javascript & typescript
+* Generate C# Earlybounds
 
 ## Features
 
