@@ -4,7 +4,7 @@ An extension to lessen the woes of working with Dynamics 365 (CRM) and Common Da
 
 #### This extension is currently in beta, more features are being added and with it more bugs
 
-I've included support for [spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl), currently the only way to do plugin deployments and earlybound entities with this extension.
+I've included support for [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl), currently the only way to do plugin deployments and earlybound entities with this extension.
 
 Currently not supported but planned for future:
  * Update Assemblies
@@ -53,7 +53,7 @@ The following 4 simple steps should get you running:
 * `cha0s2nd-vscode-cds.solution.zipfolder`: This is a optional setting to specify where the temp zip file will be dumped when importing or exporting.
 * `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Managed
 * `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Unmanaged
-* `cha0s2nd-vscode-cds.spkl.enabled`: This enabled the use of [pkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl)
+* `cha0s2nd-vscode-cds.spkl.enabled`: This enabled the use of [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl)
 * `cha0s2nd-vscode-cds.spkl.useCachedConnections`: This is to enable the use of the build in spkl connections, if disabled it uses the connection cache with the extension login.
 
 ## Known Issues
@@ -62,7 +62,7 @@ It's new, will update as soon as they become known
 
 ## Release Notes
 
-### 0.0.5
+### 0.0.6
 
 Initial release
 
