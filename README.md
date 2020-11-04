@@ -11,13 +11,16 @@ Currently not supported but planned for future:
 * Deploy Plugin Steps (SDK Message Processing Steps)
 * Deploy Workflows
 * Generate Earlybounds for javascript & typescript
-* Generate C# Earlybounds
 
 ## Features
 
 Deploy web resources in bulk or individually.
 
 ![deploy-webresources](media/samples/deploy-webresources.gif)
+
+Generate Early-bound Entities
+
+![generate-earlybound](media/samples/earlybound.gif)
 
 Export/Extract Solutions
 

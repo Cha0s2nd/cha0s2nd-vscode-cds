@@ -38,11 +38,11 @@ export default class EarlyBoundManager {
 
 
         if (utils.length < 1) {
-            throw new Error("No CrmSvcUtil.exe file found, please refine the CrmSvcUtilFolder setting.");
+            throw new Error("No CrmSvcUtil.exe file found, please ensure the required NuGet packages are installed.");
         }
 
         if (utils.length > 1) {
-            throw new Error("Multiple CrmSvcUtil.exe files found, please refine the CrmSvcUtilFolder setting.");
+            throw new Error("Multiple CrmSvcUtil.exe files found, please ensure the required NuGet packages are installed correctly.");
         }
 
         for (let util of utils) {
