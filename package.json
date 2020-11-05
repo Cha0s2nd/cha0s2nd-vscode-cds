@@ -159,18 +159,46 @@
             "default": null,
             "scope": "resource"
           },
-          "cha0s2nd-vscode-cds.earlybound.filename": {
-            "title": "Early-bound Filename",
+          "cha0s2nd-vscode-cds.earlybound.generateActions": {
+            "title": "Early-bound Generate Actions",
+            "description": "Generate request and response classes for custom actions",
+            "type": "boolean",
+            "default": true,
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.earlybound.actionFilename": {
+            "title": "Early-bound Action Filename",
+            "description": "The Name of the output file for early-bound actions",
+            "type": "string",
+            "default": "Actions.cs",
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.earlybound.generateEntities": {
+            "title": "Early-bound Generate Entities",
+            "description": "Generate classes for custom entities",
+            "type": "boolean",
+            "default": true,
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.earlybound.entityFilename": {
+            "title": "Early-bound Entity Filename",
             "description": "The Name of the output file for early-bound entities",
             "type": "string",
             "default": "Entities.cs",
             "scope": "resource"
           },
-          "cha0s2nd-vscode-cds.earlybound.generateActions": {
-            "title": "Early-bound Generate Actions",
-            "description": "Generate request and response classes for custom actions",
-            "type": "string",
+          "cha0s2nd-vscode-cds.earlybound.generateOptionSets": {
+            "title": "Early-bound Generate OptionSets",
+            "description": "Generate enums for custom option sets",
+            "type": "boolean",
             "default": true,
+            "scope": "resource"
+          },
+          "cha0s2nd-vscode-cds.earlybound.optionSetFilename": {
+            "title": "Early-bound OptionSet Filename",
+            "description": "The Name of the output file for early-bound option sets",
+            "type": "string",
+            "default": "OptionSets.cs",
             "scope": "resource"
           },
           "cha0s2nd-vscode-cds.solution.folder": {
@@ -270,7 +298,7 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.earlybound.generate",
-        "title": "Generate Early-bound Entities",
+        "title": "Generate Early-bound Files",
         "category": "Cha0s Data"
       },
       {
