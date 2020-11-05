@@ -205,14 +205,15 @@
             "title": "Early-bound Service Context Name",
             "description": "The Name of the output file for early-bound option sets",
             "type": "string",
-            "default": "OptionSets.cs",
+            "default": "CrmServiceContext",
             "scope": "resource"
           },
-          "cha0s2nd-vscode-cds.earlybound.DLaBGeneratorSettings": {
-            "title": "Early-bound OptionSet Filename",
-            "description": "The Name of the output file for early-bound option sets",
+          "cha0s2nd-vscode-cds.earlybound.generatorSettings": {
+            "title": "The DLaB.Xrm.EarlyBoundGenerator Settings",
+            "description": "The settings usually contained in the DLaB.Xrm.EarlyBoundGenerator xml file.",
             "type": "object",
             "default": {
+              "MaxCrmConnectionTimeOutMinutes": 20,
               "ActionPrefixesWhitelist": [],
               "ActionPrefixesToSkip": [],
               "ActionsWhitelist": [],

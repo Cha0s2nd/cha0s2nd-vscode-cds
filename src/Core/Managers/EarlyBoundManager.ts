@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as jwt_decode from 'jwt-decode';
 import * as child_process from 'child_process';
 import * as path from 'path';
+import * as xml2js from 'xml2js';
 import * as Constants from '../Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
 import { IAuthToken } from '../../Entities';
@@ -21,6 +22,8 @@ export default class EarlyBoundManager {
         const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
         const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound');
 
+        this.injectSettings(config);
+
         const actionParams = [
             `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('actionFilename') || '')}`,
             `/generateActions`,
@@ -32,7 +35,7 @@ export default class EarlyBoundManager {
 
         const entityParams = [
             `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('entityFilename') || '')}`,
-            `/servicecontextname:CrmServiceContext`,
+            `/servicecontextname:${config.get<string>('serviceContextName') || 'CrmServiceContext'}`,
             `/codecustomization:DLaB.CrmSvcUtilExtensions.Entity.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
             `/codegenerationservice:DLaB.CrmSvcUtilExtensions.Entity.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
             `/codewriterfilter:DLaB.CrmSvcUtilExtensions.Entity.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
@@ -74,6 +77,37 @@ export default class EarlyBoundManager {
         const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
         const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
         return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
+    }
+
+    private async injectSettings(config: vscode.WorkspaceConfiguration) {
+        const configFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFolder') || '', '**/CrmSvcUtil.exe.config'));
+        const configFile = configFiles.find(cf => cf);
+
+        if (configFile) {
+            const array = await vscode.workspace.fs.readFile(configFile);
+            var buffer = Buffer.from(array);
+
+            const configXml = await xml2js.parseStringPromise(buffer.toString());
+            const settings = config.get<any>('generatorSettings') || {};
+
+            configXml.configuration.appSettings = [{ add: [] }];
+
+            for (let setting in settings) {
+                configXml.configuration.appSettings[0].add.push({
+                    "$": {
+                        "key": setting,
+                        "value": settings[setting]
+                    }
+                });
+            }
+
+            const builder = new xml2js.Builder();
+            var xml = builder.buildObject(configXml);
+
+            const newBuffer = Buffer.from(xml, 'utf-8');
+            const newArray = new Uint8Array(newBuffer);
+            vscode.workspace.fs.writeFile(configFile, newArray);
+        }
     }
 
     private async getCrmSvcUtils(): Promise<vscode.Uri | undefined> {
