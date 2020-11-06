@@ -72,14 +72,9 @@ export default class SpklManager {
     }
 
     private async getConnection(): Promise<string> {
-        if (vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.spkl').get<boolean>('useCachedConnections')) {
-            return '';
-        }
-        else {
-            const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-            const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
-            return ` "AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name}" `;
-        }
+        const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
+        const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+        return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
     }
 
     private async getSpkl(): Promise<vscode.Uri | undefined> {
@@ -103,9 +98,13 @@ export default class SpklManager {
             if (spkl) {
                 const terminal = vscode.window.createTerminal('spkl');
 
+                if (!vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.spkl').get<boolean>('useCachedConnections')) {
+                    params.unshift(await this.getConnection());
+                }
+
                 terminal.show();
                 terminal.sendText(`cd "${vscode.Uri.joinPath(spkl, "..").fsPath}"`);
-                terminal.sendText(`.\\spkl.exe ${action} "${spklJson.fsPath}"${await this.getConnection()} ${params.join(' ')}`, true);
+                terminal.sendText(`.\\spkl.exe ${action} "${spklJson.fsPath}" ${params.join(' ')}`, true);
             }
             else {
                 throw new Error("Could not locate spkl.exe");

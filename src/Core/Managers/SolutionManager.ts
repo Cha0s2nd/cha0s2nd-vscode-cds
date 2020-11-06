@@ -92,6 +92,22 @@ export default class SolutionManager {
     }
   }
 
+  private async getSolutionPackager(): Promise<vscode.Uri | undefined> {
+    const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFolder') || '', '**/SolutionPackager.exe'));
+
+    if (spFiles.length < 1) {
+      throw new Error("No SolutionPackager.exe file found, please ensure the required NuGet packages are installed.");
+    }
+
+    if (spFiles.length > 1) {
+      throw new Error("Multiple SolutionPackager.exe files found, please ensure the required NuGet packages are installed correctly.");
+    }
+
+    for (let sp of spFiles) {
+      return sp;
+    }
+  }
+
   private async exportSolution(): Promise<void> {
     if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportManaged')) {
       const fileUri = await vscode.window.withProgress({
@@ -177,53 +193,23 @@ export default class SolutionManager {
 
     if (solution) {
       try {
-        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
-
-        if (spFiles.length < 1) {
-          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
-        }
-
-        if (spFiles.length > 1) {
-          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
-        }
-
-        for (let sp of spFiles) {
-          const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution Export");
-          output.show();
-
-          await vscode.window.withProgress({
-            location: vscode.ProgressLocation.Notification,
-            cancellable: false,
-            title: "Extracting Solution..."
-          }, async (progress) => {
-            return new Promise((resolve, reject) => {
-              const process = child_process.spawn(sp.fsPath, [
-                '/action:Extract',
-                `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
-                `/zipfile:${fileUri.fsPath}`,
-                `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
-                '/allowWrite:Yes',
-                '/allowDelete:Yes',
-                '/clobber',
-                '/errorlevel:Verbose',
-                '/nologo'
-              ]);
-
-              process.stdout.on('data', async (data) => {
-                output.appendLine(data.toString());
-              });
-
-              process.stderr.on('data', async (data) => {
-                output.appendLine(data.toString());
-              });
-
-              process.addListener('exit', async (code) => {
-                output.appendLine(`Solution Packager exited with code '${code}'`);
-                resolve();
-              });
-            });
-          });
-        }
+        await vscode.window.withProgress({
+          location: vscode.ProgressLocation.Notification,
+          cancellable: false,
+          title: "Extracting Solution..."
+        }, async (progress) => {
+          this.executeSolutionPackger(
+            '/action:Extract',
+            `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
+            `/zipfile:${fileUri.fsPath}`,
+            `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
+            '/allowWrite:Yes',
+            '/allowDelete:Yes',
+            '/clobber',
+            '/errorlevel:Verbose',
+            '/nologo'
+          );
+        });
       }
       catch (error) {
         vscode.window.showErrorMessage(error);
@@ -331,61 +317,65 @@ export default class SolutionManager {
 
     if (solution) {
       try {
-        const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.globalState.get<string>('cha0s2nd-vscode-cds.crmUtilFolder') || '', '**/SolutionPackager.exe'));
+        return await vscode.window.withProgress({
+          location: vscode.ProgressLocation.Notification,
+          cancellable: false,
+          title: "Packing Solution..."
+        }, async (progress) => {
+          const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+          const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder') || '';
+          const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
 
-        if (spFiles.length < 1) {
-          throw new Error("No SolutionPackager.exe file found, please refine the CrmSvcUtilFolder setting.");
-        }
+          const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
+          const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
 
-        if (spFiles.length > 1) {
-          throw new Error("Multiple SolutionPackager.exe files found, please refine the CrmSvcUtilFolder setting.");
-        }
+          this.executeSolutionPackger(
+            '/action:Pack',
+            `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
+            `/zipfile:${fileUri.fsPath}`,
+            `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
+            '/errorlevel:Verbose',
+            '/nologo'
+          );
 
-        for (let sp of spFiles) {
-          const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution Import");
-          output.show();
-
-          return await vscode.window.withProgress({
-            location: vscode.ProgressLocation.Notification,
-            cancellable: false,
-            title: "Packing Solution..."
-          }, async (progress) => {
-            const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-            const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder') || '';
-            const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
-
-            const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
-            const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
-
-            return new Promise((resolve, reject) => {
-              const process = child_process.spawn(sp.fsPath, [
-                '/action:Pack',
-                `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
-                `/zipfile:${fileUri.fsPath}`,
-                `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
-                '/errorlevel:Verbose',
-                '/nologo'
-              ]);
-
-              process.stdout.on('data', async (data) => {
-                output.appendLine(data.toString());
-              });
-
-              process.stderr.on('data', async (data) => {
-                output.appendLine(data.toString());
-              });
-
-              process.addListener('exit', async (code) => {
-                output.appendLine(`Solution Packager exited with code '${code}'`);
-                resolve(fileUri);
-              });
-            });
-          });
-        }
+          return fileUri;
+        });
       }
       catch (error) {
         vscode.window.showErrorMessage(error);
       }
     }
+  }
+
+  private async executeSolutionPackger(...params: string[]): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+
+      const sp = await this.getSolutionPackager();
+
+      if (sp) {
+        const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution");
+        output.show();
+
+        const process = child_process.spawn(sp.fsPath, params, {
+          cwd: this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFolder')
+        });
+
+        process.stdout.on('data', async (data) => {
+          output.append(data.toString());
+        });
+
+        process.stderr.on('data', async (data) => {
+          output.append(data.toString());
+        });
+
+        process.addListener('exit', async (code) => {
+          output.append(`Solution Packager exited with code '${code}'`);
+          resolve();
+        });
+      }
+      else {
+        throw new Error('Could not locate CrmSvcUtil.exe');
+      }
+    });
   }
 }
