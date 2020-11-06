@@ -22,8 +22,6 @@ export default class EarlyBoundManager {
         const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
         const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound');
 
-        this.injectSettings(config);
-
         const actionParams = [
             `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('actionFilename') || '')}`,
             `/generateActions`,
@@ -43,7 +41,7 @@ export default class EarlyBoundManager {
             `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.Entity.MetadataProviderService,DLaB.CrmSvcUtilExtensions`,
         ];
 
-        const optionSetparams = [
+        const optionSetParams = [
             `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('optionSetFilename') || '')}`,
             `/codecustomization:DLaB.CrmSvcUtilExtensions.OptionSet.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
             `/codegenerationservice:DLaB.CrmSvcUtilExtensions.OptionSet.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
@@ -57,8 +55,10 @@ export default class EarlyBoundManager {
 
             actionParams.unshift(namespace);
             entityParams.unshift(namespace);
-            optionSetparams.unshift(namespace);
+            optionSetParams.unshift(namespace);
         }
+
+        await this.injectSettings(config, actionParams, entityParams, optionSetParams);
 
         if (config.get<boolean>('generateActions')) {
             await this.executeCrmSvcUtils(...actionParams);
@@ -69,7 +69,7 @@ export default class EarlyBoundManager {
         }
 
         if (config.get<boolean>('generateOptionSets')) {
-            await this.executeCrmSvcUtils(...optionSetparams);
+            await this.executeCrmSvcUtils(...optionSetParams);
         }
     }
 
@@ -79,7 +79,7 @@ export default class EarlyBoundManager {
         return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
     }
 
-    private async injectSettings(config: vscode.WorkspaceConfiguration) {
+    private async injectSettings(config: vscode.WorkspaceConfiguration, actionParams: string[], entityParams: string[], optionSetParams: string[]) {
         const configFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFolder') || '', '**/CrmSvcUtil.exe.config'));
         const configFile = configFiles.find(cf => cf);
 
@@ -92,11 +92,43 @@ export default class EarlyBoundManager {
 
             configXml.configuration.appSettings = [{ add: [] }];
 
+            // Actions don't generate without this
+            configXml.configuration.appSettings[0].add.push({
+                "$": {
+                    "key": "ActionCommandLineText",
+                    "value": `.\\CrmSvcUtils.exe ${actionParams.join(' ')}`
+                }
+            });
+
+            configXml.configuration.appSettings[0].add.push({
+                "$": {
+                    "key": "EntityCommandLineText",
+                    "value": `.\\CrmSvcUtils.exe ${entityParams.join(' ')}`
+                }
+            });
+
+            configXml.configuration.appSettings[0].add.push({
+                "$": {
+                    "key": "OptionSetCommandLineText",
+                    "value": `.\\CrmSvcUtils.exe ${optionSetParams.join(' ')}`
+                }
+            });
+
             for (let setting in settings) {
+                let value = settings[setting];
+
+                if (value instanceof Boolean) {
+                    value = value ? 'True' : 'False';
+                }
+
+                if (value instanceof Array) {
+                    value = value.join('|');
+                }
+
                 configXml.configuration.appSettings[0].add.push({
                     "$": {
                         "key": setting,
-                        "value": settings[setting]
+                        "value": value
                     }
                 });
             }
