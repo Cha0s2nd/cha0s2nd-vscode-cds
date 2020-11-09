@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
-    <RootNamespace>dotnet_dependancies</RootNamespace>
+    <RootNamespace>dotnet_dependencies</RootNamespace>
   </PropertyGroup>
 </Project>

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import * as xml2js from 'xml2js';
 
-export default class DependancyManager {
+export default class DependencyManager {
     private output: vscode.OutputChannel;
     private context: vscode.ExtensionContext;
 
@@ -13,7 +13,7 @@ export default class DependancyManager {
 
     private async getPackageFolder(): Promise<vscode.Uri | undefined> {
         const result = child_process.execSync('dotnet nuget locals all --list', {
-            cwd: vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependancies').fsPath,
+            cwd: vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependencies').fsPath,
         }).toString();
 
         const path = /(?:global\-packages\:\s)([A-Za-z0-9\\\.\/\:]+)/.exec(result)?.find(r => r);
@@ -24,7 +24,7 @@ export default class DependancyManager {
     }
 
     private async getProjectData(): Promise<any> {
-        const array = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependancies\\dotnet-dependancies.csproj'));
+        const array = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependencies\\dotnet-dependencies.csproj'));
         var buffer = Buffer.from(array);
 
         return await xml2js.parseStringPromise(buffer.toString());
@@ -48,7 +48,7 @@ export default class DependancyManager {
     public async checkForCrmSdkTools(packageFolder: vscode.Uri) {
         await this.executeDotNet(
             'add',
-            'dotnet-dependancies.csproj',
+            'dotnet-dependencies.csproj',
             'package',
             'microsoft.crmsdk.coretools'
         );
@@ -65,7 +65,7 @@ export default class DependancyManager {
     public async checkForDlaB(packageFolder: vscode.Uri) {
         await this.executeDotNet(
             'add',
-            'dotnet-dependancies.csproj',
+            'dotnet-dependencies.csproj',
             'package',
             'dlab.xrm.earlyboundgenerator.api'
         );
@@ -81,7 +81,7 @@ export default class DependancyManager {
             this.output.show();
 
             const process = child_process.spawn('dotnet', params, {
-                cwd: vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependancies').fsPath
+                cwd: vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependencies').fsPath
             });
 
             process.stdout.on('data', async (data) => {

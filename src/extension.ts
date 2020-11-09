@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import AuthorizationManager from './Auth/AuthorizationManager';
-import DependancyManager from './Core/Managers/DependancyManager';
+import DependencyManager from './Core/Managers/DependencyManager';
 import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
 import SolutionManager from './Core/Managers/SolutionManager';
@@ -9,7 +9,7 @@ import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
-  new DependancyManager(context).checkAll();
+  new DependencyManager(context).checkAll();
 
   new AuthorizationManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();

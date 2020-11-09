@@ -3,3 +3,5 @@ node_modules
 .vscode-test/
 *.vsix
 token_cache
+dotnet-dependencies/bin/**
+dotnet-dependencies/obj/**
