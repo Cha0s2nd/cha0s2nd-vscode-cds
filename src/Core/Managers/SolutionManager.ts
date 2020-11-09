@@ -92,22 +92,6 @@ export default class SolutionManager {
     }
   }
 
-  private async getSolutionPackager(): Promise<vscode.Uri | undefined> {
-    const spFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFolder') || '', '**/SolutionPackager.exe'));
-
-    if (spFiles.length < 1) {
-      throw new Error("No SolutionPackager.exe file found, please ensure the required NuGet packages are installed.");
-    }
-
-    if (spFiles.length > 1) {
-      throw new Error("Multiple SolutionPackager.exe files found, please ensure the required NuGet packages are installed correctly.");
-    }
-
-    for (let sp of spFiles) {
-      return sp;
-    }
-  }
-
   private async exportSolution(): Promise<void> {
     if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportManaged')) {
       const fileUri = await vscode.window.withProgress({
@@ -350,15 +334,13 @@ export default class SolutionManager {
   private async executeSolutionPackger(...params: string[]): Promise<void> {
     return new Promise(async (resolve, reject) => {
 
-      const sp = await this.getSolutionPackager();
+      const sp = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFile');
 
       if (sp) {
         const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution");
         output.show();
 
-        const process = child_process.spawn(sp.fsPath, params, {
-          cwd: this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFolder')
-        });
+        const process = child_process.spawn(sp, params);
 
         process.stdout.on('data', async (data) => {
           output.append(data.toString());

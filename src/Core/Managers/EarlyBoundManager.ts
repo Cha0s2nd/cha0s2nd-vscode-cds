@@ -162,7 +162,7 @@ export default class EarlyBoundManager {
     private async executeCrmSvcUtils(...params: string[]): Promise<void> {
         return new Promise(async (resolve, reject) => {
 
-            const crmSvcUtils = await this.getCrmSvcUtils();
+            const crmSvcUtils = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFile');
 
             if (crmSvcUtils) {
                 const output = vscode.window.createOutputChannel('Cha0s Data Tools: Early-bound');
@@ -170,7 +170,7 @@ export default class EarlyBoundManager {
 
                 params.unshift(`/connectionstring:${await this.getConnection()}`);
 
-                const process = child_process.spawn(crmSvcUtils.fsPath, params, {
+                const process = child_process.spawn(crmSvcUtils, params, {
                     cwd: this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFolder')
                 });
 

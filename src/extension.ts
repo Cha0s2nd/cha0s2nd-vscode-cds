@@ -9,8 +9,7 @@ import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
-  new DependancyManager(context).checkForSolutionPackager();
-  new DependancyManager(context).checkForDlaB();
+  new DependancyManager(context).checkAll();
 
   new AuthorizationManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();
