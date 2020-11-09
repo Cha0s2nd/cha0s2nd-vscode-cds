@@ -182,7 +182,7 @@ export default class SolutionManager {
           cancellable: false,
           title: "Extracting Solution..."
         }, async (progress) => {
-          this.executeSolutionPackger(
+          await this.executeSolutionPackager(
             '/action:Extract',
             `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
             `/zipfile:${fileUri.fsPath}`,
@@ -221,7 +221,7 @@ export default class SolutionManager {
           location: vscode.ProgressLocation.Notification,
           cancellable: false,
           title: "Importing Solution"
-        }, async (progress) => {
+        }, async (progress): Promise<void> => {
           return new Promise(async (resolve, reject) => {
             progress.report({
               message: 'Uploading Solution package...'
@@ -313,7 +313,7 @@ export default class SolutionManager {
           const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
           const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
 
-          this.executeSolutionPackger(
+          await this.executeSolutionPackager(
             '/action:Pack',
             `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
             `/zipfile:${fileUri.fsPath}`,
@@ -331,7 +331,7 @@ export default class SolutionManager {
     }
   }
 
-  private async executeSolutionPackger(...params: string[]): Promise<void> {
+  private async executeSolutionPackager(...params: string[]): Promise<void> {
     return new Promise(async (resolve, reject) => {
 
       const sp = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFile');
@@ -352,6 +352,11 @@ export default class SolutionManager {
 
         process.addListener('exit', async (code) => {
           output.append(`Solution Packager exited with code '${code}'`);
+
+          if (code === 0) {
+            output.dispose();
+          }
+
           resolve();
         });
       }

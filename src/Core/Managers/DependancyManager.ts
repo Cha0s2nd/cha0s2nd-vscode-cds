@@ -76,7 +76,7 @@ export default class DependancyManager {
         this.context.workspaceState.update('cha0s2nd-vscode-cds.dlabFile', dlabFile.fsPath);
     }
 
-    private async executeDotNet(...params: string[]) {
+    private async executeDotNet(...params: string[]): Promise<void> {
         return new Promise(async (resolve, reject) => {
             this.output.show();
 
@@ -93,7 +93,7 @@ export default class DependancyManager {
             });
 
             process.addListener('exit', async (code) => {
-                this.output.appendLine(`Solution Packager exited with code '${code}'`);
+                this.output.appendLine(`dotnet exited with code '${code}'`);
                 resolve();
             });
         });

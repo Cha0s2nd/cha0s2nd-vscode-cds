@@ -8,7 +8,7 @@
     "url": "https://github.com/Cha0s2nd/cha0s2nd-vscode-cds"
   },
   "preview": true,
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.50.0"
   },
@@ -95,11 +95,6 @@
       "editor/title": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "group": "navigation",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "navigation",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }

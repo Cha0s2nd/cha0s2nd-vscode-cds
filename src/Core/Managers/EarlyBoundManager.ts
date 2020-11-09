@@ -80,83 +80,63 @@ export default class EarlyBoundManager {
     }
 
     private async injectSettings(config: vscode.WorkspaceConfiguration, actionParams: string[], entityParams: string[], optionSetParams: string[]) {
-        const configFiles = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFolder') || '', '**/CrmSvcUtil.exe.config'));
-        const configFile = configFiles.find(cf => cf);
+        const configFile = await vscode.Uri.joinPath(vscode.Uri.file(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFile') || ''), '..', 'CrmSvcUtil.exe.config');
 
-        if (configFile) {
-            const array = await vscode.workspace.fs.readFile(configFile);
-            var buffer = Buffer.from(array);
+        const array = await vscode.workspace.fs.readFile(configFile);
+        var buffer = Buffer.from(array);
 
-            const configXml = await xml2js.parseStringPromise(buffer.toString());
-            const settings = config.get<any>('generatorSettings') || {};
+        const configXml = await xml2js.parseStringPromise(buffer.toString());
+        const settings = config.get<any>('generatorSettings') || {};
 
-            configXml.configuration.appSettings = [{ add: [] }];
+        configXml.configuration.appSettings = [{ add: [] }];
 
-            // Actions don't generate without this
-            configXml.configuration.appSettings[0].add.push({
-                "$": {
-                    "key": "ActionCommandLineText",
-                    "value": `.\\CrmSvcUtils.exe ${actionParams.join(' ')}`
-                }
-            });
+        // Actions don't generate without this
+        configXml.configuration.appSettings[0].add.push({
+            "$": {
+                "key": "ActionCommandLineText",
+                "value": `.\\CrmSvcUtils.exe ${actionParams.join(' ')}`
+            }
+        });
 
-            configXml.configuration.appSettings[0].add.push({
-                "$": {
-                    "key": "EntityCommandLineText",
-                    "value": `.\\CrmSvcUtils.exe ${entityParams.join(' ')}`
-                }
-            });
+        configXml.configuration.appSettings[0].add.push({
+            "$": {
+                "key": "EntityCommandLineText",
+                "value": `.\\CrmSvcUtils.exe ${entityParams.join(' ')}`
+            }
+        });
 
-            configXml.configuration.appSettings[0].add.push({
-                "$": {
-                    "key": "OptionSetCommandLineText",
-                    "value": `.\\CrmSvcUtils.exe ${optionSetParams.join(' ')}`
-                }
-            });
+        configXml.configuration.appSettings[0].add.push({
+            "$": {
+                "key": "OptionSetCommandLineText",
+                "value": `.\\CrmSvcUtils.exe ${optionSetParams.join(' ')}`
+            }
+        });
 
-            for (let setting in settings) {
-                let value = settings[setting];
+        for (let setting in settings) {
+            let value = settings[setting];
 
-                if (value instanceof Boolean) {
-                    value = value ? 'True' : 'False';
-                }
-
-                if (value instanceof Array) {
-                    value = value.join('|');
-                }
-
-                configXml.configuration.appSettings[0].add.push({
-                    "$": {
-                        "key": setting,
-                        "value": value
-                    }
-                });
+            if (value instanceof Boolean) {
+                value = value ? 'True' : 'False';
             }
 
-            const builder = new xml2js.Builder();
-            var xml = builder.buildObject(configXml);
+            if (value instanceof Array) {
+                value = value.join('|');
+            }
 
-            const newBuffer = Buffer.from(xml, 'utf-8');
-            const newArray = new Uint8Array(newBuffer);
-            vscode.workspace.fs.writeFile(configFile, newArray);
-        }
-    }
-
-    private async getCrmSvcUtils(): Promise<vscode.Uri | undefined> {
-        const utils = await vscode.workspace.findFiles(new vscode.RelativePattern(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFolder') || '', '**/CrmSvcUtil.exe'));
-
-
-        if (utils.length < 1) {
-            throw new Error('No CrmSvcUtil.exe file found, please ensure the required NuGet packages are installed.');
+            configXml.configuration.appSettings[0].add.push({
+                "$": {
+                    "key": setting,
+                    "value": value
+                }
+            });
         }
 
-        if (utils.length > 1) {
-            throw new Error('Multiple CrmSvcUtil.exe files found, please ensure the required NuGet packages are installed correctly.');
-        }
+        const builder = new xml2js.Builder();
+        var xml = builder.buildObject(configXml);
 
-        for (let util of utils) {
-            return util;
-        }
+        const newBuffer = Buffer.from(xml, 'utf-8');
+        const newArray = new Uint8Array(newBuffer);
+        vscode.workspace.fs.writeFile(configFile, newArray);
     }
 
     private async executeCrmSvcUtils(...params: string[]): Promise<void> {
@@ -170,9 +150,9 @@ export default class EarlyBoundManager {
 
                 params.unshift(`/connectionstring:${await this.getConnection()}`);
 
-                const process = child_process.spawn(crmSvcUtils, params, {
-                    cwd: this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFolder')
-                });
+                output.appendLine(`${crmSvcUtils} ${params.join(' ')}`);
+
+                const process = child_process.spawn(crmSvcUtils, params);
 
                 process.stdout.on('data', async (data) => {
                     output.append(data.toString());
@@ -183,7 +163,12 @@ export default class EarlyBoundManager {
                 });
 
                 process.addListener('exit', async (code) => {
-                    output.append(`Solution Packager exited with code '${code}'`);
+                    output.append(`CrmSvcUtil exited with code '${code}'`);
+
+                    if (code === 0) {
+                        output.dispose();
+                    }
+
                     resolve();
                 });
             }
