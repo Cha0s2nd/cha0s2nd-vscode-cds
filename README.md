@@ -52,11 +52,11 @@ The following 3 simple steps should get you running:
 * `cha0s2nd-vscode-cds.webresources.folder`: The folder containing the local Solution web resources
 * `cha0s2nd-vscode-cds.earlybound.namespace`: The namespace to use for early-bound classes
 * `cha0s2nd-vscode-cds.earlybound.generateActions`: Should early-bound Actions be generated
-* `cha0s2nd-vscode-cds.earlybound.actionFilename`: Should early-bound Actions file name
+* `cha0s2nd-vscode-cds.earlybound.actionFilename`: The early-bound Actions file name (from workspace root)
 * `cha0s2nd-vscode-cds.earlybound.generateActions`: Should early-bound Entities be generated
-* `cha0s2nd-vscode-cds.earlybound.actionFilename`: Should early-bound Entities file name
+* `cha0s2nd-vscode-cds.earlybound.entityFilename`: The early-bound Entities file name (from workspace root)
 * `cha0s2nd-vscode-cds.earlybound.generateActions`: Should early-bound OptionSets be generated
-* `cha0s2nd-vscode-cds.earlybound.actionFilename`: Should early-bound OptionSets file name
+* `cha0s2nd-vscode-cds.earlybound.optionSetFilename`: The early-bound OptionSets file name (from workspace root)
 * `cha0s2nd-vscode-cds.earlybound.serviceContextName`: The name of the organization service context for early-bound classes
 * `cha0s2nd-vscode-cds.earlybound.generatorSettings`: The [DLaB.Xrm.EarlyBoundGenerator](https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator) Settings
 * `cha0s2nd-vscode-cds.solution.folder`: The folder containing the local extracted Solution files
