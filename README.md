@@ -9,7 +9,7 @@ Support for [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl) has been 
 
 Currently not supported but planned for future:
 * Update Plugin/Workflow Assemblies
-* Generate Earlybounds for javascript & typescript
+* Generate Early-bounds for javascript & typescript
 
 ## Features
 
@@ -31,12 +31,12 @@ Import Solutions
 
 Spkl commands
 
-![deploy-webresources](media/samples/spkl.gif)
+![deploy-webresources-spkl](media/samples/spkl.gif)
 
 ## Requirements
 
-SolutionPackager.exe is required to use the solution features.
-Either the [Spkl](https://www.nuget.org/packages/spkl/) or [Microsoft.CrmSdk.CoreTools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget packages need to be installed in one of the projects to obtain it.
+The [dotnet-cli](https://dotnet.microsoft.com/download/) is required for the dependencies to install and [.Net 4.6.2](https://dotnet.microsoft.com/download/) is required for Dynamics development.
+If you wish to use [Spkl](https://www.nuget.org/packages/spkl/) please install the required NuGet packages in the projects.
 
 ## Getting Started
 

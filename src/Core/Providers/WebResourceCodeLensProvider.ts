@@ -5,7 +5,7 @@ export class WebResourceCodeLensProvider implements vscode.CodeLensProvider {
     onDidChangeCodeLenses?: vscode.Event<void> | undefined;
 
     public async resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken) {
-        const metadata = await vscode.commands.executeCommand<IWebResource[]>('cha0s2nd-vscode-cds.webresource.getDetails', [arguments[0]]) || [];
+        const metadata = await vscode.commands.executeCommand<IWebResource[]>('cha0s2nd-vscode-cds.webresource.getDetails', [codeLens.command?.arguments?.find(arg => arg)]) || [];
 
         switch (codeLens.command?.command) {
             case 'cha0s2nd-vscode-cds.webresource.setName':
