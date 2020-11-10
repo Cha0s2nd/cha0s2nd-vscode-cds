@@ -1,10 +1,10 @@
 # Cha0s Data Tools (Dynamics 365)
 
-An extension to lessen the woes of working with Dynamics 365 (CRM) and Common Data Services customizations. The idea was to make uploading and publising webresources a breeze (something that I magnaged to do), and eventially manage the entire dev process.
+An extension to assist when working with Dynamics 365 (CRM) and Common Data Services customizations.<br>The idea was to make uploading and publising webresources easier, and eventially manage the entire dev process.
 
 #### This extension is currently in beta, more features are being added and with it more bugs
 
-Early-bound classes are generated using the [DLaB.Xrm.EarlyBoundGenerator](https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator).
+Early-bound classes are generated using the [DLaB.Xrm.EarlyBoundGenerator](https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator).<br>
 Support for [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl) has been included, this is currently the only way to do plugin deployments with this extension.
 
 Currently not supported but planned for future:
@@ -42,11 +42,10 @@ Either the [Spkl](https://www.nuget.org/packages/spkl/) or [Microsoft.CrmSdk.Cor
 
 Please refer to the [getting started wiki page](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/wiki/Getting-Started) for more detail.
 
-The following 4 simple steps should get you running:
+The following 3 simple steps should get you running:
 1. Create a base C# class library project.
-2. Install the [Microsoft.CrmSdk.CoreTools](https://www.nuget.org/packages/Microsoft.CrmSdk.CoreTools/) nuget package.
-3. Customize the local file locations.
-4. Download and map web resources.
+2. Customize the local file locations.
+3. Download and map web resources.
 
 ## Extension Settings
 
@@ -73,7 +72,7 @@ Organization Discovery tokens do not always refresh, this seems to be because of
 
 ## Release Notes
 
-### 0.0.7
+### 0.0.9
 
 Initial release
 

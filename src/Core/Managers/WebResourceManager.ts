@@ -81,7 +81,7 @@ export default class WebResourceManager {
     const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
     const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'cds-webresources.json');
 
-    var buffer = Buffer.from(JSON.stringify(metadata), 'utf-8');
+    var buffer = Buffer.from(JSON.stringify(metadata, null, 2), 'utf-8');
     var array = new Uint8Array(buffer);
     await vscode.workspace.fs.writeFile(file, array);
   }
@@ -99,7 +99,7 @@ export default class WebResourceManager {
         webResource = {
           description: '',
           displayName: path.basename(resource.fsPath),
-          uniqueName: resource.fsPath.replace(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').fsPath + '\\' || '', ''),
+          uniqueName: resource.path.replace(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').path + '/' || '', ''),
           file: resource.fsPath.replace(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').fsPath + '\\' || '', '')
         };
 
