@@ -5,8 +5,24 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "watch",
-			"problemMatcher": "$tsc-watch",
+			"script": "webpack-dev",
+			"problemMatcher": {
+				"owner": "webpack",
+				"severity": "error",
+				"fileLocation": "relative",
+				"pattern": [
+					{
+						"regexp": "ERROR in \\[at-loader\\] ([^:]*):(\\d+):(\\d+)",
+						"file": 1,
+						"line": 2,
+						"column": 3
+					},
+					{
+						"regexp": "TS(.*)",
+						"message": 1
+					},
+				]
+			},
 			"isBackground": true,
 			"presentation": {
 				"reveal": "never"

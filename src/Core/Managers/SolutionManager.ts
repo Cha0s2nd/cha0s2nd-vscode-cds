@@ -355,9 +355,11 @@ export default class SolutionManager {
 
           if (code === 0) {
             output.dispose();
+            resolve();
           }
-
-          resolve();
+          else {
+            reject();
+          }
         });
       }
       else {

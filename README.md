@@ -11,6 +11,10 @@ Currently not supported but planned for future:
 * Update Plugin/Workflow Assemblies
 * Generate Early-bounds for javascript & typescript
 
+### Licence
+
+The source code to this extension is available on https://github.com/Cha0s2nd/cha0s2nd-vscode-cds and licensed under the [MIT licence](https://cha0s2nd.neocities.org/vscode/extensions/cds/license.html).
+
 ## Features
 
 Deploy web resources in bulk or individually.
@@ -72,8 +76,11 @@ Organization Discovery tokens do not always refresh, this seems to be because of
 
 ## Release Notes
 
-### 0.0.9
+### [0.0.9]
+Added
+- webpack build for better build packaging
+- MIT licence
 
-Initial release
+Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 
 -----------------------------------------------------------------------------------------------------------

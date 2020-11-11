@@ -78,8 +78,6 @@ export default class DependencyManager {
 
     private async executeDotNet(...params: string[]): Promise<void> {
         return new Promise(async (resolve, reject) => {
-            this.output.show();
-
             const process = child_process.spawn('dotnet', params, {
                 cwd: vscode.Uri.joinPath(this.context.extensionUri, 'dotnet-dependencies').fsPath
             });
@@ -94,7 +92,13 @@ export default class DependencyManager {
 
             process.addListener('exit', async (code) => {
                 this.output.appendLine(`dotnet exited with code '${code}'`);
-                resolve();
+
+                if (code === 0) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
             });
         });
     }

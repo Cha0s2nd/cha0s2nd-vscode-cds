@@ -3,4 +3,8 @@
     <TargetFramework>net462</TargetFramework>
     <RootNamespace>dotnet_dependencies</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="dlab.xrm.earlyboundgenerator.api" Version="1.2020.6.22" />
+    <PackageReference Include="microsoft.crmsdk.coretools" Version="9.1.0.49" />
+  </ItemGroup>
 </Project>

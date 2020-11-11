@@ -12,3 +12,4 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 token_cache
+node_modules
