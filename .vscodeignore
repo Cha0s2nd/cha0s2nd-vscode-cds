@@ -9,6 +9,7 @@ src/**
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
+**/webpack.config.js
 **/*.map
 **/*.ts
 token_cache
