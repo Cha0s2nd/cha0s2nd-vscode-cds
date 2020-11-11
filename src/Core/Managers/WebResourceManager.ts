@@ -95,7 +95,7 @@ export default class WebResourceManager {
     for (let resource of resources) {
       let webResource = webResourceMeta.find((file: IWebResource) => vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '', file.file).fsPath === resource.fsPath);
 
-      if (!webResource) {
+      if (!webResource && resource.path.startsWith(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').path)) {
         webResource = {
           description: '',
           displayName: path.basename(resource.fsPath),
@@ -108,7 +108,7 @@ export default class WebResourceManager {
 
         this.saveWebResourceMetadata(webResourceMeta);
       }
-      else {
+      else if (webResource) {
         webResources.push(webResource);
       }
     }
@@ -363,6 +363,8 @@ export default class WebResourceManager {
             DoNotIncludeSubcomponents: false,
             IncludedComponentSettingsValues: null
           });
+
+          await WebApi.post(`PublishAllXml`, null);
         }
       }
     }

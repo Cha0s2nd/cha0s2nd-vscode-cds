@@ -22,7 +22,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // Spkl (by Scott Durow) support: https://github.com/scottdurow/SparkleXrm/wiki/spkl
   new SpklManager(context).registerCommands();
 
-  vscode.languages.registerCodeLensProvider({ pattern: `**/${vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder')}/**` }, new WebResourceCodeLensProvider());
+  vscode.languages.registerCodeLensProvider({ pattern: '**/*.{css,gif,html,htm,ico,jpg,jpeg,js,png,resx,svg,xap,xml,xsl}' }, new WebResourceCodeLensProvider());
 
   if (await context.workspaceState.get('cha0s2nd-vscode-cds.auth.token')) {
     if (await vscode.commands.executeCommand('cha0s2nd-vscode-cds.organization.get')) {
