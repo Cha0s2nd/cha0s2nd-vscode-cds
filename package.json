@@ -5,9 +5,22 @@
   "publisher": "Cha0s2nd",
   "icon": "media/icon.png",
   "license": "LICENCE.txt",
+  "bugs": {
+    "url": "https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/issues"
+  },
   "repository": {
     "url": "https://github.com/Cha0s2nd/cha0s2nd-vscode-cds"
   },
+  "contributors": [
+    {
+      "name": "Cha0s2nd",
+      "url": "https://github.com/Cha0s2nd"
+    },
+    {
+      "name": "Jackelope96",
+      "url": "https://github.com/Jackelope96"
+    }
+  ],
   "preview": true,
   "version": "0.0.9",
   "engines": {
