@@ -12,7 +12,7 @@
 				"fileLocation": "relative",
 				"pattern": [
 					{
-						"regexp": "ERROR in \\[at-loader\\] ([^:]*):(\\d+):(\\d+)",
+						"regexp": "ERROR in[\\s]+([^:]*):(\\d+):(\\d+)",
 						"file": 1,
 						"line": 2,
 						"column": 3
@@ -21,7 +21,16 @@
 						"regexp": "TS(.*)",
 						"message": 1
 					},
-				]
+				],
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": {
+						"regexp": "\\[webpack-cli\\][\\s]+Compilation starting[\\.]*"
+					},
+					"endsPattern": {
+						"regexp": "\\[webpack-cli\\][\\s]+watching files for updates[\\.]*"
+					}
+				}
 			},
 			"isBackground": true,
 			"presentation": {
