@@ -76,7 +76,7 @@ Organization Discovery tokens do not always refresh, this seems to be because of
 
 ## Release Notes
 
-### [0.0.9]
+### [0.0.10]
 Added
 - webpack build for better build packaging
 - MIT licence

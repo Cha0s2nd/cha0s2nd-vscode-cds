@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Early-bound files for typescript web resources
 
 ## [0.0.9]
+### Changed
+- Updated Readme
+- Added contributors to package
+
+### Fixed
+- Web resource not publishing
+
+## [0.0.9]
 ### Added
 - webpack build for better build packaging
 - MIT licence
