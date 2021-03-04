@@ -345,7 +345,7 @@ export default class WebResourceManager {
       else {
         const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
-        const response = await WebApi.post(`webresourceset`, {
+        const response = await WebApi.post('webresourceset', {
           name: webResource.uniqueName,
           displayname: webResource.displayName,
           description: webResource.description,
@@ -355,7 +355,7 @@ export default class WebResourceManager {
         });
 
         if (response) {
-          await WebApi.post(`AddSolutionComponent`, {
+          await WebApi.post('AddSolutionComponent', {
             ComponentId: response.webresourceid,
             ComponentType: SolutionComponentTypes.WebResource,
             SolutionUniqueName: solution?.uniqueName,
@@ -364,7 +364,9 @@ export default class WebResourceManager {
             IncludedComponentSettingsValues: null
           });
 
-          await WebApi.post(`PublishAllXml`, null);
+          await WebApi.post('PublishXml', {
+            ParameterXml: `<importexportxml><webresources><webresource>{${response.webresourceid}}</webresource></webresources></importexportxml>`
+          });
         }
       }
     }
