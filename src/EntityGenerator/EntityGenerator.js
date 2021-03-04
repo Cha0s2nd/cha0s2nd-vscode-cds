@@ -104,7 +104,7 @@
 
             xhr.open(
                 "GET",
-                [orgUrl, "/api/data/v8.2/EntityDefinitions(LogicalName='", entityLogicalName, "')/Attributes?$select=LogicalName,SchemaName"].join(""),
+                [orgUrl, "/api/data/v8.2/EntityDefinitions(LogicalName='", entityLogicalName, "')/Attributes?$select=LogicalName,SchemaName&$filter=AttributeOf eq null"].join(""),
                 false
             );
 

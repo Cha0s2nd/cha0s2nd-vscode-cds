@@ -7,6 +7,9 @@ import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
+import ISolution from './Entities/ISolution';
+import { EntityTreeViewDataProvider } from './Views/TreeViews/EntityTreeViewDataProvider';
+import { SolutionTreeViewDataProvider } from './Views/TreeViews/SolutionTreeViewDataProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
   new DependencyManager(context).checkAll();
@@ -26,7 +29,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
   if (await context.workspaceState.get('cha0s2nd-vscode-cds.auth.token')) {
     if (await vscode.commands.executeCommand('cha0s2nd-vscode-cds.organization.get')) {
-      await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.get');
+      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
+
+      if (solution) {
+        vscode.window.registerTreeDataProvider('solution', new SolutionTreeViewDataProvider(solution));
+      }
+
+      vscode.window.registerTreeDataProvider('defaultSolution', new SolutionTreeViewDataProvider());
     }
   }
 }

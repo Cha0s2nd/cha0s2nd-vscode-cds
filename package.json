@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.0.10",
+  "version": "0.0.11",
   "engines": {
     "vscode": "^1.50.0"
   },
@@ -37,6 +37,31 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cds-treeview",
+          "title": "CDS Explorer",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "cds-treeview": [
+        {
+          "id": "solution",
+          "name": "Solution",
+          "icon": "media/icon.svg",
+          "contextualTitle": "Solution Explorer"
+        },
+        {
+          "id": "defaultSolution",
+          "name": "System",
+          "icon": "media/icon.svg",
+          "contextualTitle": "System Explorer"
+        }
+      ]
+    },
     "menus": {
       "commandPalette": [
         {
@@ -121,7 +146,7 @@
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "navigation",
+          "group": "z_commands",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
@@ -133,7 +158,7 @@
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "navigation",
+          "group": "z_commands",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ],
@@ -145,7 +170,7 @@
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "navigation",
+          "group": "z_commands",
           "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
         }
       ]
