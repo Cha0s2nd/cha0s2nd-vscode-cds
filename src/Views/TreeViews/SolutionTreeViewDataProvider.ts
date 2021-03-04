@@ -54,7 +54,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
           children.push(new ValueTreeItem('Display Name: ' + entityTreeItem.entity.DisplayName?.UserLocalizedLabel?.Label));
           children.push(new ValueTreeItem('Schema Name: ' + entityTreeItem.entity.SchemaName));
 
-          children.push(new ContainerTreeItem('Attributes', entityTreeItem.logicalName, 'attributeContainer'));
+          children.push(new ContainerTreeItem('Columns', entityTreeItem.logicalName, 'attributeContainer'));
           children.push(new ContainerTreeItem('Choices', entityTreeItem.logicalName, 'optionSetContainer'));
           children.push(new ContainerTreeItem('1:N Relationships', entityTreeItem.logicalName, 'oneToManyContainer'));
           children.push(new ContainerTreeItem('N:1 Relationships', entityTreeItem.logicalName, 'manyToOneContainer'));
