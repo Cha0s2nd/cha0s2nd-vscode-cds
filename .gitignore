@@ -5,4 +5,4 @@ node_modules
 token_cache
 dotnet-dependencies/bin/**
 dotnet-dependencies/obj/**
-dist
+dist/**
