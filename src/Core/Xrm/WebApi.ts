@@ -4,7 +4,7 @@ import IOrganization from '../../Entities/IOrganization';
 import { IAuthToken } from '../../Entities';
 
 export default class WebApi {
-  public static async retrieve(entitySet: string, id: string, columnSet?: string[], filter?: string, additionalQuery?: string) {
+  public static async retrieve(entitySet: string, id: string, columnSet?: string[] | null, filter?: string | null, additionalQuery?: string | null) {
     const query: string[] = [];
     let url: string = entitySet + '(' + id + ')';
 
@@ -27,7 +27,7 @@ export default class WebApi {
     return this.get(url);
   }
 
-  public static async retrieveMultiple(entitySet: string, columnSet?: string[], filter?: string, top?: number, additionalQuery?: string): Promise<any[]> {
+  public static async retrieveMultiple(entitySet: string, columnSet?: string[] | null, filter?: string | null, top?: number | null, additionalQuery?: string | null): Promise<any[]> {
     const query: string[] = [];
     let url: string = entitySet;
 
@@ -55,7 +55,7 @@ export default class WebApi {
     return response.value;
   }
 
-  public static async retrieveMultiplePaged(entitySet: string, columnSet?: string[], filter?: string, top?: number, additionalQuery?: string): Promise<any[]> {
+  public static async retrieveMultiplePaged(entitySet: string, columnSet?: string[] | null, filter?: string | null, top?: number | null, additionalQuery?: string | null): Promise<any[]> {
     const query: string[] = [];
     let url: string = entitySet;
     let entities: any[] = [];

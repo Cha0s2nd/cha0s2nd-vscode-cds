@@ -88,7 +88,7 @@ export default class AuthorizationManager {
 
         await vscode.env.openExternal(vscode.Uri.parse(`${Constants.AUTH_URL}?response_type=code&client_id=${Constants.CLIENT_ID}&response_mode=query&redirect_uri=${encodeURIComponent(Constants.REDIRECT_URL)}&scope=${encodeURIComponent(Constants.SCOPES.join(' '))}&prompt=select_account&state=${this.authState}`));
 
-        const timeoutPromise = new Promise<string>((_: () => void, reject) => {
+        const timeoutPromise = new Promise<string>((resolve, reject) => {
           const wait = setTimeout(() => {
             clearTimeout(wait);
             reject('Login timed out.');
@@ -116,16 +116,16 @@ export default class AuthorizationManager {
           params.push('client_secret=' + encodeURIComponent(Constants.CLIENT_SECRET));
           params.push('refresh_token=' + encodeURIComponent(this.discoveryToken?.refresh_token));
 
-          this.token = <IAuthToken>await rp.post(Constants.TOKEN_URL, {
+          this.discoveryToken = <IAuthToken>await rp.post(Constants.TOKEN_URL, {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: params.join('&')
           }).then(response => JSON.parse(response));
 
-          this.tokenExpiryDate = new Date();
-          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
-          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
+          this.discoveryTokenExpiryDate = new Date();
+          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.discoveryToken);
+          this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.discoveryTokenExpiryDate);
         }
         else if (!this.discoveryToken || this.hasTokenExpired(this.discoveryToken)) {
           if (await vscode.window.showInformationMessage("You will now be redirected to a browser to log into the Discovery service.", {

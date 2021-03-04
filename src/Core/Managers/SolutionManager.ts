@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import * as uuid from 'node-uuid';
+import * as fs from 'fs';
 import IOrganization from "../../Entities/IOrganization";
 import ISolution from '../../Entities/ISolution';
 import WebApi from '../xrm/WebApi';
@@ -51,6 +52,7 @@ export default class SolutionManager {
           version: solution.version,
           label: solution.friendlyname,
           description: solution.uniquename,
+          detail: solution.version,
           alwaysShow: true
         };
       });
@@ -84,7 +86,7 @@ export default class SolutionManager {
 
   private updateStatusBar(solution?: ISolution): void {
     if (solution) {
-      this.statusBarItem.text = solution.friendlyName;
+      this.statusBarItem.text = solution.uniqueName;
       this.statusBarItem.show();
     }
     else {
@@ -202,72 +204,90 @@ export default class SolutionManager {
   }
 
   private async importSolution(isManaged: boolean): Promise<void> {
-    const fileUri = await this.packSolution(isManaged);
-    if (fileUri) {
-      await this.uploadSolution(isManaged, fileUri);
-      await vscode.workspace.fs.delete(fileUri);
+    const folderUris = await vscode.window.showOpenDialog({
+      canSelectMany: false,
+      openLabel: 'Solution Folder',
+      canSelectFiles: false,
+      canSelectFolders: true
+    });
+
+    if (folderUris && folderUris[0]) {
+      const fileUri = await this.packSolution(isManaged, folderUris[0]);
+      if (fileUri) {
+        await this.uploadSolution(isManaged, fileUri);
+        await vscode.workspace.fs.delete(fileUri);
+      }
     }
   }
 
   private async uploadSolution(isManaged: boolean, fileUri: vscode.Uri): Promise<void> {
-    const solution = await this.getSolution();
+    try {
+      const jobId = uuid.v4();
+      const content = await vscode.workspace.fs.readFile(fileUri);
 
-    if (solution) {
-      try {
-        const jobId = uuid.v4();
-        const content = await vscode.workspace.fs.readFile(fileUri);
+      await vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        cancellable: false,
+        title: "Importing Solution"
+      }, async (progress): Promise<void> => {
+        return new Promise(async (resolve, reject) => {
+          progress.report({
+            message: 'Uploading Solution package...'
+          });
 
-        await vscode.window.withProgress({
-          location: vscode.ProgressLocation.Notification,
-          cancellable: false,
-          title: "Importing Solution"
-        }, async (progress): Promise<void> => {
-          return new Promise(async (resolve, reject) => {
-            progress.report({
-              message: 'Uploading Solution package...'
-            });
+          const wait = setTimeout(() => {
+            clearTimeout(wait);
+            reject('Importing Solution timed out.');
+          }, 1000 * 60 * 15);
 
-            const wait = setTimeout(() => {
-              clearTimeout(wait);
-              reject('Importing Solution timed out.');
-            }, 1000 * 60 * 15);
+          WebApi.post('ImportSolution',
+            {
+              OverwriteUnmanagedCustomizations: true,
+              PublishWorkflows: true,
+              CustomizationFile: Buffer.from(content).toString('base64'),
+              ImportJobId: jobId
+            }
+          );
 
-            await WebApi.post('ImportSolution',
-              {
-                OverwriteUnmanagedCustomizations: true,
-                PublishWorkflows: true,
-                CustomizationFile: Buffer.from(content).toString('base64'),
-                ImportJobId: jobId
-              }
+          let prevProgress = 0;
+
+          const interval = setInterval(async (jobId, progress) => {
+            const job = await WebApi.retrieve(
+              'importjobs',
+              jobId,
+              [
+                'importjobid',
+                'solutionid',
+                'progress',
+                'completedon',
+                'data'
+              ]
             );
 
-            const interval = setInterval(async (jobId, progress) => {
-              const job = await WebApi.retrieve(
-                'importjobs',
-                jobId,
-                [
-                  'importjobid',
-                  'solutionid',
-                  'progress',
-                  'completedon',
-                  'data'
-                ]
-              );
+            const increment = job.progress - prevProgress;
+            prevProgress = job.progress;
 
-              progress.report({
-                message: 'Applying Changes...',
-                increment: job.progress
-              });
+            progress.report({
+              message: 'Applying Changes...',
+              increment: increment
+            });
 
-              if (job.completedon) {
-                clearInterval(interval);
+            if (job.completedon) {
+              clearInterval(interval);
 
-                const data = await parseStringPromise(job.data);
+              const data = await parseStringPromise(job.data);
 
-                if (data.importexportxml.$.succeeded === 'success') {
+              switch (data.importexportxml.$.succeeded) {
+                case 'success':
                   resolve();
-                }
-                else {
+                  break;
+                case 'warning':
+                  await vscode.window.showWarningMessage("The Solution Import succeeded with Warnings.", {
+                    modal: true
+                  });
+                  resolve();
+                  break;
+                default:
                   if ("Yes" === await vscode.window.showErrorMessage("The Solution Import failed, would you like to save the result containing the details of the failure?", {
                     modal: true
                   }, "Yes", "No")) {
@@ -284,50 +304,62 @@ export default class SolutionManager {
                   }
 
                   reject('Importing Solution failed');
-                }
+                  break;
               }
-            }, 1000 * 5, jobId, progress);
-          });
+            }
+          }, 1000 * 5, jobId, progress);
         });
-      }
-      catch (error) {
-        vscode.window.showErrorMessage(error);
-      }
+      });
+    }
+    catch (error) {
+      vscode.window.showErrorMessage(error);
     }
   }
 
-  private async packSolution(isManaged: boolean): Promise<vscode.Uri | undefined> {
-    const solution = await this.getSolution();
+  private async packSolution(isManaged: boolean, solutionFolder: vscode.Uri): Promise<vscode.Uri | undefined> {
+    try {
+      return await vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        cancellable: false,
+        title: "Packing Solution..."
+      }, async (progress) => {
+        if (!fs.existsSync(vscode.Uri.joinPath(solutionFolder, isManaged ? 'managed' : 'unmanaged').fsPath)) {
 
-    if (solution) {
-      try {
-        return await vscode.window.withProgress({
-          location: vscode.ProgressLocation.Notification,
-          cancellable: false,
-          title: "Packing Solution..."
-        }, async (progress) => {
-          const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-          const solutionFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.folder') || '';
-          const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
+          if (!fs.existsSync(solutionFolder.fsPath)) {
+            new Error('The selected folder does not exist');
+          }
+        }
+        else {
+          solutionFolder = vscode.Uri.joinPath(solutionFolder, isManaged ? 'managed' : 'unmanaged');
+        }
 
-          const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
-          const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
+        const solutionFile = vscode.Uri.joinPath(solutionFolder, 'Other', 'Solution.xml');
+        const array = await vscode.workspace.fs.readFile(solutionFile);
+        const solutionData = await parseStringPromise(array.toString());
 
-          await this.executeSolutionPackager(
-            '/action:Pack',
-            `/folder:${vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), solutionFolder || '', solution.uniqueName, isManaged ? 'managed' : 'unmanaged').fsPath}`,
-            `/zipfile:${fileUri.fsPath}`,
-            `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
-            '/errorlevel:Verbose',
-            '/nologo'
-          );
+        const solutionName = solutionData.ImportExportXml.SolutionManifest[0].UniqueName;
+        const solutionVersion = solutionData.ImportExportXml.SolutionManifest[0].Version;
 
-          return fileUri;
-        });
-      }
-      catch (error) {
-        vscode.window.showErrorMessage(error);
-      }
+        const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+        const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
+
+        const zipFileName = `${solutionZipFolder}\\${solutionName}_${solutionVersion}${isManaged ? '_managed' : ''}.zip`;
+        const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
+
+        await this.executeSolutionPackager(
+          '/action:Pack',
+          `/folder:${solutionFolder.fsPath}`,
+          `/zipfile:${fileUri.fsPath}`,
+          `/packagetype:${isManaged ? 'Managed' : 'Unmanaged'}`,
+          '/errorlevel:Verbose',
+          '/nologo'
+        );
+
+        return fileUri;
+      });
+    }
+    catch (error) {
+      vscode.window.showErrorMessage(error);
     }
   }
 
