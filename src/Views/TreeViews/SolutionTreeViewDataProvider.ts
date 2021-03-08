@@ -37,7 +37,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         }
         children = entities.map(entity => new EntityTreeItem(entity)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
-      case 'globatOptionSetContainer':
+      case 'globalOptionSetContainer':
         let globalOptionSets = new Array<IOptionSet>();
         if (this.solution) {
           const optionSetComponents = await this.getSolutionComponents(SolutionComponentTypes.OptionSet);
@@ -89,7 +89,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         break;
       default:
         children.push(new ContainerTreeItem('Tables', 'solutioncomponents', 'entityContainer'));
-        children.push(new ContainerTreeItem('Choices', 'solutioncomponents', 'globatOptionSetContainer'));
+        children.push(new ContainerTreeItem('Choices', 'solutioncomponents', 'globalOptionSetContainer'));
         break;
     }
 

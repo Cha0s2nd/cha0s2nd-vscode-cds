@@ -127,7 +127,7 @@ export default class AuthorizationManager {
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.discoveryToken);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.discoveryTokenExpiryDate);
         }
-        else if (!this.discoveryToken || this.hasTokenExpired(this.discoveryToken)) {
+        else if (!this.discoveryToken) {
           if (await vscode.window.showInformationMessage("You will now be redirected to a browser to log into the Discovery service.", {
             modal: true
           }, "Continue") !== "Continue") {
@@ -156,6 +156,18 @@ export default class AuthorizationManager {
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryToken', this.discoveryToken);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.discoveryTokenExpiryDate', this.discoveryTokenExpiryDate);
         }
+
+        // check if valid
+        await rp(`${Constants.DISCOVERY_URL}/api/discovery/v1.0/Instances`, {
+          headers: {
+            'Content-Type': 'application/ json',
+            'Prefer': 'odata.include-annotations="*"',
+            'OData-Version': '4.0',
+            'OData-MaxVersion': '4.0',
+            'Authorization': 'Bearer ' + this.discoveryToken?.access_token
+          },
+          json: true
+        });
 
         resolve(this.discoveryToken);
       }
@@ -191,7 +203,7 @@ export default class AuthorizationManager {
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
         }
-        else if (!this.token || this.hasTokenExpired(this.token)) {
+        else if (!this.token) {
           if (await vscode.window.showInformationMessage("You will now be redirected to a browser to log into the Organization.", {
             modal: true
           }, "Continue") !== "Continue") {
@@ -220,6 +232,20 @@ export default class AuthorizationManager {
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.token', this.token);
           this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenExpiryDate', this.tokenExpiryDate);
         }
+
+        // check if valid
+        rp('WhoAmI', {
+          baseUrl: organization.url + '/api/data/v' + organization.version.substring(0, 3) + '/',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Prefer': 'odata.include-annotations="*", return=representation',
+            'OData-Version': '4.0',
+            'OData-MaxVersion': '4.0',
+            'Authorization': 'Bearer ' + this.token?.access_token
+          },
+          json: true,
+          method: 'GET',
+        });
 
         resolve(this.token);
       }

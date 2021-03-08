@@ -3,12 +3,12 @@ import AuthorizationManager from './Auth/AuthorizationManager';
 import DependencyManager from './Core/Managers/DependencyManager';
 import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
+import PluginManager from './Core/Managers/PluginManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 import ISolution from './Entities/ISolution';
-import { EntityTreeViewDataProvider } from './Views/TreeViews/EntityTreeViewDataProvider';
 import { SolutionTreeViewDataProvider } from './Views/TreeViews/SolutionTreeViewDataProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -18,6 +18,7 @@ export async function activate(context: vscode.ExtensionContext) {
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
+  new PluginManager(context).registerCommands();
 
   // DLaB.EarlyBoundGenerator used here: https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator
   new EarlyBoundManager(context).registerCommands();
@@ -32,7 +33,11 @@ export async function activate(context: vscode.ExtensionContext) {
       const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
       if (solution) {
-        vscode.window.registerTreeDataProvider('solution', new SolutionTreeViewDataProvider(solution));
+        const solutionTreeView = vscode.window.createTreeView('solution', {
+          treeDataProvider: new SolutionTreeViewDataProvider(solution)
+        });
+
+        solutionTreeView.title = `${solution.friendlyName} - ${solution.version}`;
       }
 
       vscode.window.registerTreeDataProvider('defaultSolution', new SolutionTreeViewDataProvider());
