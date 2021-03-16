@@ -43,19 +43,19 @@ export default class SpklManager {
           resolve(vscode.Uri.parse(file));
         }
         else {
-          resolve();
+          resolve(undefined);
         }
 
         const timeout = setTimeout(() => {
           clearTimeout(timeout);
-          resolve();
+          resolve(undefined);
         }, 1000 * 30);
       });
     }
   }
 
-  private async getParams(): Promise<string> {
-    return new Promise<string>(async (resolve, reject) => {
+  private async getParams(): Promise<string | undefined> {
+    return new Promise<string | undefined>(async (resolve, reject) => {
       const params = await vscode.window.showInputBox({
         ignoreFocusOut: false,
         prompt: 'Please enter any additional spkl params if required',
@@ -66,14 +66,14 @@ export default class SpklManager {
 
       const timeout = setTimeout(() => {
         clearTimeout(timeout);
-        resolve();
+        resolve(undefined);
       }, 1000 * 30);
     });
   }
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
   }
 
@@ -113,19 +113,19 @@ export default class SpklManager {
   }
 
   private async downloadWebResources(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.downloadWebResources, params);
   }
 
   private async getWebResources(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.getWebResources, params);
   }
 
   private async deployWebResources(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.deployWebResources, params);
   }
@@ -135,25 +135,25 @@ export default class SpklManager {
   }
 
   private async deployPlugins(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.deployPlugins, params);
   }
 
   private async deployWorkflows(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.deployWorkflows, params);
   }
 
   private async importSolution(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.importSolution, params);
   }
 
   private async exportSolution(spklJson: vscode.Uri | undefined) {
-    const params = await this.getParams();
+    const params = await this.getParams() || '';
 
     this.executeSpkl(spklJson, SpklActions.exportSolution, params);
   }

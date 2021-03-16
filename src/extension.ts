@@ -6,10 +6,9 @@ import OrganizationManager from './Core/Managers/OrganizationManager';
 import PluginManager from './Core/Managers/PluginManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
+import TreeViewManager from './Core/Managers/TreeviewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
-import ISolution from './Entities/ISolution';
-import { SolutionTreeViewDataProvider } from './Views/TreeViews/SolutionTreeViewDataProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
   new DependencyManager(context).checkAll();
@@ -30,17 +29,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   if (await context.workspaceState.get('cha0s2nd-vscode-cds.auth.token')) {
     if (await vscode.commands.executeCommand('cha0s2nd-vscode-cds.organization.get')) {
-      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
-
-      if (solution) {
-        const solutionTreeView = vscode.window.createTreeView('solution', {
-          treeDataProvider: new SolutionTreeViewDataProvider(solution)
-        });
-
-        solutionTreeView.title = `${solution.friendlyName} - ${solution.version}`;
-      }
-
-      vscode.window.registerTreeDataProvider('defaultSolution', new SolutionTreeViewDataProvider());
+      const treeViewManager = new TreeViewManager(context);
+      treeViewManager.registerCommands();
+      treeViewManager.registerViews();
     }
   }
 }

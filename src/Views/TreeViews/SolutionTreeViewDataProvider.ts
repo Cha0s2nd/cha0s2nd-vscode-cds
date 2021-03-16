@@ -25,7 +25,14 @@ import RelationshipTreeItem from './TreeItems/RelationshipTreeItem';
 import ValueTreeItem from './TreeItems/ValueTreeItem';
 
 export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+  private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> = this._onDidChangeTreeData.event;
+
   constructor(private solution?: ISolution) { }
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
 
   getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;

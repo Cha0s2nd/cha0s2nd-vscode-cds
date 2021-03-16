@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import * as uuid from 'node-uuid';
-import * as fs from 'fs';
 import ISolution from '../../Entities/ISolution';
 import WebApi from '../xrm/WebApi';
 import { PluginSourceTypes } from '../Enums/PluginSourceTypes';
