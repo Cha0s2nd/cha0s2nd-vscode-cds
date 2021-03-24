@@ -6,6 +6,5 @@
   <ItemGroup>
     <PackageReference Include="dlab.xrm.earlyboundgenerator.api" Version="1.2021.1.23"/>
     <PackageReference Include="microsoft.crmsdk.coretools" Version="9.1.0.68"/>
-    <PackageReference Include="microsoft.crmsdk.xrmtooling.pluginregistrationtool" Version="9.1.0.20"/>
   </ItemGroup>
 </Project>

@@ -330,8 +330,8 @@ export default class WebResourceManager {
       const webResourceFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder');
 
       const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '', webResource.file);
-      const document = await vscode.workspace.openTextDocument(file.path);
-      const content = Buffer.from(document.getText()).toString('base64');
+      const array = await vscode.workspace.fs.readFile(file);
+      const content = Buffer.from(array).toString('base64');
 
       let response = null;
 
