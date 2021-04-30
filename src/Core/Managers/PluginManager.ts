@@ -70,84 +70,14 @@ export default class SolutionManager {
         throw new Error('Registering Plugin Assembly timed out.');
       }, 1000 * 60 * 15);
 
-      const pluginFullName = (await this.executePowershell(`[System.Reflection.Assembly]::ReflectionOnlyLoadFrom("${fileUri.fsPath}").GetName().FullName`)).split(',');
-      const name = pluginFullName[0];
-      const version = pluginFullName[1].replace('Version=', '').trim();
-      const culture = pluginFullName[2].replace('Culture=', '').trim();
-      const publicToken = pluginFullName[3].replace('PublicKeyToken=', '').trim();
-
-      const content = await vscode.workspace.fs.readFile(fileUri);
-
-      const response = await WebApi.retrieveMultiple('pluginassemblies', ['pluginassemblyid'], `name eq '${name}'`);
-
-      if (response && response[0]) {
-        await WebApi.update('pluginassemblies', {
-          pluginassemblyid: response[0].pluginassemblyid,
-          content: Buffer.from(content).toString('base64'),
-          name: name,
-          culture: culture,
-          version: version,
-          publickeytoken: publicToken,
-          sourcetype: PluginSourceTypes.Database,
-          isolationmode: IsolationModes.Sandbox
-        });
-      }
-      else {
-        await WebApi.create('pluginassemblies', {
-          pluginassemblyid: uuid.v4(),
-          content: Buffer.from(content).toString('base64'),
-          name: name,
-          culture: culture,
-          version: version,
-          publickeytoken: publicToken,
-          sourcetype: PluginSourceTypes.Database,
-          isolationmode: IsolationModes.Sandbox
-        });
-      }
+      await this.executeSDKWrapper(fileUri.fsPath);
     }
     catch (error) {
       vscode.window.showErrorMessage(error);
     }
   }
 
-  private async executePluginRegistrationTool(...params: string[]): Promise<void> {
-    return new Promise(async (resolve, reject) => {
-
-      const sp = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.pluginRegToolFile');
-
-      if (sp) {
-        const output = vscode.window.createOutputChannel("Cha0s Data Tools: Plugin Registration");
-        output.show();
-
-        const process = child_process.spawn(sp, params);
-
-        process.stdout.on('data', async (data) => {
-          output.append(data.toString());
-        });
-
-        process.stderr.on('data', async (data) => {
-          output.append(data.toString());
-        });
-
-        process.addListener('exit', async (code) => {
-          output.append(`Plugin Registration exited with code '${code}'`);
-
-          if (code === 0) {
-            output.dispose();
-            resolve();
-          }
-          else {
-            reject();
-          }
-        });
-      }
-      else {
-        throw new Error('Could not locate PluginRegistration.exe');
-      }
-    });
-  }
-
-  private async executePowershell(...params: string[]): Promise<string> {
+  private async executeSDKWrapper(...params: string[]): Promise<string> {
     return new Promise(async (resolve, reject) => {
 
       let outData = '';
@@ -155,7 +85,7 @@ export default class SolutionManager {
       const output = vscode.window.createOutputChannel("Cha0s Data Tools: Plugin Registration");
       output.show();
 
-      const process = child_process.spawn('powershell', params);
+      const process = child_process.spawn('sdk-wrapper\\dist\\sdk-wrapper.exe', params);
 
       process.stdout.on('data', async (data) => {
         outData += data.toString();

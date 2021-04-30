@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "options": {
+        "cwd": "src"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "echo": false
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run",
+      "dependsOn": [
+        "build"
+      ],
+      "command": "dotnet",
+      "args": [
+        "run"
+      ],
+      "options": {
+        "cwd": "src"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "echo": false
+      }
+    },
+    {
+      "label": "publish",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "publish",
+        "-c",
+        "Release",
+        "-o",
+        "\"..\\dist\""
+      ],
+      "options": {
+        "cwd": "src"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "echo": false
+      },
+      "problemMatcher": "$msCompile"
+    },
+  ]
+}

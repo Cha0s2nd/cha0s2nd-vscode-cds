@@ -1,8 +1,10 @@
 .vscode/**
 .vscode-test/**
 out/**
-dotnet-dependencies/bin/**
-dotnet-dependencies/obj/**
+dotnet-dependencies/bin/
+dotnet-dependencies/obj/
+sdk-wrapper/.vscode/
+sdk-wrapper/src/
 src/**
 .gitignore
 .yarnrc

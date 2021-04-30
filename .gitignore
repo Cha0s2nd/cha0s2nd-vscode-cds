@@ -1,8 +1,10 @@
-out/**
 node_modules
 .vscode-test/
 *.vsix
 token_cache
-dotnet-dependencies/bin/**
-dotnet-dependencies/obj/**
+dotnet-dependencies/bin/
+dotnet-dependencies/obj/
+sdk-wrapper/dist/
+sdk-wrapper/src/bin/
+sdk-wrapper/src/obj/
 dist/**
