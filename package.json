@@ -1,7 +1,7 @@
 {
   "name": "cha0s2nd-vscode-cds",
   "displayName": "Cha0s Data Tools (Dynamics 365)",
-  "description": "Tools to assist in developing custom solutions in Dynamics 365 and Common Data Services",
+  "description": "Tools to assist in developing custom solutions in Dynamics 365 and Microsoft Dataverse",
   "publisher": "Cha0s2nd",
   "icon": "media/icon.png",
   "license": "LICENCE.txt",
@@ -518,7 +518,7 @@
     "lint": "eslint src --ext ts",
     "pretest": "npm run webpack && npm run lint",
     "test": "node ./dist/test/runTest.js",
-    "vscode:prepublish": "webpack --mode production",
+    "vscode:prepublish": "dotnet publish \".\\sdk-wrapper\\src\\sdk-wrapper.sln\" -c Release -o \"..\\dist\" && webpack --mode production",
     "compile": "webpack --mode development",
     "watch": "webpack --mode development --watch",
     "test-compile": "tsc -p ./"
