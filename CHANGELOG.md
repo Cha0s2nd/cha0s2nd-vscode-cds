@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Plugin Assembly Registration (no steps yet)
   
-- ## [0.0.12]
+## [0.0.12]
 ### Added
 - Solution Data Tree View (Tables and Choices)
 
