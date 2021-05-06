@@ -8,12 +8,13 @@
       "args": [
         "build",
         "/property:GenerateFullPaths=true",
-        "/consoleloggerparameters:NoSummary"
+        "/consoleloggerparameters:NoSummary",
+        "/p:OutputPath=\"..\\dist\"",
       ],
       "options": {
         "cwd": "src"
       },
-      "group": "build",
+      "group": "msbuild",
       "presentation": {
         "reveal": "silent",
         "echo": false
@@ -23,7 +24,7 @@
     {
       "label": "run",
       "dependsOn": [
-        "build"
+        "msbuild"
       ],
       "command": "dotnet",
       "args": [
@@ -55,7 +56,7 @@
       "options": {
         "cwd": "src"
       },
-      "group": "build",
+      "group": "msbuild",
       "presentation": {
         "reveal": "silent",
         "echo": false

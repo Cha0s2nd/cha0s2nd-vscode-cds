@@ -1,4 +1,4 @@
-export interface IAuthToken {
+export default interface IAuthToken {
   access_token: string,
   expires_in: number,
   expires_on: Date,

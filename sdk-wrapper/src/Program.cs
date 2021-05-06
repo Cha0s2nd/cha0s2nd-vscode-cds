@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Tooling.Connector;
 using sdk_wrapper.Managers;
+using sdk_wrapper.Models;
 
 namespace sdk_wrapper
 {
@@ -9,56 +10,40 @@ namespace sdk_wrapper
   {
     static void Main(string[] args)
     {
-      IOrganizationService service = null;
+      Console.Out.WriteLine("Cha0s Data Tools - SDK Wrapper");
+      Console.Out.WriteLine("==============================");
 
-      string connectionString = null;
-      string url = null;
-      string userName = null;
-      string password = null;
-
-      for (int i = 0; i < args.Length; i++)
+      try
       {
-        switch (args[i].ToLowerInvariant())
+        CrmServiceClient service = null;
+        Arguments arguments = ArgumentManager.ParseArguments(args);
+
+        if (!string.IsNullOrWhiteSpace(arguments.ConnectionString))
         {
-          case "-c":
-          case "-connectionstring":
-            connectionString = args[i + 1];
+          service = ServiceManager.CreateOrganizationService(arguments.ConnectionString);
+        }
+        else if (arguments.Url != null)
+        {
+          service = ServiceManager.CreateOrganizationService(arguments.Url.ToString(), arguments.Username, arguments.Password);
+        }
+
+        switch (arguments.Action)
+        {
+          case "pluginassembly":
+            Console.Out.WriteLine("Register Plugin Assembly");
+            PluginManager.UpdateAssembly(service, arguments.Solution, arguments.AdditionalArgs.First());
+            Console.Out.WriteLine("Completed Plugin Assembly Registration");
             break;
 
-          case "-u":
-          case "-username":
-            userName = args[i + 1];
-            break;
 
-          case "-p":
-          case "-password":
-            password = args[i + 1];
-            break;
-
-          case "-url":
-            url = args[i + 1];
+          default:
+            Console.Out.WriteLine("Unrecognized command, exiting...");
             break;
         }
       }
-
-      if (!string.IsNullOrWhiteSpace(connectionString))
+      catch (Exception ex)
       {
-        service = ServiceManager.CreateOrganizationService(connectionString);
-      }
-      else if (!string.IsNullOrWhiteSpace(url))
-      {
-        service = ServiceManager.CreateOrganizationService(url, userName, password);
-      }
-
-      switch (args[0].ToLowerInvariant())
-      {
-        case "pluginassembly":
-          PluginManager.UpdatePlugins(service, args[1]);
-          break;
-
-        case "plugin":
-          PluginManager.UpdatePlugins(service, args[1]);
-          break;
+        Console.Error.WriteLine(ex.ToString());
       }
     }
   }

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as rp from 'request-promise';
 import IOrganization from '../../Entities/IOrganization';
-import { IAuthToken } from '../../Entities';
+import IAuthToken from '../../Entities/IAuthToken';
 
 export default class WebApi {
   public static async retrieve(entitySet: string, id: string, columnSet?: string[] | null, filter?: string | null, additionalQuery?: string | null) {

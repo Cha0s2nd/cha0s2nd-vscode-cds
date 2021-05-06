@@ -3,14 +3,79 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "webpack-dev",
+      "script": "compile",
       "problemMatcher": [],
-      "label": "npm: webpack-dev",
-      "detail": "webpack --mode development --watch",
+      "label": "npm: compile",
+      "detail": "webpack --mode development",
       "group": {
         "kind": "build",
         "isDefault": true
+      },
+      "dependsOn": [
+        "sdk-wrapper build"
+      ]
+    },
+    {
+      "label": "sdk-wrapper build",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary",
+        "/p:OutputPath=\"..\\dist\"",
+      ],
+      "options": {
+        "cwd": "sdk-wrapper/src"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "echo": false
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run",
+      "dependsOn": [
+        "sdk-wrapper build"
+      ],
+      "command": "dotnet",
+      "args": [
+        "run"
+      ],
+      "options": {
+        "cwd": "sdk-wrapper/src"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "echo": false
       }
-    }
+    },
+    {
+      "label": "sdk-wrapper publish",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "publish",
+        "-c",
+        "Release",
+        "-o",
+        "\"..\\dist\""
+      ],
+      "options": {
+        "cwd": "sdk-wrapper/src"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "echo": false
+      },
+      "problemMatcher": "$msCompile"
+    },
   ]
 }

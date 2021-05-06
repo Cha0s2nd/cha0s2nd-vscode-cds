@@ -5,7 +5,7 @@ import * as rp from 'request-promise';
 import IOrganization from '../Entities/IOrganization';
 import ISolution from '../Entities/ISolution';
 import AuthUriHandler from './AuthUriHandler';
-import { IAuthToken } from '../Entities';
+import IAuthToken from '../Entities/IAuthToken';
 
 export default class AuthorizationManager {
   private uriHandler: AuthUriHandler;

@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as xml2js from 'xml2js';
 import * as Constants from '../Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
-import { IAuthToken } from '../../Entities';
+import IAuthToken from '../../Entities/IAuthToken';
 
 export default class EarlyBoundManager {
   private context: vscode.ExtensionContext;

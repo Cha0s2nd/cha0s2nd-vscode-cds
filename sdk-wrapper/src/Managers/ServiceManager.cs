@@ -1,11 +1,12 @@
-using Microsoft.Xrm.Sdk;
+using System;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Tooling.Connector;
 
 namespace sdk_wrapper.Managers
 {
   public sealed class ServiceManager
   {
-    public static IOrganizationService CreateOrganizationService(string url, string userName, string password)
+    public static CrmServiceClient CreateOrganizationService(string url, string userName, string password)
     {
       string connectionString = $@"
                                 Url = {url};
@@ -20,9 +21,13 @@ namespace sdk_wrapper.Managers
       return CreateOrganizationService(connectionString);
     }
 
-    public static IOrganizationService CreateOrganizationService(string connectionString)
+    public static CrmServiceClient CreateOrganizationService(string connectionString)
     {
-      return new CrmServiceClient(connectionString);
+      CrmServiceClient.MaxConnectionTimeout = TimeSpan.FromMinutes(5);
+
+      var service = new CrmServiceClient(connectionString);
+      service.Execute(new WhoAmIRequest());
+      return service;
     }
   }
 }
