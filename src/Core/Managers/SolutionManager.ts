@@ -4,7 +4,7 @@ import * as uuid from 'node-uuid';
 import * as fs from 'fs';
 import IOrganization from "../../Entities/IOrganization";
 import ISolution from '../../Entities/ISolution';
-import WebApi from '../xrm/WebApi';
+import WebApi from '../Xrm/WebApi';
 import { Buffer } from 'buffer';
 import { parseStringPromise } from 'xml2js';
 

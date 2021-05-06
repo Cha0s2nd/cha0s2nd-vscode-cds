@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import * as Constants from "../Constants/Constants";
-import * as child_process from 'child_process';
 import * as jwt_decode from "jwt-decode";
 import IOrganization from "../../Entities/IOrganization";
 import IAuthToken from "../../Entities/IAuthToken";

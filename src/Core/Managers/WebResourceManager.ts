@@ -2,9 +2,10 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import IWebResource from '../../Entities/IWebResource';
 import ISolution from '../../Entities/ISolution';
-import WebApi from '../xrm/WebApi';
+import WebApi from '../Xrm/WebApi';
 import { SolutionComponentTypes } from '../Enums/SolutionComponentTypes';
-import { WebResourceTypes } from '../enums/WebResourceTypes';
+import { WebResourceTypes } from '../Enums/WebResourceTypes';
+import ISolutionComponent from '../../Entities/ISolutionComponent';
 
 export default class WebResourceManager {
   private context: vscode.ExtensionContext;
@@ -216,7 +217,7 @@ export default class WebResourceManager {
         'objectid'
       ],
       `componenttype eq ${SolutionComponentTypes.WebResource} and _solutionid_value eq '${solution?.solutionId}'`
-    ).then(response => response.map(sc => sc.objectid));
+    ).then(response => response.map((sc: ISolutionComponent) => sc.objectid));
   }
 
   private async getWebResourceDetailsFromSolution(webresourceIds: string[]): Promise<any[]> {

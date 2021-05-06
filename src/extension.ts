@@ -6,7 +6,7 @@ import OrganizationManager from './Core/Managers/OrganizationManager';
 import PluginManager from './Core/Managers/PluginManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
-import TreeViewManager from './Core/Managers/TreeviewManager';
+import TreeViewManager from './Core/Managers/TreeViewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 
