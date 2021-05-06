@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.0.12",
+  "version": "0.0.13",
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -519,8 +519,8 @@
     "pretest": "npm run webpack && npm run lint",
     "test": "node ./dist/test/runTest.js",
     "vscode:prepublish": "webpack --mode production",
-    "webpack": "webpack --mode development",
-    "webpack-dev": "webpack --mode development --watch",
+    "compile": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
     "test-compile": "tsc -p ./"
   },
   "dependencies": {
