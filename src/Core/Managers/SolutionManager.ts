@@ -27,7 +27,7 @@ export default class SolutionManager {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.export', async () => { return await this.exportSolution(); }));
   }
 
-  private async getAvailableSolutions(): Promise<ISolution[]> {
+  public async getAvailableSolutions(): Promise<ISolution[]> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
 
     const response = await WebApi.retrieveMultiple(

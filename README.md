@@ -76,10 +76,9 @@ Organization Discovery tokens do not always refresh, this seems to be because of
 
 ## Release Notes
 
-### [0.0.10]
+### [0.0.13]
 Added
-- webpack build for better build packaging
-- MIT licence
+- Plugin Assembly Registration (no steps yet)
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 

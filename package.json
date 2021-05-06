@@ -22,9 +22,9 @@
     }
   ],
   "preview": true,
-  "version": "0.0.12",
+  "version": "0.0.13",
   "engines": {
-    "vscode": "^1.50.0"
+    "vscode": "^1.54.0"
   },
   "categories": [
     "Other"
@@ -63,17 +63,29 @@
       ]
     },
     "menus": {
+      "view/title": [
+        {
+          "command": "cha0s2nd-vscode-cds.solutionTreeView.refresh",
+          "when": "view == solution",
+          "group": "navigation"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.defaultSolutionTreeView.refresh",
+          "when": "view == defaultSolution",
+          "group": "navigation"
+        }
+      ],
       "commandPalette": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "explorer/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.download",
@@ -83,7 +95,7 @@
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl || resourceFilename == cds-webresources.json"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
@@ -103,7 +115,7 @@
         {
           "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl || resourceFilename == spkl.json"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
           "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
@@ -135,43 +147,43 @@
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "navigation",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "editor/title/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "editor/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
           "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
-          "when": "resourceLangId == javascript || resourceLangId == html || resourceLangId == css || resourceLangId == xml || resourceLangId == xsl"
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ]
     },
@@ -424,6 +436,11 @@
         "category": "Cha0s Data"
       },
       {
+        "command": "cha0s2nd-vscode-cds.plugin.updateAssembly",
+        "title": "Update Plugin Assembly",
+        "category": "Cha0s Data"
+      },
+      {
         "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
         "title": "Deploy Web Resources using Spkl",
         "category": "Cha0s Data",
@@ -476,6 +493,24 @@
         "title": "Generate Early Bound Types using Spkl",
         "category": "Cha0s Data",
         "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.solutionTreeView.refresh",
+        "title": "Refresh Solution Tree View",
+        "category": "Cha0s Data",
+        "icon": {
+          "light": "media/light/reload.png",
+          "dark": "media/dark/reload.png"
+        }
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.defaultSolutionTreeView.refresh",
+        "title": "Refresh Tree View",
+        "category": "Cha0s Data",
+        "icon": {
+          "light": "media/light/reload.png",
+          "dark": "media/dark/reload.png"
+        }
       }
     ]
   },
@@ -484,35 +519,35 @@
     "pretest": "npm run webpack && npm run lint",
     "test": "node ./dist/test/runTest.js",
     "vscode:prepublish": "webpack --mode production",
-    "webpack": "webpack --mode development",
-    "webpack-dev": "webpack --mode development --watch",
+    "compile": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
     "test-compile": "tsc -p ./"
   },
   "dependencies": {
-    "request": "2.88.0",
-    "request-promise": "4.2.5",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "node-uuid": "^1.4.8",
     "xml2js": "^0.4.23",
-    "jwt-decode": "^3.0.0"
+    "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
-    "@types/jwt-decode": "^2.2.1",
-    "@types/mocha": "^8.0.0",
-    "@types/node": "^12.11.7",
+    "@types/jwt-decode": "^3.1.0",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.33",
     "@types/node-uuid": "^0.0.28",
-    "@types/request-promise": "^4.1.41",
-    "@types/vscode": "^1.14.0",
-    "@types/xml2js": "^0.4.5",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "eslint": "^7.9.0",
+    "@types/request-promise": "^4.1.47",
+    "@types/vscode": "^1.54.0",
+    "@types/xml2js": "^0.4.8",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.21.0",
     "glob": "^7.1.6",
-    "mocha": "^8.1.3",
-    "ts-loader": "^8.0.11",
-    "typescript": "^4.0.2",
-    "vscode-test": "^1.4.0",
-    "webpack": "^5.4.0",
-    "webpack-cli": "^4.2.0"
+    "mocha": "^8.3.1",
+    "ts-loader": "^8.0.18",
+    "typescript": "^4.2.3",
+    "vscode-test": "^1.5.1",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0"
   }
 }

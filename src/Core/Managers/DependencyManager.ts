@@ -41,6 +41,7 @@ export default class DependencyManager {
 
         if (packageFolder) {
             await this.checkForCrmSdkTools(packageFolder);
+            await this.checkForCrmPluginRegTool(packageFolder);
             await this.checkForDlaB(packageFolder);
         }
     }
@@ -60,6 +61,20 @@ export default class DependencyManager {
 
         const utilFile = vscode.Uri.joinPath(packageFolder, 'microsoft.crmsdk.coretools', version, 'content\\bin\\coretools\\CrmSvcUtil.exe');
         this.context.workspaceState.update('cha0s2nd-vscode-cds.crmSvcUtilFile', utilFile.fsPath);
+    }
+
+    public async checkForCrmPluginRegTool(packageFolder: vscode.Uri) {
+        await this.executeDotNet(
+            'add',
+            'dotnet-dependencies.csproj',
+            'package',
+            'microsoft.crmsdk.xrmtooling.pluginregistrationtool'
+        );
+
+        const version = await this.getPackageVersion('microsoft.crmsdk.xrmtooling.pluginregistrationtool');
+
+        const prFile = vscode.Uri.joinPath(packageFolder, 'microsoft.crmsdk.xrmtooling.pluginregistrationtool', version, 'tools\\PluginRegistration.exe');
+        this.context.workspaceState.update('cha0s2nd-vscode-cds.pluginRegToolFile', prFile.fsPath);
     }
 
     public async checkForDlaB(packageFolder: vscode.Uri) {

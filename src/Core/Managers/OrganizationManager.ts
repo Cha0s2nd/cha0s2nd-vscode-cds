@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as rp from 'request-promise';
 import * as Constants from "../Constants/Constants";
 import IOrganization from "../../Entities/IOrganization";
-import { IAuthToken } from '../../Entities';
+import IAuthToken from '../../Entities/IAuthToken';
 
 export default class OrganizationManager {
   private context: vscode.ExtensionContext;

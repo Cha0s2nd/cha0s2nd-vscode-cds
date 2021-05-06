@@ -330,11 +330,13 @@ export default class WebResourceManager {
       const webResourceFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder');
 
       const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '', webResource.file);
-      const document = await vscode.workspace.openTextDocument(file.path);
-      const content = Buffer.from(document.getText()).toString('base64');
+      const array = await vscode.workspace.fs.readFile(file);
+      const content = Buffer.from(array).toString('base64');
+
+      let response = null;
 
       if (resources.length > 0) {
-        await WebApi.patch(`webresourceset(${resources[0].webresourceid})`, {
+        response = await WebApi.patch(`webresourceset(${resources[0].webresourceid})`, {
           name: webResource.uniqueName,
           displayname: webResource.displayName,
           description: webResource.description,
@@ -345,7 +347,7 @@ export default class WebResourceManager {
       else {
         const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
-        const response = await WebApi.post('webresourceset', {
+        response = await WebApi.post('webresourceset', {
           name: webResource.uniqueName,
           displayname: webResource.displayName,
           description: webResource.description,
@@ -363,12 +365,12 @@ export default class WebResourceManager {
             DoNotIncludeSubcomponents: false,
             IncludedComponentSettingsValues: null
           });
-
-          await WebApi.post('PublishXml', {
-            ParameterXml: `<importexportxml><webresources><webresource>{${response.webresourceid}}</webresource></webresources></importexportxml>`
-          });
         }
       }
+
+      await WebApi.post('PublishXml', {
+        ParameterXml: `<importexportxml><webresources><webresource>{${response.webresourceid}}</webresource></webresources></importexportxml>`
+      });
     }
     catch (error) {
       vscode.window.showErrorMessage("Failed to deploy " + webResource.displayName + ": " + error);
