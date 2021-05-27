@@ -366,13 +366,13 @@ export default class SolutionManager {
   private async executeSolutionPackager(...params: string[]): Promise<void> {
     return new Promise(async (resolve, reject) => {
 
-      const sp = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.solutionPackagerFile');
+      const sp = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.solutionPackagerFile');
 
       if (sp) {
         const output = vscode.window.createOutputChannel("Cha0s Data Tools: Solution");
         output.show();
 
-        const process = child_process.spawn(sp, params);
+        const process = child_process.spawn(sp.fsPath, params);
 
         process.stdout.on('data', async (data) => {
           output.append(data.toString());

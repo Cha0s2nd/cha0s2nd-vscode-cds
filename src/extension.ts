@@ -3,9 +3,9 @@ import AuthorizationManager from './Auth/AuthorizationManager';
 import DependencyManager from './Core/Managers/DependencyManager';
 import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
-import PluginManager from './Core/Managers/PluginManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
+import SpklSettingManager from './Core/Managers/SpklSettingManager';
 import TreeViewManager from './Core/Managers/TreeViewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
@@ -17,13 +17,13 @@ export async function activate(context: vscode.ExtensionContext) {
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
-  new PluginManager(context).registerCommands();
 
   // DLaB.EarlyBoundGenerator used here: https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator
   new EarlyBoundManager(context).registerCommands();
 
   // Spkl (by Scott Durow) support: https://github.com/scottdurow/SparkleXrm/wiki/spkl
   new SpklManager(context).registerCommands();
+  new SpklSettingManager(context).registerEvents();
 
   vscode.languages.registerCodeLensProvider({ pattern: '**/*.{css,gif,html,htm,ico,jpg,jpeg,js,png,resx,svg,xap,xml,xsl}' }, new WebResourceCodeLensProvider());
 

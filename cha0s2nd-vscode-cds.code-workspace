@@ -1,14 +1,7 @@
 {
   "folders": [
     {
-      "name": "sdk-wrapper",
-      "path": "sdk-wrapper"
-    },
-    {
       "path": "."
     }
-  ],
-  "settings": {
-    "typescript.tsc.autoDetect": "off"
-  }
+  ]
 }
