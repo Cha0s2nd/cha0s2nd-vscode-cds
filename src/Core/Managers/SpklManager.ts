@@ -15,17 +15,17 @@ export default class SpklManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.setting.change', this.pickSpklFile));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.deployAll', this.deployWebResources));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.download', this.downloadWebResources));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.get', this.getWebResources));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.assembly.deploy', this.deployAssemblies));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.instrument', this.instrumentPlugins));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.deploy', this.deployPlugins));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.workflow.deploy', this.deployWorkflows));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.import', this.importSolution));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.export', this.exportSolution));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.earlybound.generate', this.generateEntities));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.setting.change', this.pickSpklFile));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.deployAll', this.deployWebResources));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.download', this.downloadWebResources));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.get', this.getWebResources));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.deploy', this.deployAssemblies));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.instrument', this.instrumentPlugins));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.deploy', this.deployPlugins));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.workflow.deploy', this.deployWorkflows));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.solution.import', this.importSolution));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.solution.export', this.exportSolution));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.earlybound.generate', this.generateEntities));
   }
 
   private async pickSpklFile(): Promise<void> {
@@ -56,19 +56,6 @@ export default class SpklManager {
     }
   }
 
-  private async getSettings(): Promise<string | undefined> {
-    let spklJson = await vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.spkl.settings');
-
-    if (!spklJson) {
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const configFile = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'cds-spkl-config.json');
-
-      spklJson = configFile.fsPath;
-    }
-
-    return spklJson;
-  }
-
   private async getAssemblies(): Promise<vscode.Uri[] | undefined> {
     return await vscode.window.showOpenDialog({
       canSelectMany: false,
@@ -97,13 +84,13 @@ export default class SpklManager {
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${this.context.asAbsolutePath('token_cache')}`;
   }
 
   private async executeSpkl(action: SpklActions, ...params: string[]): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      const spklJson = await this.getSettings();
+      const spklJson = await vscode.commands.executeCommand<vscode.Uri>('cha0s2nd-vscode-cds.spkl.setting.getPath');
 
       if (spklJson) {
         const spkl = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.spkl');
@@ -111,7 +98,7 @@ export default class SpklManager {
         if (spkl) {
 
           params.unshift(await this.getConnection());
-          params.unshift(spklJson);
+          params.unshift(spklJson.fsPath);
           params.unshift(action);
 
           let outData = '';
@@ -196,20 +183,30 @@ export default class SpklManager {
   }
 
   private async importSolution() {
-    const params = new Array<string>();
+    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.import');
 
-    this.executeSpkl(SpklActions.importSolution, ...params);
+    // const params = new Array<string>();
+
+    // this.executeSpkl(SpklActions.importSolution, ...params);
   }
 
   private async exportSolution() {
-    const params = new Array<string>();
+    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.export');
 
-    this.executeSpkl(SpklActions.exportSolution, ...params);
+    // const params = new Array<string>();
+
+    // this.executeSpkl(SpklActions.exportSolution, ...params);
   }
 
   private async generateEntities(spklJson: vscode.Uri | undefined) {
     const params = new Array<string>();
+    const useDlaB = await vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound').get<boolean>('useDLaBGenerator');
 
-    this.executeSpkl(SpklActions.generateEntities);
+    if (useDlaB) {
+      await vscode.commands.executeCommand('cha0s2nd-vscode-cds.earlybound.generate');
+    }
+    else {
+      this.executeSpkl(SpklActions.generateEntities);
+    }
   }
 }

@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import * as xml2js from 'xml2js';
 import ISolution from "../../Entities/ISolution";
 import ISpklPlugin from "../../Entities/ISpklPlugin";
 import ISpklSettings from "../../Entities/ISpklSettings";
@@ -10,6 +9,10 @@ export default class SpklSettingManager {
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
+  }
+
+  public registerCommands(): void {
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.setting.getPath', this.getSettingsFilePath));
   }
 
   public registerEvents(): void {
@@ -49,17 +52,28 @@ export default class SpklSettingManager {
 
   }
 
+  private async getSettingsFilePath(): Promise<vscode.Uri> {
+    let fileSetting = await vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.spkl.settings');
+
+    if (!fileSetting) {
+      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+      const configFile = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'spkl.json');
+
+      return configFile;
+    }
+    else {
+      return vscode.Uri.parse(fileSetting);
+    }
+  }
+
   private async getSettingsFromFile(): Promise<ISpklSettings> {
-    const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'cds-spkl-config.json');
+    const file = await this.getSettingsFilePath();
     const document = await vscode.workspace.openTextDocument(file.path);
     return JSON.parse(document.getText());
   }
 
   private async saveSettingsToFile(settings: ISpklSettings): Promise<void> {
-    const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'cds-spkl-config.json');
-
+    const file = await this.getSettingsFilePath();
     var buffer = Buffer.from(JSON.stringify(settings, null, 2), 'utf-8');
     var array = new Uint8Array(buffer);
     await vscode.workspace.fs.writeFile(file, array);
@@ -165,7 +179,6 @@ export default class SpklSettingManager {
   }
 
   private async setEarlybounds(settings: ISpklSettings): Promise<ISpklSettings> {
-    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
     const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound');
 
     const actions = config.get<string[]>('actions') || [];

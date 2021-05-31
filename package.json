@@ -88,47 +88,32 @@
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
-          "command": "cha0s2nd-vscode-cds.webresource.download",
-          "group": "z_commands",
-          "when": "resourceFilename == cds-webresources.json"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
+          "command": "cha0s2nd-vscode-cds.spkl.earlybound.generate",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.download",
+          "command": "cha0s2nd-vscode-cds.spkl.webresource.download",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
+          "command": "cha0s2nd-vscode-cds.spkl.webresource.get",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
+          "command": "cha0s2nd-vscode-cds.spkl.plugin.instrument",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.plugins.deploy",
+          "command": "cha0s2nd-vscode-cds.spkl.plugin.deploy",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.workflows.deploy",
+          "command": "cha0s2nd-vscode-cds.spkl.workflow.deploy",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
@@ -155,11 +140,6 @@
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "editor/context": [
@@ -167,21 +147,11 @@
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
@@ -428,52 +398,52 @@
         }
       },
       {
-        "command": "cha0s2nd-vscode-cds.earlybound.generate",
+        "command": "cha0s2nd-vscode-cds.spkl.earlybound.generate",
         "title": "Generate Early-bound Types",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.solution.import",
+        "command": "cha0s2nd-vscode-cds.spkl.solution.import",
         "title": "Import CRM Solution as Managed",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.solution.export",
+        "command": "cha0s2nd-vscode-cds.spkl.solution.export",
         "title": "Export CRM Solution",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.assembly.deploy",
+        "command": "cha0s2nd-vscode-cds.spkl.assembly.deploy",
         "title": "Update Plugin Assembly",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.webresource.deployAll",
+        "command": "cha0s2nd-vscode-cds.spkl.webresource.deployAll",
         "title": "Deploy All Web Resources",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.webresource.download",
+        "command": "cha0s2nd-vscode-cds.spkl.webresource.download",
         "title": "Download Web Resources",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.webresource.get",
+        "command": "cha0s2nd-vscode-cds.spkl.webresource.get",
         "title": "Get Web Resources",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.plugin.instrument",
+        "command": "cha0s2nd-vscode-cds.spkl.plugin.instrument",
         "title": "Instrument Plugins",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.plugin.deploy",
+        "command": "cha0s2nd-vscode-cds.spkl.plugin.deploy",
         "title": "Deploy Plugins",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.workflow.deploy",
+        "command": "cha0s2nd-vscode-cds.spkl.workflow.deploy",
         "title": "Deploy Workflows",
         "category": "Cha0s Data"
       },

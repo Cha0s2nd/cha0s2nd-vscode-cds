@@ -6,6 +6,7 @@ import * as xml2js from 'xml2js';
 import * as Constants from '../Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
 import IAuthToken from '../../Entities/IAuthToken';
+import IDlaBArgument from '../../Entities/IDlaBArgument';
 
 export default class EarlyBoundManager {
   private context: vscode.ExtensionContext;
@@ -20,66 +21,53 @@ export default class EarlyBoundManager {
 
   private async generateEarlybounds() {
     const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound');
+    const configPath = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound').get<string>('generatorSettings');
 
-    const actionParams = [
-      `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('actionFilename') || '')}`,
-      `/generateActions`,
-      `/codecustomization:DLaB.CrmSvcUtilExtensions.Action.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
-      `/codegenerationservice:DLaB.CrmSvcUtilExtensions.Action.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
-      `/codewriterfilter:DLaB.CrmSvcUtilExtensions.Action.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
-      `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.BaseMetadataProviderService,DLaB.CrmSvcUtilExtensions`,
-    ];
+    if (configPath) {
+      const array = await vscode.workspace.fs.readFile(vscode.Uri.parse(configPath));
+      const buffer = Buffer.from(array);
+      const config = await xml2js.parseStringPromise(buffer.toString());
 
-    const entityParams = [
-      `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('entityFilename') || '')}`,
-      `/servicecontextname:${config.get<string>('serviceContextName') || 'CrmServiceContext'}`,
-      `/codecustomization:DLaB.CrmSvcUtilExtensions.Entity.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
-      `/codegenerationservice:DLaB.CrmSvcUtilExtensions.Entity.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
-      `/codewriterfilter:DLaB.CrmSvcUtilExtensions.Entity.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
-      `/namingservice:DLaB.CrmSvcUtilExtensions.NamingService,DLaB.CrmSvcUtilExtensions`,
-      `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.Entity.MetadataProviderService,DLaB.CrmSvcUtilExtensions`,
-    ];
+      let optionSetArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'OptionSets');
+      let actionArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Actions');
+      let entityArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Entities');
+      let allArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'All');
 
-    const optionSetParams = [
-      `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('optionSetFilename') || '')}`,
-      `/codecustomization:DLaB.CrmSvcUtilExtensions.OptionSet.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
-      `/codegenerationservice:DLaB.CrmSvcUtilExtensions.OptionSet.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
-      `/codewriterfilter:DLaB.CrmSvcUtilExtensions.OptionSet.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
-      `/namingservice:DLaB.CrmSvcUtilExtensions.NamingService,DLaB.CrmSvcUtilExtensions`,
-      `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.BaseMetadataProviderService,DLaB.CrmSvcUtilExtensions`,
-    ];
+      optionSetArgs = optionSetArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'OptionSets'));
+      actionArgs = actionArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Actions'));
+      entityArgs = entityArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Entities'));
+      allArgs = allArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'All'));
 
-    if (config.get<string>('namespace')) {
-      const namespace = `/namespace:${config.get<string>('namespace')}`;
+      const actionParams = actionArgs.map(arg => arg.Name === 'out' ? path.join(configPath, '..', arg.Name) : `/${arg.Name}:${arg.Value}`);
+      const entityParams = entityArgs.map(arg => arg.Name === 'out' ? path.join(configPath, '..', arg.Name) : `/${arg.Name}:${arg.Value}`);
+      const optionSetParams = optionSetArgs.map(arg => arg.Name === 'out' ? path.join(configPath, '..', arg.Name) : `/${arg.Name}:${arg.Value}`);
 
-      actionParams.unshift(namespace);
-      entityParams.unshift(namespace);
-      optionSetParams.unshift(namespace);
-    }
+      for (var arg of allArgs) {
+        const param = `/${arg.Name}:${arg.Value}`;
 
-    await this.injectSettings(config, actionParams, entityParams, optionSetParams);
+        actionParams.unshift(param);
+        entityParams.unshift(param);
+        optionSetParams.unshift(param);
+      }
 
-    if (config.get<boolean>('generateActions')) {
-      await this.executeCrmSvcUtils(...actionParams);
-    }
+      await this.injectSettings(config.ExtensionConfig, actionParams, entityParams, optionSetParams);
 
-    if (config.get<boolean>('generateEntities')) {
       await this.executeCrmSvcUtils(...entityParams);
-    }
-
-    if (config.get<boolean>('generateOptionSets')) {
       await this.executeCrmSvcUtils(...optionSetParams);
+
+      if (actionArgs.find(arg => arg.Name === 'generateActions')?.Value) {
+        await this.executeCrmSvcUtils(...actionParams);
+      }
     }
   }
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
   }
 
-  private async injectSettings(config: vscode.WorkspaceConfiguration, actionParams: string[], entityParams: string[], optionSetParams: string[]) {
+  private async injectSettings(config: any, actionParams: string[], entityParams: string[], optionSetParams: string[]) {
     const dlabFile = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.dlabFile');
 
     if (dlabFile) {
@@ -89,8 +77,6 @@ export default class EarlyBoundManager {
       const buffer = Buffer.from(array);
 
       const configXml = await xml2js.parseStringPromise(buffer.toString());
-      const settings = config.get<any>('generatorSettings') || {};
-
       configXml.configuration.appSettings = [{ add: [] }];
 
       // Actions don't generate without this
@@ -115,8 +101,8 @@ export default class EarlyBoundManager {
         }
       });
 
-      for (let setting in settings) {
-        let value = settings[setting];
+      for (let setting in config) {
+        let value = config[setting];
 
         if (value instanceof Boolean) {
           value = value ? 'True' : 'False';
