@@ -86,7 +86,7 @@ export default class EarlyBoundManager {
       const configFile = await vscode.Uri.joinPath(dlabFile, '..', 'CrmSvcUtil.exe.config');
 
       const array = await vscode.workspace.fs.readFile(configFile);
-      var buffer = Buffer.from(array);
+      const buffer = Buffer.from(array);
 
       const configXml = await xml2js.parseStringPromise(buffer.toString());
       const settings = config.get<any>('generatorSettings') || {};

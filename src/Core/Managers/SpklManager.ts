@@ -15,17 +15,17 @@ export default class SpklManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.settings.change', this.pickSpklFile));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresources.deploy', this.deployWebResources));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresources.download', this.downloadWebResources));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresources.get', this.getWebResources));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.deploy', this.deployAssemblies));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugins.instrument', this.instrumentPlugins));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugins.deploy', this.deployPlugins));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.workflows.deploy', this.deployWorkflows));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.solution.import', this.importSolution));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.solution.export', this.exportSolution));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.entities.generate', this.generateEntities));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.setting.change', this.pickSpklFile));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.deployAll', this.deployWebResources));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.download', this.downloadWebResources));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.get', this.getWebResources));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.assembly.deploy', this.deployAssemblies));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.instrument', this.instrumentPlugins));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.deploy', this.deployPlugins));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.workflow.deploy', this.deployWorkflows));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.import', this.importSolution));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.export', this.exportSolution));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.earlybound.generate', this.generateEntities));
   }
 
   private async pickSpklFile(): Promise<void> {

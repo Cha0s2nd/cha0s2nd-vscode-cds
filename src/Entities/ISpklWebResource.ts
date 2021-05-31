@@ -4,7 +4,7 @@ export default interface ISpklWebResource {
   profile: string,
   root: string,
   solution: string,
-  autodetect: string | undefined,
-  deleteaction: string | undefined,
+  autodetect?: string,
+  deleteaction?: string,
   files: IWebResourceFile[]
 }

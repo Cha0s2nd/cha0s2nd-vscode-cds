@@ -1,5 +1,6 @@
 export default interface ISpklPlugin {
   profile: string,
   assemblypath: string,
-  classRegex: string | undefined
+  classRegex?: string,
+  solution: string
 }

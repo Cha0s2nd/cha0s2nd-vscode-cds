@@ -214,11 +214,12 @@
           },
           "cha0s2nd-vscode-cds.solution.exportType": {
             "title": "Solution Export Type",
-            "description": "The type of solution to Export (managed, unmanaged)",
+            "description": "The type of solution to Export (managed, unmanaged, both)",
             "type": "string",
             "enum": [
               "managed",
-              "unmanaged"
+              "unmanaged",
+              "both"
             ],
             "enumDescriptions": [
               "Exports the solution as managed",
@@ -249,7 +250,7 @@
             "default": "false",
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.webresources.folders": {
+          "cha0s2nd-vscode-cds.webresource.folders": {
             "title": "Web Resources Folders",
             "description": "The root folders to the Web Resources",
             "type": "array",
@@ -261,14 +262,19 @@
             ],
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.webresources.delete": {
-            "title": "Delete Removed Web Resource files",
+          "cha0s2nd-vscode-cds.webresource.deleteAction": {
+            "title": "Delete Action for Web Resource files",
             "description": "Select whether or not Web Resources in the Solution no longer present in folder tree should be Deleted or Removed from the solution",
-            "type": "boolean",
-            "default": false,
+            "type": "string",
+            "enum": [
+              "Remove from Solution",
+              "Delete from System",
+              "None"
+            ],
+            "default": "None",
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.webresources.processAll": {
+          "cha0s2nd-vscode-cds.webresource.processAll": {
             "title": "Process all Web Resources",
             "description": "Process all Web Resource files in the root folders (deselect to specify a list)",
             "type": "boolean",
@@ -308,16 +314,6 @@
           "cha0s2nd-vscode-cds.earlybound.entities": {
             "title": "Earlybound Entities",
             "description": "List of Entities to generate",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": [],
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.optionSets": {
-            "title": "Earlybound OptionSets",
-            "description": "List of OptionSets to generate",
             "type": "array",
             "items": {
               "type": "string"
@@ -437,13 +433,8 @@
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.solution.importManaged",
+        "command": "cha0s2nd-vscode-cds.solution.import",
         "title": "Import CRM Solution as Managed",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.solution.importUnmanaged",
-        "title": "Import CRM Solution as Unmanaged",
         "category": "Cha0s Data"
       },
       {
@@ -452,53 +443,38 @@
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.assembly.deploy",
+        "command": "cha0s2nd-vscode-cds.assembly.deploy",
         "title": "Update Plugin Assembly",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
+        "command": "cha0s2nd-vscode-cds.webresource.deployAll",
         "title": "Deploy All Web Resources",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.webresources.download",
+        "command": "cha0s2nd-vscode-cds.webresource.download",
         "title": "Download Web Resources",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
+        "command": "cha0s2nd-vscode-cds.webresource.get",
         "title": "Get Web Resources",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
+        "command": "cha0s2nd-vscode-cds.plugin.instrument",
         "title": "Instrument Plugins",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.plugins.deploy",
+        "command": "cha0s2nd-vscode-cds.plugin.deploy",
         "title": "Deploy Plugins",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.workflows.deploy",
+        "command": "cha0s2nd-vscode-cds.workflow.deploy",
         "title": "Deploy Workflows",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.spkl.solution.import",
-        "title": "Import Solution",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.spkl.solution.export",
-        "title": "Export Solution",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
-        "title": "Generate Early Bound Types",
         "category": "Cha0s Data"
       },
       {

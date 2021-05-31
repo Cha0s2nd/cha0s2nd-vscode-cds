@@ -22,8 +22,7 @@ export default class SolutionManager {
   public registerCommands(): void {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.get', async () => { return await this.getSolution(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.change', async () => { return await this.changeSolution(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.importManaged', async () => { return await this.importSolution(true); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.importUnmanaged', async () => { return await this.importSolution(false); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.import', async () => { return await this.importSolution(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.export', async () => { return await this.exportSolution(); }));
   }
 
@@ -95,7 +94,9 @@ export default class SolutionManager {
   }
 
   private async exportSolution(): Promise<void> {
-    if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportManaged')) {
+    const exportType = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.solution').get<string>('exportType') || 'unmanaged';
+
+    if (exportType === 'mananged' || exportType === 'both') {
       const fileUri = await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
@@ -108,7 +109,7 @@ export default class SolutionManager {
       }
     }
 
-    if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.solution.exportUnmanaged')) {
+    if (exportType === 'unmananged' || exportType === 'both') {
       const fileUri = await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
@@ -153,9 +154,9 @@ export default class SolutionManager {
           }
 
           const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-          const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
+          const solutionZipFileName = vscode.Uri.joinPath(vscode.Uri.parse(vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFile') || ''), "..");
 
-          const zipFileName = `${solutionZipFolder}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
+          const zipFileName = `${solutionZipFileName.fsPath}\\${solution.uniqueName}_${new Date().valueOf()}${isManaged ? '_managed' : ''}.zip`;
           const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
 
           var buffer = Buffer.from(response.ExportSolutionFile, 'base64');
@@ -203,7 +204,7 @@ export default class SolutionManager {
     }
   }
 
-  private async importSolution(isManaged: boolean): Promise<void> {
+  private async importSolution(): Promise<void> {
     const folderUris = await vscode.window.showOpenDialog({
       canSelectMany: false,
       openLabel: 'Solution Folder',
@@ -212,9 +213,11 @@ export default class SolutionManager {
     });
 
     if (folderUris && folderUris[0]) {
-      const fileUri = await this.packSolution(isManaged, folderUris[0]);
+      const importType = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.solution').get<string>('importType') || 'unmananged';
+
+      const fileUri = await this.packSolution(importType === 'mamanged', folderUris[0]);
       if (fileUri) {
-        await this.uploadSolution(isManaged, fileUri);
+        await this.uploadSolution(importType === 'mamanged', fileUri);
         await vscode.workspace.fs.delete(fileUri);
       }
     }
@@ -341,9 +344,9 @@ export default class SolutionManager {
         const solutionVersion = solutionData.ImportExportXml.SolutionManifest[0].Version;
 
         const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-        const solutionZipFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFolder') || '';
+        const solutionZipFileName = vscode.Uri.joinPath(vscode.Uri.parse(vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.solution.zipFile') || ''), "..");
 
-        const zipFileName = `${solutionZipFolder}\\${solutionName}_${solutionVersion}${isManaged ? '_managed' : ''}.zip`;
+        const zipFileName = `${solutionZipFileName.fsPath}\\${solutionName}_${solutionVersion}${isManaged ? '_managed' : ''}.zip`;
         const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), zipFileName);
 
         await this.executeSolutionPackager(
