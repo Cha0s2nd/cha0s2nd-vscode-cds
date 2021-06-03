@@ -24,38 +24,39 @@ export default class EarlyBoundManager {
     const configPath = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound').get<string>('generatorSettings');
 
     if (configPath) {
-      const array = await vscode.workspace.fs.readFile(vscode.Uri.parse(configPath));
+      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+      const array = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), configPath));
       const buffer = Buffer.from(array);
       const config = await xml2js.parseStringPromise(buffer.toString());
 
-      let optionSetArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'OptionSets');
-      let actionArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Actions');
-      let entityArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Entities');
-      let allArgs: IDlaBArgument[] = config.UserArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'All');
+      let optionSetArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'OptionSets');
+      let actionArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Actions');
+      let entityArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Entities');
+      let allArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'All');
 
-      optionSetArgs = optionSetArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'OptionSets'));
-      actionArgs = actionArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Actions'));
-      entityArgs = entityArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'Entities'));
-      allArgs = allArgs.concat(config.ExtensionArguments.filter((arg: IDlaBArgument) => arg.SettingType === 'All'));
+      optionSetArgs = optionSetArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'OptionSets'));
+      actionArgs = actionArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Actions'));
+      entityArgs = entityArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Entities'));
+      allArgs = allArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'All'));
 
-      const actionParams = actionArgs.map(arg => arg.Name === 'out' ? path.join(configPath, '..', arg.Name) : `/${arg.Name}:${arg.Value}`);
-      const entityParams = entityArgs.map(arg => arg.Name === 'out' ? path.join(configPath, '..', arg.Name) : `/${arg.Name}:${arg.Value}`);
-      const optionSetParams = optionSetArgs.map(arg => arg.Name === 'out' ? path.join(configPath, '..', arg.Name) : `/${arg.Name}:${arg.Value}`);
+      const actionParams = actionArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${path.join(configPath, '..', arg.Value[0])}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const entityParams = entityArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${path.join(configPath, '..', arg.Value[0])}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const optionSetParams = optionSetArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${path.join(configPath, '..', arg.Value[0])}` : `/${arg.Name[0]}:${arg.Value[0]}`);
 
       for (var arg of allArgs) {
-        const param = `/${arg.Name}:${arg.Value}`;
+        const param = `/${arg.Name[0]}:${arg.Value[0]}`;
 
         actionParams.unshift(param);
         entityParams.unshift(param);
         optionSetParams.unshift(param);
       }
 
-      await this.injectSettings(config.ExtensionConfig, actionParams, entityParams, optionSetParams);
+      await this.injectSettings(config.Config.ExtensionConfig[0], actionParams, entityParams, optionSetParams);
 
       await this.executeCrmSvcUtils(...entityParams);
       await this.executeCrmSvcUtils(...optionSetParams);
 
-      if (actionArgs.find(arg => arg.Name === 'generateActions')?.Value) {
+      if (actionArgs.find((arg: any) => arg.Name[0] === 'generateActions')?.Value[0]) {
         await this.executeCrmSvcUtils(...actionParams);
       }
     }
@@ -63,7 +64,7 @@ export default class EarlyBoundManager {
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
   }
 
@@ -77,7 +78,10 @@ export default class EarlyBoundManager {
       const buffer = Buffer.from(array);
 
       const configXml = await xml2js.parseStringPromise(buffer.toString());
-      configXml.configuration.appSettings = [{ add: [] }];
+
+      if (!configXml.configuration.appSettings || configXml.configuration.appSettings.length === 0) {
+        configXml.configuration.appSettings = [{ add: [] }];
+      }
 
       // Actions don't generate without this
       configXml.configuration.appSettings[0].add.push({
@@ -102,7 +106,7 @@ export default class EarlyBoundManager {
       });
 
       for (let setting in config) {
-        let value = config[setting];
+        let value = config[setting][0];
 
         if (value instanceof Boolean) {
           value = value ? 'True' : 'False';

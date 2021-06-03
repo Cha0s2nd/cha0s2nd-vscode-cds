@@ -172,7 +172,7 @@
             "title": "Solution Folder",
             "description": "The folder to extract the Solution to and package the Solution from",
             "type": "string",
-            "default": "Solution",
+            "default": "",
             "scope": "window"
           },
           "cha0s2nd-vscode-cds.solution.zipFile": {

@@ -13,6 +13,11 @@ import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLen
 export async function activate(context: vscode.ExtensionContext) {
   new DependencyManager(context).checkAll();
 
+  const settingManager = new SpklSettingManager(context);
+  settingManager.registerCommands();
+  settingManager.registerEvents();
+  settingManager.initializeSettings();
+
   new AuthorizationManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
@@ -23,7 +28,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // Spkl (by Scott Durow) support: https://github.com/scottdurow/SparkleXrm/wiki/spkl
   new SpklManager(context).registerCommands();
-  new SpklSettingManager(context).registerEvents();
 
   vscode.languages.registerCodeLensProvider({ pattern: '**/*.{css,gif,html,htm,ico,jpg,jpeg,js,png,resx,svg,xap,xml,xsl}' }, new WebResourceCodeLensProvider());
 

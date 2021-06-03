@@ -1,4 +1,4 @@
-import IWebResourceFile from "./IWebResource";
+import IWebResource from "./IWebResource";
 
 export default interface ISpklWebResource {
   profile: string,
@@ -6,5 +6,5 @@ export default interface ISpklWebResource {
   solution: string,
   autodetect?: string,
   deleteaction?: string,
-  files: IWebResourceFile[]
+  files: IWebResource[]
 }

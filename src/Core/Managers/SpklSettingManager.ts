@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as fs from "fs";
 import ISolution from "../../Entities/ISolution";
 import ISpklPlugin from "../../Entities/ISpklPlugin";
 import ISpklSettings from "../../Entities/ISpklSettings";
@@ -12,12 +13,26 @@ export default class SpklSettingManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.setting.getPath', this.getSettingsFilePath));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.setting.get', async () => { return this.getSettingsFromFile(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.setting.getPath', async () => { return this.getSettingsFilePath(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.setting.update', async (settings: ISpklSettings) => { return this.saveSettingsToFile(settings); }));
   }
 
   public registerEvents(): void {
-    vscode.workspace.onDidChangeConfiguration(this.onSettingChange);
-    vscode.workspace.createFileSystemWatcher('.vscode\\cds-spkl-config.json', true, false, true).onDidChange(this.getFileChanges);
+    vscode.workspace.onDidChangeConfiguration(this.onSettingChange, this);
+    vscode.workspace.createFileSystemWatcher('.vscode\\spkl.json', true, false, true).onDidChange(this.getFileChanges);
+  }
+
+  public async initializeSettings(): Promise<void> {
+    let settings = await this.getSettingsFromFile();
+
+    settings = await this.setSolution(settings);
+    settings = await this.setWebResources(settings);
+    settings = await this.setPlugins(settings);
+    settings = await this.setWorkflows(settings);
+    settings = await this.setEarlybounds(settings);
+
+    await this.saveSettingsToFile(settings);
   }
 
   private async onSettingChange(event: vscode.ConfigurationChangeEvent) {
@@ -68,8 +83,19 @@ export default class SpklSettingManager {
 
   private async getSettingsFromFile(): Promise<ISpklSettings> {
     const file = await this.getSettingsFilePath();
-    const document = await vscode.workspace.openTextDocument(file.path);
-    return JSON.parse(document.getText());
+
+    if (fs.existsSync(file.fsPath)) {
+      const document = await vscode.workspace.openTextDocument(file.path);
+      return JSON.parse(document.getText());
+    }
+
+    return {
+      earlyboundtypes: [],
+      plugins: [],
+      workflows: [],
+      solutions: [],
+      webresources: []
+    };
   }
 
   private async saveSettingsToFile(settings: ISpklSettings): Promise<void> {
@@ -85,7 +111,7 @@ export default class SpklSettingManager {
 
     settings.solutions = [];
 
-    const folder = config.get<string>('folder') || 'Solution';
+    const folder = config.get<string>('folder') || '';
     const zipFile = config.get<string>('zipFile') || '.\\solution_{0}_{1}_{2}_{3}.zip';
     const exportType = config.get<string>('exportType') || 'unmanaged';
     const importType = config.get<string>('importType') || 'unmanaged';
@@ -117,7 +143,7 @@ export default class SpklSettingManager {
     const deleteAction = config.get<string>('deleteAction') || 'None';
 
     for (let folder of folders) {
-      let webResource = settings.webresources.find(wr => wr.root === folder);
+      let webResource = settings.webresources?.find(wr => wr.root === folder);
 
       webResource = {
         profile: 'default',
@@ -173,7 +199,7 @@ export default class SpklSettingManager {
       });
     }
 
-    settings.plugins = changedWorkflows;
+    settings.workflows = changedWorkflows;
 
     return settings;
   }
