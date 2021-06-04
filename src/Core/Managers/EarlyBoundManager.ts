@@ -21,11 +21,12 @@ export default class EarlyBoundManager {
 
   private async generateEarlybounds() {
     const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const configPath = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound').get<string>('generatorSettings');
+    let configPath = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound').get<string>('generatorSettings');
 
     if (configPath) {
       const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const array = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), configPath));
+      const configFile = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), configPath);
+      const array = await vscode.workspace.fs.readFile(configFile);
       const buffer = Buffer.from(array);
       const config = await xml2js.parseStringPromise(buffer.toString());
 
@@ -39,9 +40,9 @@ export default class EarlyBoundManager {
       entityArgs = entityArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Entities'));
       allArgs = allArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'All'));
 
-      const actionParams = actionArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${path.join(configPath, '..', arg.Value[0])}` : `/${arg.Name[0]}:${arg.Value[0]}`);
-      const entityParams = entityArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${path.join(configPath, '..', arg.Value[0])}` : `/${arg.Name[0]}:${arg.Value[0]}`);
-      const optionSetParams = optionSetArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${path.join(configPath, '..', arg.Value[0])}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const actionParams = actionArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${vscode.Uri.joinPath(configFile, '..', arg.Value[0]).fsPath}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const entityParams = entityArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${vscode.Uri.joinPath(configFile, '..', arg.Value[0]).fsPath}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const optionSetParams = optionSetArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${vscode.Uri.joinPath(configFile, '..', arg.Value[0]).fsPath}` : `/${arg.Name[0]}:${arg.Value[0]}`);
 
       for (var arg of allArgs) {
         const param = `/${arg.Name[0]}:${arg.Value[0]}`;

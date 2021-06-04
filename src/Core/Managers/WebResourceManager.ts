@@ -104,9 +104,11 @@ export default class WebResourceManager {
 
     for (let resource of resources) {
       const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.file.startsWith(resourceFolder.root));
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file == resource.file));
 
-      vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder?.root || '', resource.file);
+      if (webResourceFolder) {
+        files.push(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder?.root || '', resource.file));
+      }
     }
 
     return files;
