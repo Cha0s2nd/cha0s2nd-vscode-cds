@@ -86,7 +86,7 @@ export default class DependencyManager {
 
     const version = await this.getPackageVersion('dlab.xrm.earlyboundgenerator.api');
 
-    const dlabFile = vscode.Uri.joinPath(packageFolder, 'dlab.xrm.earlyboundgenerator.api', version, 'content\\bin\\DLaB.EarlyBoundGenerator\\CrmSvcUtil.exe');
+    const dlabFile = vscode.Uri.joinPath(packageFolder, 'dlab.xrm.earlyboundgenerator.api', version, '\\contentFiles\\any\\any\\DLaB.EarlyBoundGenerator\\CrmSvcUtil.exe');
     this.context.workspaceState.update('cha0s2nd-vscode-cds.dlabFile', dlabFile);
   }
 

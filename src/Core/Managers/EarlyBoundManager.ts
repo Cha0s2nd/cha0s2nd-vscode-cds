@@ -1,12 +1,11 @@
 import * as vscode from 'vscode';
 import * as jwt_decode from 'jwt-decode';
 import * as child_process from 'child_process';
-import * as path from 'path';
 import * as xml2js from 'xml2js';
 import * as Constants from '../Constants/Constants';
+import { EarlyboundActions } from '../Enums/EarlyboundActions';
 import IOrganization from '../../Entities/IOrganization';
 import IAuthToken from '../../Entities/IAuthToken';
-import IDlaBArgument from '../../Entities/IDlaBArgument';
 
 export default class EarlyBoundManager {
   private context: vscode.ExtensionContext;
@@ -54,11 +53,11 @@ export default class EarlyBoundManager {
 
       await this.injectSettings(config.Config.ExtensionConfig[0], actionParams, entityParams, optionSetParams);
 
-      await this.executeCrmSvcUtils(...entityParams);
-      await this.executeCrmSvcUtils(...optionSetParams);
+      await this.executeCrmSvcUtils(EarlyboundActions.Entities, ...entityParams);
+      await this.executeCrmSvcUtils(EarlyboundActions.OptionSets, ...optionSetParams);
 
       if (actionArgs.find((arg: any) => arg.Name[0] === 'generateActions')?.Value[0]) {
-        await this.executeCrmSvcUtils(...actionParams);
+        await this.executeCrmSvcUtils(EarlyboundActions.Actions, ...actionParams);
       }
     }
   }
@@ -134,13 +133,27 @@ export default class EarlyBoundManager {
     }
   }
 
-  private async executeCrmSvcUtils(...params: string[]): Promise<void> {
+  private async executeCrmSvcUtils(action: EarlyboundActions, ...params: string[]): Promise<void> {
     return new Promise(async (resolve, reject) => {
 
       const crmSvcUtils = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.dlabFile');
 
       if (crmSvcUtils) {
-        const output = vscode.window.createOutputChannel('Cha0s Data Tools: Early-bound');
+        let title = '';
+
+        switch (action) {
+          case EarlyboundActions.Actions:
+            title = 'Cha0s Data Tools: Early-bound (Actions)';
+            break;
+          case EarlyboundActions.Entities:
+            title = 'Cha0s Data Tools: Early-bound (Entities)';
+            break;
+          case EarlyboundActions.OptionSets:
+            title = 'Cha0s Data Tools: Early-bound (OptionSets)';
+            break;
+        }
+
+        const output = vscode.window.createOutputChannel(title);
         output.show();
 
         params.unshift(`/connectionstring:${await this.getConnection()}`);
