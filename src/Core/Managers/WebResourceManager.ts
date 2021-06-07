@@ -5,7 +5,6 @@ import ISolution from '../../Entities/ISolution';
 import WebApi from '../Xrm/WebApi';
 import { SolutionComponentTypes } from '../Enums/SolutionComponentTypes';
 import { WebResourceTypes } from '../Enums/WebResourceTypes';
-import ISolutionComponent from '../../Entities/ISolutionComponent';
 import ISpklSettings from '../../Entities/ISpklSettings';
 import ISpklWebResource from '../../Entities/ISpklWebResource';
 
