@@ -179,7 +179,7 @@
             "title": "Solution Zip File",
             "description": "The temp file to create for the exported and packaged solution",
             "type": "string",
-            "default": ".\\solution_{0}_{1}_{2}_{3}.zip",
+            "default": "solution_{0}_{1}_{2}_{3}.zip",
             "scope": "window"
           },
           "cha0s2nd-vscode-cds.solution.exportType": {
@@ -228,7 +228,7 @@
               "type": "string"
             },
             "default": [
-              ".\\WebResources\\"
+              "WebResources\\"
             ],
             "scope": "window"
           },
@@ -316,7 +316,7 @@
             "title": "EarlyBound Filename",
             "description": "Path for the Earlybound output",
             "type": "string",
-            "default": ".\\EarlyBoundTypes.cs",
+            "default": "EarlyBoundTypes.cs",
             "scope": "window"
           },
           "cha0s2nd-vscode-cds.earlybound.namespace": {
@@ -414,7 +414,7 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.assembly.deploy",
-        "title": "Update Plugin Assembly",
+        "title": "Deploy Plugin Assemblies",
         "category": "Cha0s Data"
       },
       {

@@ -43,7 +43,7 @@ export default class SpklSettingManager {
         settings = await this.setSolution(settings);
       }
 
-      if (event.affectsConfiguration('cha0s2nd-vscode-cds.webresources')) {
+      if (event.affectsConfiguration('cha0s2nd-vscode-cds.webresource')) {
         settings = await this.setWebResources(settings);
       }
 
@@ -67,8 +67,13 @@ export default class SpklSettingManager {
 
   }
 
+  private isCustomFile(): boolean {
+    const setting = vscode.workspace.getConfiguration().get('cha0s2nd-vscode-cds.spkl.settings');
+    return setting !== undefined && setting !== null;
+  }
+
   private async getSettingsFilePath(): Promise<vscode.Uri> {
-    let fileSetting = await vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.spkl.settings');
+    let fileSetting = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.spkl.settings');
 
     if (!fileSetting) {
       const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
@@ -77,7 +82,7 @@ export default class SpklSettingManager {
       return configFile;
     }
     else {
-      return vscode.Uri.parse(fileSetting);
+      return vscode.Uri.file(fileSetting);
     }
   }
 
@@ -112,7 +117,7 @@ export default class SpklSettingManager {
     settings.solutions = [];
 
     const folder = config.get<string>('folder') || '';
-    const zipFile = config.get<string>('zipFile') || '.\\solution_{0}_{1}_{2}_{3}.zip';
+    const zipFile = config.get<string>('zipFile') || 'solution_{0}_{1}_{2}_{3}.zip';
     const exportType = config.get<string>('exportType') || 'unmanaged';
     const importType = config.get<string>('importType') || 'unmanaged';
     const versionIncrement = config.get<boolean>('versionIncrement') || false;
@@ -122,9 +127,9 @@ export default class SpklSettingManager {
     settings.solutions.push({
       profile: 'default',
       increment_on_import: versionIncrement,
-      packagepath: zipFile,
+      packagepath: (this.isCustomFile() ? '' : '..\\') + zipFile,
       packagetype: packageType,
-      solutionpath: folder,
+      solutionpath: (this.isCustomFile() ? '' : '..\\') + folder,
       solution_uniquename: solution?.uniqueName || 'Default',
       map: []
     });
@@ -138,16 +143,16 @@ export default class SpklSettingManager {
     const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
     const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.webresource');
 
-    const folders = config.get<string[]>('folders') || ['./Webresources/'];
+    const folders = config.get<string[]>('folders') || ['Webresources\\'];
     const autodetect = config.get<boolean>('processAll') || false;
     const deleteAction = config.get<string>('deleteAction') || 'None';
 
     for (let folder of folders) {
-      let webResource = settings.webresources?.find(wr => wr.root === folder);
+      let webResource = settings.webresources?.find(wr => wr.root === (this.isCustomFile() ? '' : '..\\') + folder);
 
       webResource = {
         profile: 'default',
-        root: folder,
+        root: (this.isCustomFile() ? '' : '..\\') + folder,
         autodetect: autodetect ? 'yes' : 'no',
         deleteaction: deleteAction === 'Remove from Solution' ? 'remove' : (deleteAction === 'Delete from System' ? 'delete' : 'no'),
         solution: solution?.uniqueName || 'Default',
@@ -173,7 +178,7 @@ export default class SpklSettingManager {
     for (let assembly of assemblies) {
       changedPlugins.push({
         profile: 'default',
-        assemblypath: assembly,
+        assemblypath: (this.isCustomFile() ? '' : '..\\') + assembly,
         solution: solution?.uniqueName || 'Default'
       });
     }
@@ -194,7 +199,7 @@ export default class SpklSettingManager {
     for (let assembly of assemblies) {
       changedWorkflows.push({
         profile: 'default',
-        assemblypath: assembly,
+        assemblypath: (this.isCustomFile() ? '' : '..\\') + assembly,
         solution: solution?.uniqueName || 'Default'
       });
     }
@@ -213,7 +218,7 @@ export default class SpklSettingManager {
     const globalOptionSetEnums = config.get<boolean>('globalOptionSetEnums') || false;
     const stateEnums = config.get<boolean>('stateEnums') || true;
     const oneFilePerType = config.get<boolean>('oneFilePerType') || false;
-    const fileName = config.get<string>('fileName') || '.\\EarlyBoundTypes.cs';
+    const fileName = config.get<string>('fileName') || 'EarlyBoundTypes.cs';
     const namespace = config.get<string>('namespace') || 'Entities';
     const serviceContext = config.get<string>('serviceContext') || 'XrmSvc';
 
@@ -224,7 +229,7 @@ export default class SpklSettingManager {
       generateGlobalOptionsets: globalOptionSetEnums,
       generateStateEnums: stateEnums,
       oneTypePerFile: oneFilePerType,
-      filename: fileName,
+      filename: (this.isCustomFile() ? '' : '..\\') + fileName,
       classNamespace: namespace,
       serviceContextName: serviceContext
     }];

@@ -3,12 +3,11 @@ import * as child_process from 'child_process';
 import * as xml2js from 'xml2js';
 
 export default class DependencyManager {
-  private output: vscode.OutputChannel;
+  private output: vscode.OutputChannel | null = null;
   private context: vscode.ExtensionContext;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
-    this.output = vscode.window.createOutputChannel('Cha0s Data Tools: Dependencies');
   }
 
   private async getPackageFolder(): Promise<vscode.Uri | undefined> {
@@ -37,12 +36,17 @@ export default class DependencyManager {
   }
 
   public async checkAll() {
+    this.output = vscode.window.createOutputChannel('Cha0s Data Tools: Dependencies');
+
     const packageFolder = await this.getPackageFolder();
 
     if (packageFolder) {
       await this.checkForCrmSdkTools(packageFolder);
+      await this.checkForSpkl(packageFolder);
       await this.checkForDlaB(packageFolder);
     }
+
+    this.output?.dispose();
   }
 
   public async checkForCrmSdkTools(packageFolder: vscode.Uri) {
@@ -97,15 +101,15 @@ export default class DependencyManager {
       });
 
       process.stdout.on('data', async (data) => {
-        this.output.append(data.toString());
+        this.output?.append(data.toString());
       });
 
       process.stderr.on('data', async (data) => {
-        this.output.append(data.toString());
+        this.output?.append(data.toString());
       });
 
       process.addListener('exit', async (code) => {
-        this.output.appendLine(`dotnet exited with code '${code}'`);
+        this.output?.appendLine(`dotnet exited with code '${code}'`);
 
         if (code === 0) {
           resolve();

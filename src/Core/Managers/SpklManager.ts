@@ -5,6 +5,8 @@ import * as jwt_decode from "jwt-decode";
 import IOrganization from "../../Entities/IOrganization";
 import IAuthToken from "../../Entities/IAuthToken";
 import { SpklActions } from "../Enums/SpklActions";
+import ISpklSettings from "../../Entities/ISpklSettings";
+import ISolution from "../../Entities/ISolution";
 
 export default class SpklManager {
   private context: vscode.ExtensionContext;
@@ -19,6 +21,7 @@ export default class SpklManager {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.download', () => this.downloadWebResources()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.get', () => this.getWebResources()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.deploy', () => this.deployAssemblies()));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.file', (assemblyFile: vscode.Uri) => this.deployAssembly(assemblyFile)));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.instrument', () => this.instrumentPlugins()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.deploy', () => this.deployPlugins()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.workflow.deploy', () => this.deployWorkflows()));
@@ -55,36 +58,77 @@ export default class SpklManager {
     }
   }
 
-  private async getAssemblies(): Promise<vscode.Uri[] | undefined> {
-    return await vscode.window.showOpenDialog({
+  private async pickAssembly(): Promise<vscode.Uri | undefined> {
+    const fileUris = await vscode.window.showOpenDialog({
       canSelectMany: false,
       openLabel: 'Plugin Assembly',
       canSelectFiles: true,
       canSelectFolders: false
     });
-  }
 
-  private async getParams(): Promise<string | undefined> {
-    return new Promise<string | undefined>(async (resolve, reject) => {
-      const params = await vscode.window.showInputBox({
-        ignoreFocusOut: false,
-        prompt: 'Please enter any additional spkl params if required',
-        placeHolder: 'params'
-      });
-
-      resolve(params);
-
-      const timeout = setTimeout(() => {
-        clearTimeout(timeout);
-        resolve(undefined);
-      }, 1000 * 30);
-    });
+    if (fileUris && fileUris.length > 0) {
+      return fileUris[0];
+    }
   }
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
     const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${this.context.asAbsolutePath('token_cache')}`;
+  }
+
+  private async executeSpklWithTempSettings(action: SpklActions, settings: ISpklSettings, ...params: string[]) {
+    const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+    const tempFile = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'spkl-temp.json');
+    var buffer = Buffer.from(JSON.stringify(settings, null, 2), 'utf-8');
+    var array = new Uint8Array(buffer);
+    await vscode.workspace.fs.writeFile(tempFile, array);
+
+    return new Promise(async (resolve, reject) => {
+      const spkl = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.spkl');
+
+      if (spkl) {
+        params.unshift(await this.getConnection());
+        params.unshift(tempFile.fsPath);
+        params.unshift(action);
+
+        let outData = '';
+
+        const output = vscode.window.createOutputChannel("Cha0s Data Tools: Spkl");
+        output.show();
+
+        const process = child_process.spawn(spkl.fsPath, params, {
+          cwd: vscode.Uri.joinPath(spkl, "..").fsPath,
+        });
+
+        process.stdout.on('data', async (data) => {
+          outData += data.toString();
+          output.append(data.toString());
+        });
+
+        process.stderr.on('data', async (data) => {
+          outData += data.toString();
+          output.append(data.toString());
+        });
+
+        process.addListener('exit', async (code) => {
+          output.append(`Spkl exited with code '${code}'`);
+
+          if (code === 0) {
+            // output.dispose();
+            resolve(outData);
+
+            vscode.workspace.fs.delete(tempFile);
+          }
+          else {
+            reject();
+          }
+        });
+      }
+      else {
+        throw new Error("Could not locate spkl.exe");
+      }
+    });
   }
 
   private async executeSpkl(action: SpklActions, ...params: string[]): Promise<string> {
@@ -156,9 +200,32 @@ export default class SpklManager {
     this.executeSpkl(SpklActions.deployWebResources, ...params);
   }
 
+  private async deployAssembly(assemblyFile: vscode.Uri | undefined) {
+    if (!assemblyFile) {
+      assemblyFile = await this.pickAssembly();
+    }
+
+    if (assemblyFile) {
+      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
+
+      const settings: ISpklSettings = {
+        plugins: [{
+          assemblypath: assemblyFile.fsPath,
+          solution: solution?.uniqueName || 'Default',
+          profile: 'default'
+        }]
+      };
+
+      const params = new Array<string>();
+      params.push('/e');
+
+      this.executeSpklWithTempSettings(SpklActions.deployPlugins, settings, ...params);
+    }
+  }
+
   private async deployAssemblies() {
     const params = new Array<string>();
-    params.push('\\e');
+    params.push('/e');
 
     this.executeSpkl(SpklActions.deployPlugins, ...params);
   }

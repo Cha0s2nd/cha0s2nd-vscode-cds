@@ -79,9 +79,7 @@ export default class EarlyBoundManager {
 
       const configXml = await xml2js.parseStringPromise(buffer.toString());
 
-      if (!configXml.configuration.appSettings || configXml.configuration.appSettings.length === 0) {
-        configXml.configuration.appSettings = [{ add: [] }];
-      }
+      configXml.configuration.appSettings = [{ add: [] }];
 
       // Actions don't generate without this
       configXml.configuration.appSettings[0].add.push({
@@ -113,7 +111,19 @@ export default class EarlyBoundManager {
         }
 
         if (value instanceof Array) {
-          value = value.join('|');
+          value = value.map(v => v.trim()).join('|');
+        }
+
+        if (value && value.$ && value.$['xsi:nil']) {
+          value = null;
+        }
+
+        while (value && value.toString().indexOf('\r') >= 0) {
+          value = value.replace('\r', '');
+        }
+
+        while (value && value.toString().indexOf('\n') >= 0) {
+          value = value.replace('\n', '');
         }
 
         configXml.configuration.appSettings[0].add.push({
@@ -158,8 +168,6 @@ export default class EarlyBoundManager {
 
         params.unshift(`/connectionstring:${await this.getConnection()}`);
 
-        output.appendLine(`${crmSvcUtils} ${params.join(' ')}`);
-
         const process = child_process.spawn(crmSvcUtils.fsPath, params);
 
         process.stdout.on('data', async (data) => {
@@ -174,7 +182,7 @@ export default class EarlyBoundManager {
           output.append(`CrmSvcUtil exited with code '${code}'`);
 
           if (code === 0) {
-            output.dispose();
+            // output.dispose();
             resolve();
           }
           else {

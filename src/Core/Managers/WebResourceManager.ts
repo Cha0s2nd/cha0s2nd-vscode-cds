@@ -51,6 +51,10 @@ export default class WebResourceManager {
     }
   }
 
+  private async getWebResourceRoot(): Promise<vscode.Uri> {
+    return vscode.Uri.joinPath(vscode.Uri.parse(await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.spkl.setting.getPath') || ''), '..');
+  }
+
   private async getAllWebResourceMetadata(): Promise<ISpklWebResource[]> {
     const settings = await vscode.commands.executeCommand<ISpklSettings>('cha0s2nd-vscode-cds.spkl.setting.get');
     return settings?.webresources || [];
@@ -69,18 +73,17 @@ export default class WebResourceManager {
     const webResourceMeta = await this.getAllWebResourceMetadata();
 
     for (let resource of resources) {
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const file = resource.fsPath.replace(workspaceFolder?.uri.fsPath + '\\' || '\\', '');
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => file.startsWith('\\' + resourceFolder.root) || file.startsWith(resourceFolder.root));
+      const root = await this.getWebResourceRoot();
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.fsPath.startsWith(vscode.Uri.joinPath(root, resourceFolder.root).fsPath));
 
       if (webResourceFolder) {
-        let webResource = webResourceFolder.files.find(wr => wr.file === file.replace(webResourceFolder.root + '\\', ''));
+        let webResource = webResourceFolder.files.find(wr => wr.file === resource.fsPath.replace(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath + '\\', ''));
 
         if (!webResource) {
           webResource = {
             displayName: path.basename(resource.fsPath),
-            uniqueName: resource.path.replace(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder.root).path + '/', ''),
-            file: file.replace(webResourceFolder.root + '\\', '')
+            uniqueName: resource.path.replace(vscode.Uri.joinPath(root, webResourceFolder.root).path + '/', ''),
+            file: resource.fsPath.replace(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath + '\\', '')
           };
 
           webResources.push(webResource);
@@ -102,11 +105,11 @@ export default class WebResourceManager {
     const files = new Array<vscode.Uri>();
 
     for (let resource of resources) {
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file == resource.file));
+      const root = await this.getWebResourceRoot();
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file === resource.file));
 
       if (webResourceFolder) {
-        files.push(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder?.root || '', resource.file));
+        files.push(vscode.Uri.joinPath(root, webResourceFolder.root, resource.file));
       }
     }
 
