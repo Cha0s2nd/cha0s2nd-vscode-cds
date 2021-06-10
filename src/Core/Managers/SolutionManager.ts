@@ -344,12 +344,12 @@ export default class SolutionManager {
         const solutionData = await parseStringPromise(array.toString());
 
         const solutionName = solutionData.ImportExportXml.SolutionManifest[0].UniqueName;
-        const solutionVersion = solutionData.ImportExportXml.SolutionManifest[0].Version.split('.');
+        const version = solutionData.ImportExportXml.SolutionManifest[0].Version[0].split('.');
 
         const root = await this.getSolutionRoot();
         const solutionMetadata = await this.getSolutionMetaData();
-        let solutionZipFileName = vscode.Uri.joinPath(root, solutionMetadata?.packagetype || '');
-        solutionZipFileName = vscode.Uri.file(solutionZipFileName.fsPath.replace('{0}', solutionVersion[0]).replace('{1}', solutionVersion[1]).replace('{2}', solutionVersion[2]).replace('{3}', solutionVersion[3]));
+        let solutionZipFileName = vscode.Uri.joinPath(root, solutionMetadata?.packagepath || '');
+        solutionZipFileName = vscode.Uri.file(solutionZipFileName.fsPath.replace('{0}', version[0]).replace('{1}', version[1]).replace('{2}', version[2]).replace('{3}', version[3]));
 
         await this.executeSolutionPackager(
           '/action:Pack',

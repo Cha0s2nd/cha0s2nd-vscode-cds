@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.0.13",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -404,7 +404,7 @@
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.solution.import",
-        "title": "Import CRM Solution as Managed",
+        "title": "Import CRM Solution",
         "category": "Cha0s Data"
       },
       {
