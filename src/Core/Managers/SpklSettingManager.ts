@@ -20,7 +20,6 @@ export default class SpklSettingManager {
 
   public registerEvents(): void {
     vscode.workspace.onDidChangeConfiguration(this.onSettingChange, this);
-    vscode.workspace.createFileSystemWatcher('.vscode\\spkl.json', true, false, true).onDidChange(this.getFileChanges);
   }
 
   public async initializeSettings(): Promise<void> {
@@ -61,10 +60,6 @@ export default class SpklSettingManager {
 
       await this.saveSettingsToFile(settings);
     }
-  }
-
-  private async getFileChanges(file: vscode.Uri): Promise<void> {
-
   }
 
   private isCustomFile(): boolean {
