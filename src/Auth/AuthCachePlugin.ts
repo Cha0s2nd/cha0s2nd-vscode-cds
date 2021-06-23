@@ -13,15 +13,17 @@ export default class AuthCachePlugin implements msal.ICachePlugin {
   public async beforeCacheAccess(tokenCacheContext: msal.TokenCacheContext): Promise<void> {
     await new Promise<void>((resolve, reject) => {
       try {
-        fs.readFile(this.context.asAbsolutePath('token_cache'), { encoding: "utf-8" }, (err: NodeJS.ErrnoException | null, data: string) => {
-          if (!err) {
-            tokenCacheContext.tokenCache.deserialize(data);
-            resolve();
-          }
-          else {
-            reject(err);
-          }
-        });
+        if (fs.existsSync(this.context.asAbsolutePath('token_cache'))) {
+          fs.readFile(this.context.asAbsolutePath('token_cache'), { encoding: "utf-8" }, (err: NodeJS.ErrnoException | null, data: string) => {
+            if (!err) {
+              tokenCacheContext.tokenCache.deserialize(data);
+              resolve();
+            }
+            else {
+              reject(err);
+            }
+          });
+        }
       }
       catch (err) {
         reject(err);
