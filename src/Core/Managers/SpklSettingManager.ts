@@ -64,7 +64,7 @@ export default class SpklSettingManager {
 
   private isCustomFile(): boolean {
     const setting = vscode.workspace.getConfiguration().get('cha0s2nd-vscode-cds.spkl.settings');
-    return setting !== undefined && setting !== null;
+    return setting !== '' && setting !== null && setting !== undefined;
   }
 
   private async getSettingsFilePath(): Promise<vscode.Uri> {

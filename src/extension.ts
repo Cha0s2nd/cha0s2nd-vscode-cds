@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import AuthorizationManager from './Auth/AuthorizationManager';
+import { AuthProviderType } from './Core/Enums/AuthProviderType';
 import DependencyManager from './Core/Managers/DependencyManager';
 import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
@@ -8,9 +8,12 @@ import SpklManager from './Core/Managers/SpklManager';
 import SpklSettingManager from './Core/Managers/SpklSettingManager';
 import TreeViewManager from './Core/Managers/TreeViewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
+import AuthProvider from './Auth/AuthProvider';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
+  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", new AuthProvider(), { supportsMultipleAccounts: true });
+
   new DependencyManager(context).checkAll();
 
   const settingManager = new SpklSettingManager(context);
@@ -18,7 +21,6 @@ export async function activate(context: vscode.ExtensionContext) {
   settingManager.registerEvents();
   settingManager.initializeSettings();
 
-  new AuthorizationManager(context).registerCommands();
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
