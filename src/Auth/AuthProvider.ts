@@ -12,10 +12,12 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   private sessions: vscode.AuthenticationSession[] = [];
   private sessionChangeEventEmitter = new vscode.EventEmitter<vscode.AuthenticationProviderAuthenticationSessionsChangeEvent>();
   private uriHandler: AuthUriHandler;
+  private context: vscode.ExtensionContext;
 
   public onDidChangeSessions: vscode.Event<vscode.AuthenticationProviderAuthenticationSessionsChangeEvent>;
 
-  constructor() {
+  constructor(context: vscode.ExtensionContext) {
+    this.context = context;
     this.onDidChangeSessions = this.sessionChangeEventEmitter.event;
 
     this.client = new msal.PublicClientApplication({
@@ -30,6 +32,8 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     this.uriHandler = new AuthUriHandler();
 
     vscode.window.registerUriHandler(this.uriHandler);
+
+    this.sessions = this.context.workspaceState.get<vscode.AuthenticationSession[]>('cha0s2nd-vscode-cds.auth.sessions') || [];
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
@@ -52,11 +56,13 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     const sessionIndex = this.sessions.findIndex(s => s.id === session.id);
     if (sessionIndex > -1) {
       this.sessions.splice(sessionIndex, 1, session);
+      this.sessionChangeEventEmitter.fire({ added: [], removed: [], changed: [session] });
     } else {
       this.sessions.push(session);
+      this.sessionChangeEventEmitter.fire({ added: [session], removed: [], changed: [] });
     }
 
-    this.sessionChangeEventEmitter.fire({ added: [session], removed: [], changed: [] });
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
 
     return session;
   }
@@ -67,6 +73,9 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     if (sessionIndex >= 0) {
       const session = this.sessions[sessionIndex];
       this.sessions.splice(sessionIndex, 1);
+
+      this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
+
       this.sessionChangeEventEmitter.fire({ added: [], removed: [session], changed: [] });
     }
   }
