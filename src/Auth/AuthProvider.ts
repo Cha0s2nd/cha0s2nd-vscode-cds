@@ -4,6 +4,7 @@ import * as Constants from '../Core/Constants/Constants';
 import * as msal from "@azure/msal-node";
 import * as msalCommon from "@azure/msal-common";
 import AuthUriHandler from './AuthUriHandler';
+import AuthCachePlugin from './AuthCachePlugin';
 
 export default class AuthProvider implements vscode.AuthenticationProvider {
   private authState: string = '';
@@ -25,15 +26,16 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
         clientId: Constants.CLIENT_ID,
         clientSecret: Constants.CLIENT_SECRET,
         authority: msalCommon.Constants.DEFAULT_AUTHORITY,
-        knownAuthorities: [msalCommon.Constants.DEFAULT_AUTHORITY]
+        knownAuthorities: [msalCommon.Constants.DEFAULT_AUTHORITY],
+      },
+      cache: {
+        cachePlugin: new AuthCachePlugin(context)
       }
     });
 
     this.uriHandler = new AuthUriHandler();
 
     vscode.window.registerUriHandler(this.uriHandler);
-
-    this.sessions = this.context.workspaceState.get<vscode.AuthenticationSession[]>('cha0s2nd-vscode-cds.auth.sessions') || [];
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
@@ -43,7 +45,6 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   }
 
   public async createSession(scopes: string[]): Promise<vscode.AuthenticationSession> {
-
     const tokenResponse = await this.getToken(scopes);
 
     const session = {
@@ -62,8 +63,6 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
       this.sessionChangeEventEmitter.fire({ added: [session], removed: [], changed: [] });
     }
 
-    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
-
     return session;
   }
 
@@ -73,8 +72,6 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     if (sessionIndex >= 0) {
       const session = this.sessions[sessionIndex];
       this.sessions.splice(sessionIndex, 1);
-
-      this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
 
       this.sessionChangeEventEmitter.fire({ added: [], removed: [session], changed: [] });
     }
@@ -99,7 +96,7 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
       redirectUri: Constants.REDIRECT_URL,
       scopes: msalCommon.OIDC_DEFAULT_SCOPES,
       state: this.authState,
-      prompt: msalCommon.PromptValue.SELECT_ACCOUNT,
+      prompt: msalCommon.PromptValue.SELECT_ACCOUNT
     });
 
     await vscode.env.openExternal(vscode.Uri.parse(authUrl));

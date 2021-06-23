@@ -6,6 +6,7 @@ import * as Constants from '../Constants/Constants';
 import { EarlyboundActions } from '../Enums/EarlyboundActions';
 import IOrganization from '../../Entities/IOrganization';
 import IAuthToken from '../../Entities/IAuthToken';
+import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class EarlyBoundManager {
   private context: vscode.ExtensionContext;
@@ -64,7 +65,7 @@ export default class EarlyBoundManager {
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode.default<any>((await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation']))?.accessToken || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
   }
 

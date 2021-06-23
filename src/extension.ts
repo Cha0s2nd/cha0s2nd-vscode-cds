@@ -10,9 +10,10 @@ import TreeViewManager from './Core/Managers/TreeViewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
 import AuthProvider from './Auth/AuthProvider';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
+import IOrganization from './Entities/IOrganization';
 
 export async function activate(context: vscode.ExtensionContext) {
-  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", new AuthProvider(), { supportsMultipleAccounts: true });
+  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", new AuthProvider(context), { supportsMultipleAccounts: true });
 
   new DependencyManager(context).checkAll();
 
@@ -33,12 +34,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.languages.registerCodeLensProvider({ pattern: '**/*.{css,gif,html,htm,ico,jpg,jpeg,js,png,resx,svg,xap,xml,xsl}' }, new WebResourceCodeLensProvider());
 
-  if (await context.workspaceState.get('cha0s2nd-vscode-cds.auth.token')) {
-    if (await vscode.commands.executeCommand('cha0s2nd-vscode-cds.organization.get')) {
-      const treeViewManager = new TreeViewManager(context);
-      treeViewManager.registerCommands();
-      treeViewManager.registerViews();
-    }
+  if (await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get')) {
+    const treeViewManager = new TreeViewManager(context);
+    treeViewManager.registerCommands();
+    treeViewManager.registerViews();
   }
 }
 

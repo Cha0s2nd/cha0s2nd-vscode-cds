@@ -367,16 +367,6 @@
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.auth.discoveryToken.set",
-        "title": "Configure Discovery Token",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.auth.organizationToken.set",
-        "title": "Configure Organization Token",
-        "category": "Cha0s Data"
-      },
-      {
         "command": "cha0s2nd-vscode-cds.organization.change",
         "title": "Change Organization",
         "category": "Cha0s Data"
@@ -479,6 +469,7 @@
     "request-promise": "^4.2.6",
     "node-uuid": "^1.4.8",
     "@azure/msal-node": "^1.1.0",
+    "@azure/msal-node-extensions": "1.0.0-alpha.7",
     "xml2js": "^0.4.23",
     "jwt-decode": "^3.1.2"
   },
