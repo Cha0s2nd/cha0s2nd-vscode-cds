@@ -38,6 +38,20 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     vscode.window.registerUriHandler(this.uriHandler);
   }
 
+  public registerCommands(): void {
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.login', async () => { return this.login(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.auth.logout', async () => { return this.logout(); }));
+  }
+
+  public async login(): Promise<void> {
+    await this.createSession([Constants.DISCOVERY_URL + '//user_impersonation']);
+  }
+
+  public async logout(): Promise<void> {
+    this.sessionChangeEventEmitter.fire({ added: [], removed: this.sessions, changed: [] });
+    this.sessions = [];
+  }
+
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
     return scopes
       ? this.sessions.filter(session => session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined)

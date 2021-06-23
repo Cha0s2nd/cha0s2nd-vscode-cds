@@ -13,7 +13,10 @@ import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLen
 import IOrganization from './Entities/IOrganization';
 
 export async function activate(context: vscode.ExtensionContext) {
-  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", new AuthProvider(context), { supportsMultipleAccounts: true });
+  const authProvider = new AuthProvider(context);
+  authProvider.registerCommands();
+
+  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", authProvider, { supportsMultipleAccounts: false });
 
   new DependencyManager(context).checkAll();
 
