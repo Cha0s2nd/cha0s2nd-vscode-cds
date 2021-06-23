@@ -5,7 +5,6 @@ import * as xml2js from 'xml2js';
 import * as Constants from '../Constants/Constants';
 import { EarlyboundActions } from '../Enums/EarlyboundActions';
 import IOrganization from '../../Entities/IOrganization';
-import IAuthToken from '../../Entities/IAuthToken';
 import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class EarlyBoundManager {

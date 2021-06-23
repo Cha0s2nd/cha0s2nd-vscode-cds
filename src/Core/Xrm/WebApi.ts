@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import * as rp from 'request-promise';
 import * as Constants from '../../Core/Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
-import IAuthToken from '../../Entities/IAuthToken';
 import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class WebApi {

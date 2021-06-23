@@ -1,5 +1,5 @@
 export * from "./IAttribute";
-export * from "./IAuthToken";
+export * from "./IAuthSession";
 export * from "./IDisplayName";
 export * from "./IEntityMetadata";
 export * from "./ILabel";
