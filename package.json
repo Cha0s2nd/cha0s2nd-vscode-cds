@@ -465,12 +465,12 @@
     "test-compile": "tsc -p ./"
   },
   "dependencies": {
+    "@azure/msal-node": "^1.1.0",
+    "jwt-decode": "^3.1.2",
+    "node-uuid": "^1.4.8",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
-    "node-uuid": "^1.4.8",
-    "@azure/msal-node": "^1.1.0",
-    "xml2js": "^0.4.23",
-    "jwt-decode": "^3.1.2"
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

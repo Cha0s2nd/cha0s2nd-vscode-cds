@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import IPluginType from '../../../Entities/IPluginType';
 
 export default class PluginTreeItem extends vscode.TreeItem {
@@ -12,5 +13,10 @@ export default class PluginTreeItem extends vscode.TreeItem {
     this.pluginId = plugin.plugintypeid;
     this.typename = plugin.typename;
     this.tooltip = plugin.description || '';
+
+    this.iconPath = {
+      light: path.join(__filename, '..', '..', 'media', 'light', 'plugin.png'),
+      dark: path.join(__filename, '..', '..', 'media', 'dark', 'plugin.png'),
+    };
   }
 }

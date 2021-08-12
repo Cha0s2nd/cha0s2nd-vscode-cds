@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import IPluginAssembly from '../../../Entities/IPluginAssembly';
 
 export default class PluginAssemblyTreeItem extends vscode.TreeItem {
@@ -12,5 +13,10 @@ export default class PluginAssemblyTreeItem extends vscode.TreeItem {
     this.name = pluginAssembly.name;
     this.pluginAssemblyId = pluginAssembly.pluginassemblyid;
     this.tooltip = pluginAssembly.description || '';
+
+    this.iconPath = {
+      light: path.join(__filename, '..', '..', 'media', 'light', 'assembly.png'),
+      dark: path.join(__filename, '..', '..', 'media', 'dark', 'assembly.png'),
+    };
   }
 }

@@ -4,7 +4,6 @@ import * as Constants from '../Core/Constants/Constants';
 import * as msal from "@azure/msal-node";
 import * as msalCommon from "@azure/msal-common";
 import AuthUriHandler from './AuthUriHandler';
-import AuthCachePlugin from './AuthCachePlugin';
 import IAuthSession from '../Entities/IAuthSession';
 
 export default class AuthProvider implements vscode.AuthenticationProvider {
@@ -27,9 +26,6 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
         clientSecret: Constants.CLIENT_SECRET,
         authority: msalCommon.Constants.DEFAULT_AUTHORITY,
         knownAuthorities: [msalCommon.Constants.DEFAULT_AUTHORITY],
-      },
-      cache: {
-        cachePlugin: new AuthCachePlugin(context)
       }
     });
 
@@ -38,6 +34,7 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     vscode.window.registerUriHandler(this.uriHandler);
 
     this.sessions = this.context.workspaceState.get<IAuthSession[]>('cha0s2nd-vscode-cds.auth.sessions') || [];
+    this.client.getTokenCache().deserialize(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.auth.tokenCache') || '');
   }
 
   public registerCommands(): void {
@@ -55,36 +52,25 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
-    return scopes
-      ? this.sessions.filter(session => session.session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined).map(session => session.session)
-      : this.sessions.map(session => session.session);
+    const sessions = scopes
+      ? this.sessions.filter(session => session.session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined)
+      : this.sessions;
+
+    const newSessions = [];
+
+    for (let session of sessions) {
+      newSessions.push(await (await this.createOrUpdateSession(scopes, session)).session);
+    }
+
+    return newSessions;
   }
 
   public async createSession(scopes: string[]): Promise<vscode.AuthenticationSession> {
-    const tokenResponse = await this.getToken(scopes);
+    const sessions = scopes
+      ? this.sessions.filter(session => session.session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined)
+      : this.sessions;
 
-    const session = {
-      result: tokenResponse,
-      session: {
-        id: tokenResponse?.uniqueId || uuid.v4(),
-        accessToken: tokenResponse?.accessToken || '',
-        account: { label: tokenResponse?.account?.name || '', id: tokenResponse?.uniqueId || uuid.v4() },
-        scopes: tokenResponse?.scopes || []
-      }
-    };
-
-    const sessionIndex = this.sessions.findIndex(s => s.session.id === session.session.id);
-    if (sessionIndex > -1) {
-      this.sessions.splice(sessionIndex, 1, session);
-      this.sessionChangeEventEmitter.fire({ added: [], removed: [], changed: [session.session] });
-    } else {
-      this.sessions.push(session);
-      this.sessionChangeEventEmitter.fire({ added: [session.session], removed: [], changed: [] });
-    }
-
-    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
-
-    return session.session;
+    return await (await this.createOrUpdateSession(scopes, sessions.find(() => true))).session;
   }
 
   public async removeSession(sessionId: string): Promise<void> {
@@ -98,37 +84,58 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     }
   }
 
-  private async getToken(scopes: string[]): Promise<msal.AuthenticationResult | null> {
-    const sessions = scopes
-      ? this.sessions.filter(session => session.session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined)
-      : this.sessions;
+  private async createOrUpdateSession(scopes: string[], session?: IAuthSession): Promise<IAuthSession> {
+    let tokenResponse = null;
 
-    if (sessions.length > 0 && sessions[0].result && sessions[0].result.account) {
+    if (session && session.result && session.result.account) {
       try {
-        return await this.client.acquireTokenSilent({
-          account: sessions[0].result.account,
+        tokenResponse = await this.client.acquireTokenSilent({
+          account: session.result.account,
           scopes: scopes
         });
       }
-      catch {
+      catch (error) {
         const authCode = await this.getAuthCode();
 
-        return await this.client.acquireTokenByCode({
+        tokenResponse = await this.client.acquireTokenByCode({
           code: authCode,
           redirectUri: Constants.REDIRECT_URL,
-          scopes: scopes
+          scopes: scopes,
         });
       }
-    }
-    else {
+    } else {
       const authCode = await this.getAuthCode();
 
-      return await this.client.acquireTokenByCode({
+      tokenResponse = await this.client.acquireTokenByCode({
         code: authCode,
         redirectUri: Constants.REDIRECT_URL,
-        scopes: scopes
+        scopes: scopes,
       });
     }
+
+    const newSession = {
+      result: tokenResponse,
+      session: {
+        id: tokenResponse?.uniqueId || uuid.v4(),
+        accessToken: tokenResponse?.accessToken || '',
+        account: { label: tokenResponse?.account?.name || '', id: tokenResponse?.uniqueId || uuid.v4() },
+        scopes: tokenResponse?.scopes || []
+      }
+    };
+
+    const sessionIndex = this.sessions.findIndex(s => s.session.id === newSession.session.id);
+    if (sessionIndex > -1) {
+      this.sessions.splice(sessionIndex, 1, newSession);
+      this.sessionChangeEventEmitter.fire({ added: [], removed: [], changed: [newSession.session] });
+    } else {
+      this.sessions.push(newSession);
+      this.sessionChangeEventEmitter.fire({ added: [newSession.session], removed: [], changed: [] });
+    }
+
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenCache', this.client.getTokenCache().serialize());
+
+    return newSession;
   }
 
   private async getAuthCode(): Promise<string> {

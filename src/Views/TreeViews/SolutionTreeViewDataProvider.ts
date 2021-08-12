@@ -318,7 +318,8 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       [
         'sdkmessageprocessingstepid',
         'name',
-        'description'
+        'description',
+        'statecode'
       ],
       `_plugintypeid_value eq ${pluginId}`
     ));
