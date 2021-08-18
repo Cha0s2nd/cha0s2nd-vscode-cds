@@ -1,6 +1,6 @@
 # Cha0s Data Tools (Dynamics 365)
 
-An extension to assist when working with Dynamics 365 (CRM) and Common Data Services customizations.<br>The idea was to make uploading and publising webresources easier, and eventially manage the entire dev process.
+An extension to assist when working with Dynamics 365 (CRM) and Common Data Services customizations.<br>The idea was to make uploading and publishing web resources easier, and eventually manage the entire dev process.
 
 #### This extension is currently in beta, more features are being added and with it more bugs
 
@@ -8,7 +8,6 @@ Early-bound classes are generated using the [DLaB.Xrm.EarlyBoundGenerator](https
 Support for [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl) has been included, this is currently the only way to do plugin deployments with this extension.
 
 Currently not supported but planned for future:
-* Update Plugin/Workflow Assemblies
 * Generate Early-bounds for javascript & typescript
 
 ### Licence
@@ -53,22 +52,28 @@ The following 3 simple steps should get you running:
 
 ## Extension Settings
 
-* `cha0s2nd-vscode-cds.webresources.folder`: The folder containing the local Solution web resources
-* `cha0s2nd-vscode-cds.earlybound.namespace`: The namespace to use for early-bound classes
-* `cha0s2nd-vscode-cds.earlybound.generateActions`: Should early-bound Actions be generated
-* `cha0s2nd-vscode-cds.earlybound.actionFilename`: The early-bound Actions file name (from workspace root)
-* `cha0s2nd-vscode-cds.earlybound.generateActions`: Should early-bound Entities be generated
-* `cha0s2nd-vscode-cds.earlybound.entityFilename`: The early-bound Entities file name (from workspace root)
-* `cha0s2nd-vscode-cds.earlybound.generateActions`: Should early-bound OptionSets be generated
-* `cha0s2nd-vscode-cds.earlybound.optionSetFilename`: The early-bound OptionSets file name (from workspace root)
-* `cha0s2nd-vscode-cds.earlybound.serviceContextName`: The name of the organization service context for early-bound classes
-* `cha0s2nd-vscode-cds.earlybound.generatorSettings`: The [DLaB.Xrm.EarlyBoundGenerator](https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator) Settings
-* `cha0s2nd-vscode-cds.solution.folder`: The folder containing the local extracted Solution files
-* `cha0s2nd-vscode-cds.solution.zipfolder`: This is a optional setting to specify where the temp zip file will be dumped when importing or exporting.
-* `cha0s2nd-vscode-cds.solution.exportManaged`: Export the Solution as Managed
-* `cha0s2nd-vscode-cds.solution.exportUnmanaged`: Export the Solution as Unmanaged
-* `cha0s2nd-vscode-cds.spkl.enabled`: This enabled the use of [Spkl](https://github.com/scottdurow/SparkleXrm/wiki/spkl)
-* `cha0s2nd-vscode-cds.spkl.useCachedConnections`: This is to enable the use of the build in spkl connections, if disabled it uses the connection cache with the extension login.
+* `cha0s2nd-vscode-cds.spkl.settings`: The path to the spkl.json file to use (leave blank to use workspace settings).
+* `cha0s2nd-vscode-cds.solution.folder`: The folder to extract the Solution to and package the Solution from.
+* `cha0s2nd-vscode-cds.solution.versionIncrement`: Increment the solution version when importing.
+* `cha0s2nd-vscode-cds.solution.zipFile`: The temp file to create for the exported and packaged solution.
+* `cha0s2nd-vscode-cds.solution.exportType`: The type of solution to Export (managed, unmanaged, both).
+* `cha0s2nd-vscode-cds.solution.importType`: The type of solution to Import (managed, unmanaged).
+* `cha0s2nd-vscode-cds.webresource.folders`: The root folders to the Web Resources.
+* `cha0s2nd-vscode-cds.webresource.deleteAction`: Select whether or not Web Resources in the Solution no longer present in folder tree should be Deleted or Removed from the solution.
+* `cha0s2nd-vscode-cds.webresource.processAll`: Process all Web Resource files in the root folders (deselect to specify a list).
+* `cha0s2nd-vscode-cds.plugin.assemblies`: Plugin assemblies to deploy.
+* `cha0s2nd-vscode-cds.workflow.assemblies`: Custom Workflow Activity assemblies to deploy.
+* `cha0s2nd-vscode-cds.earlybound.actions`: List of Actions to generate.
+* `cha0s2nd-vscode-cds.earlybound.entities`: List of Entities to generate.
+* `cha0s2nd-vscode-cds.earlybound.optionSetEnums`: Generate Enums for OptionSet values.
+* `cha0s2nd-vscode-cds.earlybound.globalOptionSetEnums`: Generate Enums for Global OptionSet values.
+* `cha0s2nd-vscode-cds.earlybound.stateEnums`: Generate Enums for States and Statuses values.
+* `cha0s2nd-vscode-cds.earlybound.fileName`: Path for the Earlybound output.
+* `cha0s2nd-vscode-cds.earlybound.namespace`: The Namespace to use when generating entities.
+* `cha0s2nd-vscode-cds.earlybound.serviceContext`: The Name of the service context.
+* `cha0s2nd-vscode-cds.earlybound.oneFilePerType`: Generate a file for each entity.
+* `cha0s2nd-vscode-cds.earlybound.useDLaBGenerator`: Enable the DLaB.Xrm.EarlyBoundGenerator alternatively to the Spkl built-in generator.
+* `cha0s2nd-vscode-cds.earlybound.generatorSettings`: The [DLaB.Xrm.EarlyBoundGenerator](https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator) Settings.
 
 ## Known Issues
 
@@ -76,9 +81,10 @@ Organization Discovery tokens do not always refresh, this seems to be because of
 
 ## Release Notes
 
-### [0.0.13]
-Added
-- Plugin Assembly Registration (no steps yet)
+### [0.1.1]
+Fixed
+- WebResource CodeLens
+- Updated Readme
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 

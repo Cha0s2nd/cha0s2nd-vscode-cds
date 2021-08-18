@@ -1,5 +1,5 @@
 export default interface IWebResource {
-  displayName: string;
-  uniqueName: string;
+  displayname: string;
+  uniquename: string;
   file: string;
 }

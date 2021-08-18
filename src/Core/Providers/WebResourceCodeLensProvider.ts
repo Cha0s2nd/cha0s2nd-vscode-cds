@@ -9,10 +9,10 @@ export class WebResourceCodeLensProvider implements vscode.CodeLensProvider {
 
     switch (codeLens.command?.command) {
       case 'cha0s2nd-vscode-cds.webresource.setName':
-        codeLens.command.title = `Unique Name${metadata[0].uniqueName ? ': ' + metadata[0].uniqueName : ''}`;
+        codeLens.command.title = `Unique Name${metadata[0].uniquename ? ': ' + metadata[0].uniquename : ''}`;
         break;
       case 'cha0s2nd-vscode-cds.webresource.setDisplayName':
-        codeLens.command.title = `Display Name${metadata[0].uniqueName ? ': ' + metadata[0].displayName : ''}`;
+        codeLens.command.title = `Display Name${metadata[0].uniquename ? ': ' + metadata[0].displayname : ''}`;
         break;
     }
 
@@ -28,12 +28,12 @@ export class WebResourceCodeLensProvider implements vscode.CodeLensProvider {
         command: ''
       }),
       new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
-        title: `Unique Name${metadata[0].uniqueName ? ': ' + metadata[0].uniqueName : ''}`,
+        title: `Unique Name${metadata[0].uniquename ? ': ' + metadata[0].uniquename : ''}`,
         command: 'cha0s2nd-vscode-cds.webresource.setName',
         arguments: [document.uri]
       }),
       new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {
-        title: `Display Name${metadata[0].displayName ? ': ' + metadata[0].displayName : ''}`,
+        title: `Display Name${metadata[0].displayname ? ': ' + metadata[0].displayname : ''}`,
         command: 'cha0s2nd-vscode-cds.webresource.setDisplayName',
         arguments: [document.uri]
       })

@@ -28,11 +28,11 @@ export default class WebResourceManager {
 
     const name = await vscode.window.showInputBox({
       placeHolder: 'Display Name',
-      value: metadata[0].displayName
+      value: metadata[0].displayname
     });
 
     if (name !== undefined) {
-      metadata[0].displayName = name;
+      metadata[0].displayname = name;
       this.setWebResourceDetails(metadata);
     }
   }
@@ -42,11 +42,11 @@ export default class WebResourceManager {
 
     const name = await vscode.window.showInputBox({
       placeHolder: 'Unique Name',
-      value: metadata[0].uniqueName
+      value: metadata[0].uniquename
     });
 
     if (name !== undefined) {
-      metadata[0].uniqueName = name;
+      metadata[0].uniquename = name;
       this.setWebResourceDetails(metadata);
     }
   }
@@ -77,13 +77,13 @@ export default class WebResourceManager {
       const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.fsPath.startsWith(vscode.Uri.joinPath(root, resourceFolder.root).fsPath));
 
       if (webResourceFolder) {
-        let webResource = webResourceFolder.files.find(wr => wr.file === resource.fsPath.replace(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath + '\\', ''));
+        let webResource = webResourceFolder.files.find(wr => wr.file === path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath));
 
         if (!webResource) {
           webResource = {
-            displayName: path.basename(resource.fsPath),
-            uniqueName: resource.path.replace(vscode.Uri.joinPath(root, webResourceFolder.root).path + '/', ''),
-            file: resource.fsPath.replace(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath + '\\', '')
+            displayname: path.basename(resource.fsPath),
+            uniquename: path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).path, resource.path),
+            file: path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath)
           };
 
           webResources.push(webResource);
@@ -145,7 +145,7 @@ export default class WebResourceManager {
     }, async (progress, token) => {
       if (webResources.length > 0) {
         progress.report({
-          message: `Uploading ${webResources[0].displayName}`,
+          message: `Uploading ${webResources[0].displayname}`,
         });
 
         this.createOrUpdateWebResource(webResources[0]);
@@ -170,7 +170,7 @@ export default class WebResourceManager {
       for (let folder of webResourceMeta) {
         for (let webResource of folder.files) {
           progress.report({
-            message: `Uploading ${webResource.displayName}`,
+            message: `Uploading ${webResource.displayname}`,
             increment: count += 100 / total
           });
 
@@ -185,7 +185,7 @@ export default class WebResourceManager {
       const resources = await WebApi.retrieveMultiple(
         'webresourceset',
         ['webresourceid'],
-        `name eq '${webResource.uniqueName}'`,
+        `name eq '${webResource.uniquename}'`,
         1
       );
 
@@ -243,8 +243,8 @@ export default class WebResourceManager {
 
       if (resources.length > 0) {
         response = await WebApi.patch(`webresourceset(${resources[0].webresourceid})`, {
-          name: webResource.uniqueName,
-          displayname: webResource.displayName,
+          name: webResource.uniquename,
+          displayname: webResource.displayname,
           webresourcetype: webResourceType,
           content: content
         });
@@ -253,8 +253,8 @@ export default class WebResourceManager {
         const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
         response = await WebApi.post('webresourceset', {
-          name: webResource.uniqueName,
-          displayname: webResource.displayName,
+          name: webResource.uniquename,
+          displayname: webResource.displayname,
           webresourcetype: webResourceType,
           solutionid: solution?.solutionId,
           content: content
@@ -277,7 +277,7 @@ export default class WebResourceManager {
       });
     }
     catch (error) {
-      vscode.window.showErrorMessage("Failed to deploy " + webResource.displayName + ": " + error);
+      vscode.window.showErrorMessage("Failed to deploy " + webResource.displayname + ": " + error);
     }
   }
 }

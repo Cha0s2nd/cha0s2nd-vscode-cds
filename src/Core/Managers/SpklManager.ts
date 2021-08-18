@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as Constants from "../Constants/Constants";
 import * as child_process from 'child_process';
 import * as jwt_decode from "jwt-decode";
+import * as path from "path";
 import IOrganization from "../../Entities/IOrganization";
 import { SpklActions } from "../Enums/SpklActions";
 import ISpklSettings from "../../Entities/ISpklSettings";
@@ -204,12 +205,16 @@ export default class SpklManager {
     const assemblyFile = await this.pickAssembly();
 
     if (assemblyFile) {
-      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
+      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+      const tempFolder = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'temp');
+      const fileName = path.basename(assemblyFile.fsPath);
+
+      vscode.workspace.fs.copy(assemblyFile, vscode.Uri.joinPath(tempFolder, fileName));
 
       const settings: ISpklSettings = {
         plugins: [{
-          assemblypath: assemblyFile.fsPath,
-          solution: solution?.uniqueName || 'Default',
+          assemblypath: fileName,
+          solution: 'Default',
           profile: 'default'
         }]
       };
