@@ -1,5 +1,5 @@
 export * from "./IAttribute";
-export * from "./IAuthToken";
+export * from "./IAuthSession";
 export * from "./IDisplayName";
 export * from "./IEntityMetadata";
 export * from "./ILabel";
@@ -13,4 +13,10 @@ export * from "./ISDKMessageProcessingStep";
 export * from "./ISDKMessageProcessingStepImage";
 export * from "./ISolution";
 export * from "./ISolutionComponent";
+export * from "./ISpklEarlyBoundType";
+export * from "./ISpklMap";
+export * from "./ISpklPlugin";
+export * from "./ISpklSettings";
+export * from "./ISpklSolution";
+export * from "./ISpklWebResource";
 export * from "./IWebResource";

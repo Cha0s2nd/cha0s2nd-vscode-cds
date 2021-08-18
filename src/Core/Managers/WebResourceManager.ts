@@ -5,7 +5,8 @@ import ISolution from '../../Entities/ISolution';
 import WebApi from '../Xrm/WebApi';
 import { SolutionComponentTypes } from '../Enums/SolutionComponentTypes';
 import { WebResourceTypes } from '../Enums/WebResourceTypes';
-import ISolutionComponent from '../../Entities/ISolutionComponent';
+import ISpklSettings from '../../Entities/ISpklSettings';
+import ISpklWebResource from '../../Entities/ISpklWebResource';
 
 export default class WebResourceManager {
   private context: vscode.ExtensionContext;
@@ -15,17 +16,15 @@ export default class WebResourceManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.getDetails', async (resources: vscode.Uri[]) => { return this.getWebResourceDetails(resources); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.getMetadata', async (resources: vscode.Uri[]) => { return this.getWebResourceMetadata(resources); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.setName', async (resource: vscode.Uri) => { return this.setWebResourceName(resource); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.setDisplayName', async (resource: vscode.Uri) => { return this.setWebResourceDisplayName(resource); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.setDescription', async (resource: vscode.Uri) => { return this.setWebResourceDescription(resource); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.deploy', async (resource: vscode.Uri) => { return this.deployWebResource(resource); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.deployAll', async () => { return this.deployAllWebResources(); }));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.webresource.download', async () => { return this.downloadAndMapWebResources(); }));
   }
 
   private async setWebResourceDisplayName(resource: vscode.Uri) {
-    let metadata = await this.getWebResourceDetails([resource]);
+    let metadata = await this.getWebResourceMetadata([resource]);
 
     const name = await vscode.window.showInputBox({
       placeHolder: 'Display Name',
@@ -39,7 +38,7 @@ export default class WebResourceManager {
   }
 
   private async setWebResourceName(resource: vscode.Uri) {
-    let metadata = await this.getWebResourceDetails([resource]);
+    let metadata = await this.getWebResourceMetadata([resource]);
 
     const name = await vscode.window.showInputBox({
       placeHolder: 'Unique Name',
@@ -52,191 +51,93 @@ export default class WebResourceManager {
     }
   }
 
-  private async setWebResourceDescription(resource: vscode.Uri) {
-    let metadata = await this.getWebResourceDetails([resource]);
+  private async getWebResourceRoot(): Promise<vscode.Uri> {
+    return vscode.Uri.joinPath(vscode.Uri.parse(await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.spkl.setting.getPath') || ''), '..');
+  }
 
-    const desc = await vscode.window.showInputBox({
-      placeHolder: 'Description',
-      value: metadata[0].description
-    });
+  private async getAllWebResourceMetadata(): Promise<ISpklWebResource[]> {
+    const settings = await vscode.commands.executeCommand<ISpklSettings>('cha0s2nd-vscode-cds.spkl.setting.get');
+    return settings?.webresources || [];
+  }
 
-    if (desc !== undefined) {
-      metadata[0].description = desc;
-      this.setWebResourceDetails(metadata);
+  private async saveWebResourceMetadata(metadata: ISpklWebResource[]) {
+    const settings = await vscode.commands.executeCommand<ISpklSettings>('cha0s2nd-vscode-cds.spkl.setting.get');
+    if (settings) {
+      settings.webresources = metadata;
+      await vscode.commands.executeCommand('cha0s2nd-vscode-cds.spkl.setting.update', settings);
     }
   }
 
-  private async getWebResourceMetadata(): Promise<IWebResource[]> {
-    try {
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'cds-webresources.json');
-      const document = await vscode.workspace.openTextDocument(file.path);
-      return JSON.parse(document.getText());
-    }
-    catch {
-      return [];
-    }
-  }
-
-  private async saveWebResourceMetadata(metadata: IWebResource[]) {
-    const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'cds-webresources.json');
-
-    var buffer = Buffer.from(JSON.stringify(metadata, null, 2), 'utf-8');
-    var array = new Uint8Array(buffer);
-    await vscode.workspace.fs.writeFile(file, array);
-  }
-
-  private async getWebResourceDetails(resources: vscode.Uri[]): Promise<IWebResource[]> {
+  private async getWebResourceMetadata(resources: vscode.Uri[]): Promise<IWebResource[]> {
     const webResources = [];
-    const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const webResourceFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder');
-    const webResourceMeta = await this.getWebResourceMetadata();
+    const webResourceMeta = await this.getAllWebResourceMetadata();
 
     for (let resource of resources) {
-      let webResource = webResourceMeta.find((file: IWebResource) => vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '', file.file).fsPath === resource.fsPath);
+      const root = await this.getWebResourceRoot();
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.fsPath.startsWith(vscode.Uri.joinPath(root, resourceFolder.root).fsPath));
 
-      if (!webResource && resource.path.startsWith(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').path)) {
-        webResource = {
-          description: '',
-          displayName: path.basename(resource.fsPath),
-          uniqueName: resource.path.replace(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').path + '/' || '', ''),
-          file: resource.fsPath.replace(vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '').fsPath + '\\' || '', '')
-        };
+      if (webResourceFolder) {
+        let webResource = webResourceFolder.files.find(wr => wr.file === resource.fsPath.replace(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath + '\\', ''));
 
-        webResources.push(webResource);
-        webResourceMeta.push(webResource);
+        if (!webResource) {
+          webResource = {
+            displayName: path.basename(resource.fsPath),
+            uniqueName: resource.path.replace(vscode.Uri.joinPath(root, webResourceFolder.root).path + '/', ''),
+            file: resource.fsPath.replace(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath + '\\', '')
+          };
 
-        this.saveWebResourceMetadata(webResourceMeta);
-      }
-      else if (webResource) {
-        webResources.push(webResource);
+          webResources.push(webResource);
+          webResourceFolder.files.push(webResource);
+
+          this.saveWebResourceMetadata(webResourceMeta);
+        }
+        else if (webResource) {
+          webResources.push(webResource);
+        }
       }
     }
 
     return webResources;
   }
 
-  private async setWebResourceDetails(resources: IWebResource[]): Promise<void> {
-    const webResourceMeta = await this.getWebResourceMetadata();
+  private async mapResourcesToFiles(resources: IWebResource[]): Promise<vscode.Uri[]> {
+    const webResourceMeta = await this.getAllWebResourceMetadata();
+    const files = new Array<vscode.Uri>();
 
     for (let resource of resources) {
-      const index = webResourceMeta.findIndex((file: IWebResource) => file.file === resource.file);
+      const root = await this.getWebResourceRoot();
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file === resource.file));
 
-      if (index > -1) {
-        webResourceMeta.splice(index, 1, resource);
+      if (webResourceFolder) {
+        files.push(vscode.Uri.joinPath(root, webResourceFolder.root, resource.file));
       }
-      else {
-        webResourceMeta.push(resource);
+    }
+
+    return files;
+  }
+
+  private async setWebResourceDetails(resources: IWebResource[]): Promise<void> {
+    const webResourceMeta = await this.getAllWebResourceMetadata();
+
+    for (let resource of resources) {
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.file.startsWith(resourceFolder.root));
+      if (webResourceFolder) {
+        const index = webResourceFolder.files.findIndex((file: IWebResource) => file.file === resource.file);
+
+        if (index && index > -1) {
+          webResourceFolder.files.splice(index, 1, resource);
+        }
+        else {
+          webResourceFolder.files.push(resource);
+        }
       }
     }
 
     this.saveWebResourceMetadata(webResourceMeta);
   }
 
-  private async downloadAndMapWebResources(): Promise<void> {
-    try {
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const webResourceFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder');
-      const webResourceMeta = await this.getWebResourceMetadata();
-      const webResources = new Array<IWebResource>();
-
-      const resources = await vscode.window.withProgress({
-        location: vscode.ProgressLocation.Notification,
-        cancellable: false,
-        title: "Retrieving Web Resources..."
-      }, (progress) => this.getAllWebResourcesFromSolution());
-
-      const resourceDetails = await vscode.window.withProgress({
-        location: vscode.ProgressLocation.Notification,
-        cancellable: false,
-        title: "Downloading Web Resource content..."
-      }, async (progress, token) => {
-        let details: any[] = [];
-        const batchSize = 10;
-        for (let i = 0; i < resources.length; i += batchSize) {
-          if (token.isCancellationRequested) {
-            return [];
-          }
-
-          details = details.concat(await this.getWebResourceDetailsFromSolution(resources.slice(i, i + batchSize)));
-
-          progress.report({
-            message: `Completed: ${i}/${resources.length}`
-          });
-        }
-
-        return details;
-      });
-
-      let count = 0;
-
-      await vscode.window.withProgress({
-        location: vscode.ProgressLocation.Notification,
-        cancellable: true,
-        title: "Creating local files..."
-      }, async (progress, token) => {
-        for (let resource of resourceDetails) {
-          if (token.isCancellationRequested) {
-            return;
-          }
-
-          progress.report({
-            message: resource.name,
-            increment: count += 100 / resources.length,
-          });
-
-          const fileUri = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '', resource.name);
-
-          var buffer = Buffer.from(resource.content, 'base64');
-          var array = new Uint8Array(buffer);
-          await vscode.workspace.fs.writeFile(fileUri, array);
-
-          webResources.push({
-            description: resource.description,
-            displayName: resource.displayname,
-            file: resource.name,
-            uniqueName: resource.name
-          });
-        }
-      });
-
-      this.setWebResourceDetails(webResources);
-    }
-    catch (error) {
-      vscode.window.showErrorMessage(error);
-    }
-  }
-
-  private async getAllWebResourcesFromSolution(): Promise<string[]> {
-    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
-
-    return await WebApi.retrieveMultiplePaged(
-      'solutioncomponents',
-      [
-        'objectid'
-      ],
-      `componenttype eq ${SolutionComponentTypes.WebResource} and _solutionid_value eq '${solution?.solutionId}'`
-    ).then(response => response.map((sc: ISolutionComponent) => sc.objectid));
-  }
-
-  private async getWebResourceDetailsFromSolution(webresourceIds: string[]): Promise<any[]> {
-    return await WebApi.retrieveMultiplePaged(
-      'webresourceset',
-      [
-        'webresourceid',
-        'name',
-        'displayname',
-        'description',
-        'webresourcetype',
-        'content',
-      ],
-      `Microsoft.Dynamics.CRM.In(PropertyName='webresourceid',PropertyValues=['${webresourceIds.join("','")}'])`
-    );
-  }
-
   private async deployWebResource(resource: vscode.Uri) {
-    const webResources = await this.getWebResourceDetails([resource]);
+    const webResources = await this.getWebResourceMetadata([resource]);
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
       cancellable: true,
@@ -253,7 +154,12 @@ export default class WebResourceManager {
   }
 
   private async deployAllWebResources() {
-    const webResourceMeta = await this.getWebResourceMetadata();
+    const webResourceMeta = await this.getAllWebResourceMetadata();
+
+    let total = 0;
+    for (let meta of webResourceMeta) {
+      total += meta.files.length;
+    }
 
     await vscode.window.withProgress({
       location: vscode.ProgressLocation.Notification,
@@ -261,13 +167,15 @@ export default class WebResourceManager {
       title: "Deploying Web Resources..."
     }, async (progress, token) => {
       let count = 0;
-      for (let webResource of webResourceMeta) {
-        progress.report({
-          message: `Uploading ${webResource.displayName}`,
-          increment: count += 100 / webResourceMeta.length,
-        });
+      for (let folder of webResourceMeta) {
+        for (let webResource of folder.files) {
+          progress.report({
+            message: `Uploading ${webResource.displayName}`,
+            increment: count += 100 / total
+          });
 
-        this.createOrUpdateWebResource(webResource);
+          this.createOrUpdateWebResource(webResource);
+        }
       }
     });
   }
@@ -327,11 +235,8 @@ export default class WebResourceManager {
           break;
       }
 
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const webResourceFolder = vscode.workspace.getConfiguration().get<string>('cha0s2nd-vscode-cds.webresources.folder');
-
-      const file = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), webResourceFolder || '', webResource.file);
-      const array = await vscode.workspace.fs.readFile(file);
+      const files = await this.mapResourcesToFiles([webResource]);
+      const array = await vscode.workspace.fs.readFile(files[0]);
       const content = Buffer.from(array).toString('base64');
 
       let response = null;
@@ -340,7 +245,6 @@ export default class WebResourceManager {
         response = await WebApi.patch(`webresourceset(${resources[0].webresourceid})`, {
           name: webResource.uniqueName,
           displayname: webResource.displayName,
-          description: webResource.description,
           webresourcetype: webResourceType,
           content: content
         });
@@ -351,7 +255,6 @@ export default class WebResourceManager {
         response = await WebApi.post('webresourceset', {
           name: webResource.uniqueName,
           displayname: webResource.displayName,
-          description: webResource.description,
           webresourcetype: webResourceType,
           solutionid: solution?.solutionId,
           content: content

@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import * as rp from 'request-promise';
+import * as Constants from '../../Core/Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
-import IAuthToken from '../../Entities/IAuthToken';
+import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class WebApi {
   public static async retrieve(entitySet: string, id: string, columnSet?: string[] | null, filter?: string | null, additionalQuery?: string | null) {
@@ -123,7 +124,7 @@ export default class WebApi {
         'Prefer': 'odata.include-annotations="*", return=representation',
         'OData-Version': '4.0',
         'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + (await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token
+        'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation'], { createIfNone: true })).accessToken
       },
       json: true,
       method: method,

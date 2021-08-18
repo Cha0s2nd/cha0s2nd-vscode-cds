@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "sdk-wrapper": {
-      "commandName": "Project",
-      "commandLineArgs": "pluginassembly \"c:\\Users\\FRossouw\\Source\\Repos\\BES_CRM\\Source\\BES.D365\\Plugins\\bin\\Debug\\net462\\BES.D365.Plugins.dll\" -c \"AuthType=OAuth;Url=https://britisheng-d02.crm4.dynamics.com;ClientId=8baff5d8-eb25-4ea5-bcf9-b667499e2226;RedirectUri=https://cha0s2nd.neocities.org/vscode/extensions/cds/auth.html;Username=singular.frederik@briteng.co.uk;TokenCacheStorePath=..\\..\\token_cache\" -s \"BES\""
-    }
-  }
-}

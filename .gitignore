@@ -2,6 +2,7 @@ node_modules
 **/.vs/**
 .vscode-test/
 *.vsix
+auth_cache
 token_cache
 **/bin/**
 **/obj/**

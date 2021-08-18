@@ -14,5 +14,6 @@ vsc-extension-quickstart.md
 **/webpack.config.js
 **/*.map
 **/*.ts
+auth_cache
 token_cache
 node_modules

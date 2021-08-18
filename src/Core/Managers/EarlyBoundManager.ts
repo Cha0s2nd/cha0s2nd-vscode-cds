@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import * as jwt_decode from 'jwt-decode';
 import * as child_process from 'child_process';
-import * as path from 'path';
 import * as xml2js from 'xml2js';
 import * as Constants from '../Constants/Constants';
+import { EarlyboundActions } from '../Enums/EarlyboundActions';
 import IOrganization from '../../Entities/IOrganization';
-import IAuthToken from '../../Entities/IAuthToken';
+import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class EarlyBoundManager {
   private context: vscode.ExtensionContext;
@@ -20,139 +20,155 @@ export default class EarlyBoundManager {
 
   private async generateEarlybounds() {
     const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound');
+    let configPath = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.earlybound').get<string>('generatorSettings');
 
-    const actionParams = [
-      `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('actionFilename') || '')}`,
-      `/generateActions`,
-      `/codecustomization:DLaB.CrmSvcUtilExtensions.Action.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
-      `/codegenerationservice:DLaB.CrmSvcUtilExtensions.Action.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
-      `/codewriterfilter:DLaB.CrmSvcUtilExtensions.Action.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
-      `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.BaseMetadataProviderService,DLaB.CrmSvcUtilExtensions`,
-    ];
+    if (configPath) {
+      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+      const configFile = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), configPath);
+      const array = await vscode.workspace.fs.readFile(configFile);
+      const buffer = Buffer.from(array);
+      const config = await xml2js.parseStringPromise(buffer.toString());
 
-    const entityParams = [
-      `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('entityFilename') || '')}`,
-      `/servicecontextname:${config.get<string>('serviceContextName') || 'CrmServiceContext'}`,
-      `/codecustomization:DLaB.CrmSvcUtilExtensions.Entity.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
-      `/codegenerationservice:DLaB.CrmSvcUtilExtensions.Entity.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
-      `/codewriterfilter:DLaB.CrmSvcUtilExtensions.Entity.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
-      `/namingservice:DLaB.CrmSvcUtilExtensions.NamingService,DLaB.CrmSvcUtilExtensions`,
-      `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.Entity.MetadataProviderService,DLaB.CrmSvcUtilExtensions`,
-    ];
+      let optionSetArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'OptionSets');
+      let actionArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Actions');
+      let entityArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Entities');
+      let allArgs = config.Config.UserArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'All');
 
-    const optionSetParams = [
-      `/out:${path.join(workspaceFolder?.uri.fsPath || '', config.get<string>('optionSetFilename') || '')}`,
-      `/codecustomization:DLaB.CrmSvcUtilExtensions.OptionSet.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions`,
-      `/codegenerationservice:DLaB.CrmSvcUtilExtensions.OptionSet.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions`,
-      `/codewriterfilter:DLaB.CrmSvcUtilExtensions.OptionSet.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions`,
-      `/namingservice:DLaB.CrmSvcUtilExtensions.NamingService,DLaB.CrmSvcUtilExtensions`,
-      `/metadataproviderservice:DLaB.CrmSvcUtilExtensions.BaseMetadataProviderService,DLaB.CrmSvcUtilExtensions`,
-    ];
+      optionSetArgs = optionSetArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'OptionSets'));
+      actionArgs = actionArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Actions'));
+      entityArgs = entityArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'Entities'));
+      allArgs = allArgs.concat(config.Config.ExtensionArguments[0].Argument.filter((arg: any) => arg.SettingType[0] === 'All'));
 
-    if (config.get<string>('namespace')) {
-      const namespace = `/namespace:${config.get<string>('namespace')}`;
+      const actionParams = actionArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${vscode.Uri.joinPath(configFile, '..', arg.Value[0]).fsPath}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const entityParams = entityArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${vscode.Uri.joinPath(configFile, '..', arg.Value[0]).fsPath}` : `/${arg.Name[0]}:${arg.Value[0]}`);
+      const optionSetParams = optionSetArgs.map((arg: any) => arg.Name[0] === 'out' ? `/${arg.Name[0]}:${vscode.Uri.joinPath(configFile, '..', arg.Value[0]).fsPath}` : `/${arg.Name[0]}:${arg.Value[0]}`);
 
-      actionParams.unshift(namespace);
-      entityParams.unshift(namespace);
-      optionSetParams.unshift(namespace);
-    }
+      for (var arg of allArgs) {
+        const param = `/${arg.Name[0]}:${arg.Value[0]}`;
 
-    await this.injectSettings(config, actionParams, entityParams, optionSetParams);
+        actionParams.unshift(param);
+        entityParams.unshift(param);
+        optionSetParams.unshift(param);
+      }
 
-    if (config.get<boolean>('generateActions')) {
-      await this.executeCrmSvcUtils(...actionParams);
-    }
+      await this.injectSettings(config.Config.ExtensionConfig[0], actionParams, entityParams, optionSetParams);
 
-    if (config.get<boolean>('generateEntities')) {
-      await this.executeCrmSvcUtils(...entityParams);
-    }
+      await this.executeCrmSvcUtils(EarlyboundActions.Entities, ...entityParams);
+      await this.executeCrmSvcUtils(EarlyboundActions.OptionSets, ...optionSetParams);
 
-    if (config.get<boolean>('generateOptionSets')) {
-      await this.executeCrmSvcUtils(...optionSetParams);
+      if (actionArgs.find((arg: any) => arg.Name[0] === 'generateActions')?.Value[0]) {
+        await this.executeCrmSvcUtils(EarlyboundActions.Actions, ...actionParams);
+      }
     }
   }
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode.default<any>((await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation']))?.accessToken || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
   }
 
-  private async injectSettings(config: vscode.WorkspaceConfiguration, actionParams: string[], entityParams: string[], optionSetParams: string[]) {
-    const configFile = await vscode.Uri.joinPath(vscode.Uri.file(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFile') || ''), '..', 'CrmSvcUtil.exe.config');
+  private async injectSettings(config: any, actionParams: string[], entityParams: string[], optionSetParams: string[]) {
+    const dlabFile = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.dlabFile');
 
-    const array = await vscode.workspace.fs.readFile(configFile);
-    var buffer = Buffer.from(array);
+    if (dlabFile) {
+      const configFile = await vscode.Uri.joinPath(dlabFile, '..', 'CrmSvcUtil.exe.config');
 
-    const configXml = await xml2js.parseStringPromise(buffer.toString());
-    const settings = config.get<any>('generatorSettings') || {};
+      const array = await vscode.workspace.fs.readFile(configFile);
+      const buffer = Buffer.from(array);
 
-    configXml.configuration.appSettings = [{ add: [] }];
+      const configXml = await xml2js.parseStringPromise(buffer.toString());
 
-    // Actions don't generate without this
-    configXml.configuration.appSettings[0].add.push({
-      "$": {
-        "key": "ActionCommandLineText",
-        "value": `.\\CrmSvcUtils.exe ${actionParams.join(' ')}`
-      }
-    });
+      configXml.configuration.appSettings = [{ add: [] }];
 
-    configXml.configuration.appSettings[0].add.push({
-      "$": {
-        "key": "EntityCommandLineText",
-        "value": `.\\CrmSvcUtils.exe ${entityParams.join(' ')}`
-      }
-    });
-
-    configXml.configuration.appSettings[0].add.push({
-      "$": {
-        "key": "OptionSetCommandLineText",
-        "value": `.\\CrmSvcUtils.exe ${optionSetParams.join(' ')}`
-      }
-    });
-
-    for (let setting in settings) {
-      let value = settings[setting];
-
-      if (value instanceof Boolean) {
-        value = value ? 'True' : 'False';
-      }
-
-      if (value instanceof Array) {
-        value = value.join('|');
-      }
+      // Actions don't generate without this
+      configXml.configuration.appSettings[0].add.push({
+        "$": {
+          "key": "ActionCommandLineText",
+          "value": `.\\CrmSvcUtils.exe ${actionParams.join(' ')}`
+        }
+      });
 
       configXml.configuration.appSettings[0].add.push({
         "$": {
-          "key": setting,
-          "value": value
+          "key": "EntityCommandLineText",
+          "value": `.\\CrmSvcUtils.exe ${entityParams.join(' ')}`
         }
       });
+
+      configXml.configuration.appSettings[0].add.push({
+        "$": {
+          "key": "OptionSetCommandLineText",
+          "value": `.\\CrmSvcUtils.exe ${optionSetParams.join(' ')}`
+        }
+      });
+
+      for (let setting in config) {
+        let value = config[setting][0];
+
+        if (value instanceof Boolean) {
+          value = value ? 'True' : 'False';
+        }
+
+        if (value instanceof Array) {
+          value = value.map(v => v.trim()).join('|');
+        }
+
+        if (value && value.$ && value.$['xsi:nil']) {
+          value = null;
+        }
+
+        while (value && value.toString().indexOf('\r') >= 0) {
+          value = value.replace('\r', '');
+        }
+
+        while (value && value.toString().indexOf('\n') >= 0) {
+          value = value.replace('\n', '');
+        }
+
+        configXml.configuration.appSettings[0].add.push({
+          "$": {
+            "key": setting,
+            "value": value
+          }
+        });
+      }
+
+      const builder = new xml2js.Builder();
+      var xml = builder.buildObject(configXml);
+
+      const newBuffer = Buffer.from(xml, 'utf-8');
+      const newArray = new Uint8Array(newBuffer);
+      vscode.workspace.fs.writeFile(configFile, newArray);
     }
-
-    const builder = new xml2js.Builder();
-    var xml = builder.buildObject(configXml);
-
-    const newBuffer = Buffer.from(xml, 'utf-8');
-    const newArray = new Uint8Array(newBuffer);
-    vscode.workspace.fs.writeFile(configFile, newArray);
   }
 
-  private async executeCrmSvcUtils(...params: string[]): Promise<void> {
+  private async executeCrmSvcUtils(action: EarlyboundActions, ...params: string[]): Promise<void> {
     return new Promise(async (resolve, reject) => {
 
-      const crmSvcUtils = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.dlabFile');
+      const crmSvcUtils = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.dlabFile');
 
       if (crmSvcUtils) {
-        const output = vscode.window.createOutputChannel('Cha0s Data Tools: Early-bound');
+        let title = '';
+
+        switch (action) {
+          case EarlyboundActions.Actions:
+            title = 'Cha0s Data Tools: Early-bound (Actions)';
+            break;
+          case EarlyboundActions.Entities:
+            title = 'Cha0s Data Tools: Early-bound (Entities)';
+            break;
+          case EarlyboundActions.OptionSets:
+            title = 'Cha0s Data Tools: Early-bound (OptionSets)';
+            break;
+        }
+
+        const output = vscode.window.createOutputChannel(title);
         output.show();
 
         params.unshift(`/connectionstring:${await this.getConnection()}`);
 
-        output.appendLine(`${crmSvcUtils} ${params.join(' ')}`);
-
-        const process = child_process.spawn(crmSvcUtils, params);
+        const process = child_process.spawn(crmSvcUtils.fsPath, params);
 
         process.stdout.on('data', async (data) => {
           output.append(data.toString());
@@ -166,7 +182,7 @@ export default class EarlyBoundManager {
           output.append(`CrmSvcUtil exited with code '${code}'`);
 
           if (code === 0) {
-            output.dispose();
+            // output.dispose();
             resolve();
           }
           else {

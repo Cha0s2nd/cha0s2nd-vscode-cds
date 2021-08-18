@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.0.13",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.54.0"
   },
@@ -31,12 +31,20 @@
   ],
   "activationEvents": [
     "workspaceContains:**/spkl.json",
-    "workspaceContains:**/CrmSvcUtils.exe",
-    "workspaceContains:**/cds-*.json",
     "onCommand:cha0s2nd-vscode-cds.auth.login"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsWelcome": [
+      {
+        "view": "solution",
+        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.auth.login)"
+      },
+      {
+        "view": "defaultSolution",
+        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.auth.login)"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -75,6 +83,18 @@
           "group": "navigation"
         }
       ],
+      "view/item/context": [
+        {
+          "command": "cha0s2nd-vscode-cds.spkl.assembly.file",
+          "when": "viewItem == pluginAssembly",
+          "group": "inline"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
+          "group": "z_commands",
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
+        }
+      ],
       "commandPalette": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
@@ -88,47 +108,32 @@
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         },
         {
-          "command": "cha0s2nd-vscode-cds.webresource.download",
-          "group": "z_commands",
-          "when": "resourceFilename == cds-webresources.json"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
+          "command": "cha0s2nd-vscode-cds.spkl.earlybound.generate",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.download",
+          "command": "cha0s2nd-vscode-cds.spkl.webresource.download",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
+          "command": "cha0s2nd-vscode-cds.spkl.webresource.get",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
+          "command": "cha0s2nd-vscode-cds.spkl.plugin.instrument",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.plugins.deploy",
+          "command": "cha0s2nd-vscode-cds.spkl.plugin.deploy",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
         {
-          "command": "cha0s2nd-vscode-cds.spkl.workflows.deploy",
+          "command": "cha0s2nd-vscode-cds.spkl.workflow.deploy",
           "group": "z_commands",
           "when": "resourceFilename == spkl.json"
         },
@@ -155,33 +160,11 @@
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "editor/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deployAll",
           "group": "z_commands",
           "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
@@ -191,175 +174,197 @@
       {
         "title": "Cha0s Data Tools",
         "properties": {
-          "cha0s2nd-vscode-cds.webresources.folder": {
-            "title": "Web Resources Folder",
-            "description": "The folder path to the Web Resources",
-            "type": "string",
-            "default": "WebResources",
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.namespace": {
-            "title": "Early-bound Namespace",
-            "description": "The Namespace to use for early-bound entities",
+          "cha0s2nd-vscode-cds.spkl.settings": {
+            "title": "Path to spkl.json",
+            "description": "The path to the spkl.json file to use (leave blank to use workspace settings)",
             "type": "string",
             "default": null,
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.generateActions": {
-            "title": "Early-bound Generate Actions",
-            "description": "Generate request and response classes for custom actions",
-            "type": "boolean",
-            "default": true,
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.actionFilename": {
-            "title": "Early-bound Action Filename",
-            "description": "The Name of the output file for early-bound actions",
-            "type": "string",
-            "default": "Actions.cs",
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.generateEntities": {
-            "title": "Early-bound Generate Entities",
-            "description": "Generate classes for custom entities",
-            "type": "boolean",
-            "default": true,
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.entityFilename": {
-            "title": "Early-bound Entity Filename",
-            "description": "The Name of the output file for early-bound entities",
-            "type": "string",
-            "default": "Entities.cs",
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.generateOptionSets": {
-            "title": "Early-bound Generate OptionSets",
-            "description": "Generate enums for custom option sets",
-            "type": "boolean",
-            "default": true,
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.optionSetFilename": {
-            "title": "Early-bound OptionSet Filename",
-            "description": "The Name of the output file for early-bound option sets",
-            "type": "string",
-            "default": "OptionSets.cs",
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.serviceContextName": {
-            "title": "Early-bound Service Context Name",
-            "description": "The Name of the output file for early-bound option sets",
-            "type": "string",
-            "default": "CrmServiceContext",
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.earlybound.generatorSettings": {
-            "title": "The DLaB.Xrm.EarlyBoundGenerator Settings",
-            "description": "The settings usually contained in the DLaB.Xrm.EarlyBoundGenerator xml file.",
-            "type": "object",
-            "default": {
-              "MaxCrmConnectionTimeOutMinutes": 20,
-              "ActionPrefixesWhitelist": [],
-              "ActionPrefixesToSkip": [],
-              "ActionsWhitelist": [],
-              "ActionsToSkip": [
-                "msdyn_getsifeatureconfiguration",
-                "msdyn_GetSIFeatureConfiguration",
-                "retrieveappsetting",
-                "retrieveappsettinglist",
-                "saveappsetting"
-              ],
-              "AddDebuggerNonUserCode": true,
-              "AddNewFilesToProject": true,
-              "AddOptionSetMetadataAttribute": true,
-              "CreateOneFilePerAction": false,
-              "CreateOneFilePerEntity": false,
-              "CreateOneFilePerOptionSet": false,
-              "DeleteFilesFromOutputFolders": false,
-              "EntityAttributeSpecifiedNames": null,
-              "EntitiesToSkip": [],
-              "EntitiesWhitelist": [],
-              "EntityPrefixesToSkip": [],
-              "EntityPrefixesWhitelist": [],
-              "GenerateActionAttributeNameConsts": true,
-              "GenerateAttributeNameConsts": true,
-              "GenerateAnonymousTypeConstructor": true,
-              "GenerateConstructorsSansLogicalName": false,
-              "GenerateEntityRelationships": true,
-              "GenerateEntityTypeCode": false,
-              "GenerateEnumProperties": true,
-              "GenerateOnlyReferencedOptionSets": true,
-              "GenerateOptionSetMetadataAttribute": true,
-              "InvalidCSharpNamePrefix": "_",
-              "MakeAllFieldsEditable": false,
-              "MakeReadonlyFieldsEditable": false,
-              "MakeResponseActionsEditable": false,
-              "LocalOptionSetFormat": "{0}_{1}",
-              "OptionSetPrefixesToSkip": [],
-              "OptionSetsToSkip": [],
-              "OptionSetLanguageCodeOverride": null,
-              "ProjectNameForEarlyBoundFiles": null,
-              "PropertyEnumMappings": null,
-              "ReadSerializedMetadata": false,
-              "RemoveRuntimeVersionComment": true,
-              "ReplaceOptionSetPropertiesWithEnum": false,
-              "SerializeMetadata": false,
-              "UseDeprecatedOptionSetNaming": false,
-              "UnmappedProperties": [
-                "duplicaterule:BaseEntityTypeCode,MatchingEntityTypeCode",
-                "invoicedetail:InvoiceStateCode",
-                "leadaddress:AddressTypeCode,ShippingMethodCode",
-                "organization:CurrencyFormatCode,DateFormatCode,TimeFormatCode,WeekStartDayCode",
-                "quote:StatusCode",
-                "quotedetail:QuoteStateCode",
-                "salesorderdetail:SalesOrderStateCode"
-              ],
-              "UseTfsToCheckoutFiles": false,
-              "WaitForAttachedDebugger": false
-            },
             "scope": "window"
           },
           "cha0s2nd-vscode-cds.solution.folder": {
             "title": "Solution Folder",
             "description": "The folder to extract the Solution to and package the Solution from",
             "type": "string",
-            "default": "Solution",
-            "scope": "window"
-          },
-          "cha0s2nd-vscode-cds.solution.zipfolder": {
-            "title": "Solution Zip Folder",
-            "description": "The temp folder to create the exported and packaged zip files",
-            "type": "string",
             "default": "",
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.solution.exportManaged": {
-            "title": "Export Managed",
-            "description": "Export the Solution as Managed",
+          "cha0s2nd-vscode-cds.solution.zipFile": {
+            "title": "Solution Zip File",
+            "description": "The temp file to create for the exported and packaged solution",
+            "type": "string",
+            "default": "solution_{0}_{1}_{2}_{3}.zip",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.solution.exportType": {
+            "title": "Solution Export Type",
+            "description": "The type of solution to Export (managed, unmanaged, both)",
+            "type": "string",
+            "enum": [
+              "managed",
+              "unmanaged",
+              "both"
+            ],
+            "enumDescriptions": [
+              "Exports the solution as managed",
+              "Exports the solution as unmanaged"
+            ],
+            "default": "unmanaged",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.solution.importType": {
+            "title": "Solution Export Type",
+            "description": "The type of solution to Import (managed, unmanaged)",
+            "type": "string",
+            "enum": [
+              "managed",
+              "unmanaged"
+            ],
+            "enumDescriptions": [
+              "Imports the solution as managed",
+              "Imports the solution as unmanaged"
+            ],
+            "default": "unmanaged",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.solution.versionIncrement": {
+            "title": "Increment Solution Version on Import",
+            "description": "Increment the solution version when importing",
+            "type": "boolean",
+            "default": "false",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.webresource.folders": {
+            "title": "Web Resources Folders",
+            "description": "The root folders to the Web Resources",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "WebResources\\"
+            ],
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.webresource.deleteAction": {
+            "title": "Delete Action for Web Resource files",
+            "description": "Select whether or not Web Resources in the Solution no longer present in folder tree should be Deleted or Removed from the solution",
+            "type": "string",
+            "enum": [
+              "Remove from Solution",
+              "Delete from System",
+              "None"
+            ],
+            "default": "None",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.webresource.processAll": {
+            "title": "Process all Web Resources",
+            "description": "Process all Web Resource files in the root folders (deselect to specify a list)",
             "type": "boolean",
             "default": false,
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.solution.exportUnmanaged": {
-            "title": "Export Unmanaged",
-            "description": "Export the Solution as Unmanaged",
+          "cha0s2nd-vscode-cds.plugin.assemblies": {
+            "title": "Plugin Assemblies",
+            "description": "Plugin assemblies to deploy",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.workflow.assemblies": {
+            "title": "Workflow Assemblies",
+            "description": "Custom Workflow Activity assemblies to deploy",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.actions": {
+            "title": "Earlybound Actions",
+            "description": "List of Actions to generate",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.entities": {
+            "title": "Earlybound Entities",
+            "description": "List of Entities to generate",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.optionSetEnums": {
+            "title": "Generate OptionSet Enums",
+            "description": "Generate Enums for OptionSet values",
             "type": "boolean",
             "default": true,
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.spkl.enabled": {
-            "title": "Enable Spkl support",
-            "description": "Enable the use of auto generated Spkl commands via the terminal: https://github.com/scottdurow/SparkleXrm/wiki/spkl",
+          "cha0s2nd-vscode-cds.earlybound.globalOptionSetEnums": {
+            "title": "Generate OptionSet Enums",
+            "description": "Generate Enums for Global OptionSet values",
             "type": "boolean",
             "default": false,
             "scope": "window"
           },
-          "cha0s2nd-vscode-cds.spkl.useCachedConnections": {
-            "title": "Use Spkl build-in connection manager",
-            "description": "Use the build-in spkl connections stored in the Credentials.xml file",
+          "cha0s2nd-vscode-cds.earlybound.stateEnums": {
+            "title": "Generate State Enums",
+            "description": "Generate Enums for States and Statuses values",
+            "type": "boolean",
+            "default": true,
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.fileName": {
+            "title": "EarlyBound Filename",
+            "description": "Path for the Earlybound output",
+            "type": "string",
+            "default": "EarlyBoundTypes.cs",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.namespace": {
+            "title": "EarlyBound Namespace",
+            "description": "The Namespace to use when generating entities",
+            "type": "string",
+            "default": "Entities",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.serviceContext": {
+            "title": "EarlyBound ServiceContext",
+            "description": "The Name of the service context",
+            "type": "string",
+            "default": "XrmSvc",
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.oneFilePerType": {
+            "title": "One File Per Entity",
+            "description": "Generate a file for each entity",
             "type": "boolean",
             "default": false,
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.useDLaBGenerator": {
+            "title": "Use DLaB.Xrm.EarlyBoundGenerator",
+            "description": "Enable the DLaB.Xrm.EarlyBoundGenerator alternatively to the Spkl built-in generator",
+            "type": "boolean",
+            "default": false,
+            "scope": "window"
+          },
+          "cha0s2nd-vscode-cds.earlybound.generatorSettings": {
+            "title": "The DLaB.Xrm.EarlyBoundGenerator Settings",
+            "description": "The path to the DLaB.Xrm.EarlyBoundGenerator setting xml file.",
+            "type": "string",
+            "default": null,
             "scope": "window"
           }
         }
@@ -374,16 +379,6 @@
       {
         "command": "cha0s2nd-vscode-cds.auth.logout",
         "title": "Logout",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.auth.discoveryToken.set",
-        "title": "Configure Discovery Token",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.auth.organizationToken.set",
-        "title": "Configure Organization Token",
         "category": "Cha0s Data"
       },
       {
@@ -406,93 +401,63 @@
         }
       },
       {
-        "command": "cha0s2nd-vscode-cds.webresource.deployAll",
-        "title": "Deploy All CRM Web Resources",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.webresource.download",
-        "title": "Download and Map CRM Web Resources",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.earlybound.generate",
+        "command": "cha0s2nd-vscode-cds.spkl.earlybound.generate",
         "title": "Generate Early-bound Types",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.solution.importManaged",
-        "title": "Import CRM Solution as Managed",
+        "command": "cha0s2nd-vscode-cds.spkl.solution.import",
+        "title": "Import CRM Solution",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.solution.importUnmanaged",
-        "title": "Import CRM Solution as Unmanaged",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.solution.export",
+        "command": "cha0s2nd-vscode-cds.spkl.solution.export",
         "title": "Export CRM Solution",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.plugin.updateAssembly",
-        "title": "Update Plugin Assembly",
+        "command": "cha0s2nd-vscode-cds.spkl.assembly.deploy",
+        "title": "Deploy Plugin Assemblies",
         "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.webresources.deploy",
-        "title": "Deploy Web Resources using Spkl",
+        "command": "cha0s2nd-vscode-cds.spkl.assembly.file",
+        "title": "Update Plugin Assembly",
         "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "icon": {
+          "light": "media/light/upload.png",
+          "dark": "media/dark/upload.png"
+        }
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.webresources.download",
-        "title": "Download Web Resources using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "command": "cha0s2nd-vscode-cds.spkl.webresource.deployAll",
+        "title": "Deploy All Web Resources",
+        "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.webresources.get",
-        "title": "Get Web Resources using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "command": "cha0s2nd-vscode-cds.spkl.webresource.download",
+        "title": "Download Web Resources",
+        "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.plugins.instrument",
-        "title": "Instrument using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "command": "cha0s2nd-vscode-cds.spkl.webresource.get",
+        "title": "Get Web Resources",
+        "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.plugins.deploy",
-        "title": "Deploy Plugins using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "command": "cha0s2nd-vscode-cds.spkl.plugin.instrument",
+        "title": "Instrument Plugins",
+        "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.workflows.deploy",
-        "title": "Deploy Workflows using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "command": "cha0s2nd-vscode-cds.spkl.plugin.deploy",
+        "title": "Deploy Plugins",
+        "category": "Cha0s Data"
       },
       {
-        "command": "cha0s2nd-vscode-cds.spkl.solution.import",
-        "title": "Import Solution using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.spkl.solution.export",
-        "title": "Export Solution using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.spkl.entities.generate",
-        "title": "Generate Early Bound Types using Spkl",
-        "category": "Cha0s Data",
-        "enablement": "config.cha0s2nd-vscode-cds.spkl.enabled"
+        "command": "cha0s2nd-vscode-cds.spkl.workflow.deploy",
+        "title": "Deploy Workflows",
+        "category": "Cha0s Data"
       },
       {
         "command": "cha0s2nd-vscode-cds.solutionTreeView.refresh",
@@ -518,17 +483,18 @@
     "lint": "eslint src --ext ts",
     "pretest": "npm run webpack && npm run lint",
     "test": "node ./dist/test/runTest.js",
-    "vscode:prepublish": "dotnet publish \".\\sdk-wrapper\\src\\sdk-wrapper.sln\" -c Release -o \".\\sdk-wrapper\\dist\" && webpack --mode production",
+    "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode development",
     "watch": "webpack --mode development --watch",
     "test-compile": "tsc -p ./"
   },
   "dependencies": {
+    "@azure/msal-node": "^1.1.0",
+    "jwt-decode": "^3.1.2",
+    "node-uuid": "^1.4.8",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
-    "node-uuid": "^1.4.8",
-    "xml2js": "^0.4.23",
-    "jwt-decode": "^3.1.2"
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

@@ -1,23 +1,33 @@
 import * as vscode from 'vscode';
-import AuthorizationManager from './Auth/AuthorizationManager';
+import { AuthProviderType } from './Core/Enums/AuthProviderType';
 import DependencyManager from './Core/Managers/DependencyManager';
 import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
 import OrganizationManager from './Core/Managers/OrganizationManager';
-import PluginManager from './Core/Managers/PluginManager';
 import SolutionManager from './Core/Managers/SolutionManager';
 import SpklManager from './Core/Managers/SpklManager';
+import SpklSettingManager from './Core/Managers/SpklSettingManager';
 import TreeViewManager from './Core/Managers/TreeViewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
+import AuthProvider from './Auth/AuthProvider';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
+import IOrganization from './Entities/IOrganization';
 
 export async function activate(context: vscode.ExtensionContext) {
+  const authProvider = new AuthProvider(context);
+  authProvider.registerCommands();
+
+  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", authProvider, { supportsMultipleAccounts: false });
+
   new DependencyManager(context).checkAll();
 
-  new AuthorizationManager(context).registerCommands();
+  const settingManager = new SpklSettingManager(context);
+  settingManager.registerCommands();
+  settingManager.registerEvents();
+  settingManager.initializeSettings();
+
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
-  new PluginManager(context).registerCommands();
 
   // DLaB.EarlyBoundGenerator used here: https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator
   new EarlyBoundManager(context).registerCommands();
@@ -27,12 +37,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.languages.registerCodeLensProvider({ pattern: '**/*.{css,gif,html,htm,ico,jpg,jpeg,js,png,resx,svg,xap,xml,xsl}' }, new WebResourceCodeLensProvider());
 
-  if (await context.workspaceState.get('cha0s2nd-vscode-cds.auth.token')) {
-    if (await vscode.commands.executeCommand('cha0s2nd-vscode-cds.organization.get')) {
-      const treeViewManager = new TreeViewManager(context);
-      treeViewManager.registerCommands();
-      treeViewManager.registerViews();
-    }
+  if (await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get')) {
+    const treeViewManager = new TreeViewManager(context);
+    treeViewManager.registerCommands();
+    treeViewManager.registerViews();
   }
 }
 
