@@ -21,7 +21,7 @@ export default class SpklManager {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.download', () => this.downloadWebResources()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.get', () => this.getWebResources()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.deploy', () => this.deployAssemblies()));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.file', (assemblyFile: vscode.Uri) => this.deployAssembly(assemblyFile)));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.file', () => this.deployAssembly()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.instrument', () => this.instrumentPlugins()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.deploy', () => this.deployPlugins()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.workflow.deploy', () => this.deployWorkflows()));
@@ -79,17 +79,17 @@ export default class SpklManager {
 
   private async executeSpklWithTempSettings(action: SpklActions, settings: ISpklSettings, ...params: string[]) {
     const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-    const tempFile = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'spkl-temp.json');
+    const tempFolder = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'temp');
     var buffer = Buffer.from(JSON.stringify(settings, null, 2), 'utf-8');
     var array = new Uint8Array(buffer);
-    await vscode.workspace.fs.writeFile(tempFile, array);
+    await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(tempFolder, 'spkl.json'), array);
 
     return new Promise(async (resolve, reject) => {
       const spkl = this.context.workspaceState.get<vscode.Uri>('cha0s2nd-vscode-cds.spkl');
 
       if (spkl) {
         params.unshift(await this.getConnection());
-        params.unshift(tempFile.fsPath);
+        params.unshift(tempFolder.fsPath);
         params.unshift(action);
 
         let outData = '';
@@ -118,7 +118,7 @@ export default class SpklManager {
             // output.dispose();
             resolve(outData);
 
-            vscode.workspace.fs.delete(tempFile);
+            vscode.workspace.fs.delete(tempFolder, { recursive: true, useTrash: false });
           }
           else {
             reject();
@@ -200,10 +200,8 @@ export default class SpklManager {
     this.executeSpkl(SpklActions.deployWebResources, ...params);
   }
 
-  private async deployAssembly(assemblyFile: vscode.Uri | undefined) {
-    if (!assemblyFile) {
-      assemblyFile = await this.pickAssembly();
-    }
+  private async deployAssembly() {
+    const assemblyFile = await this.pickAssembly();
 
     if (assemblyFile) {
       const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');

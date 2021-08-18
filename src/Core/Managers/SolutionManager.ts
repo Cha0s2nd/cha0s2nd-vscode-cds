@@ -244,7 +244,7 @@ export default class SolutionManager {
           const wait = setTimeout(() => {
             clearTimeout(wait);
             reject('Importing Solution timed out.');
-          }, 1000 * 60 * 15);
+          }, 1000 * 60 * 60);
 
           WebApi.post('ImportSolution',
             {

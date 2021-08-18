@@ -35,6 +35,16 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsWelcome": [
+      {
+        "view": "solution",
+        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.auth.login)"
+      },
+      {
+        "view": "defaultSolution",
+        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.auth.login)"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -71,6 +81,18 @@
           "command": "cha0s2nd-vscode-cds.defaultSolutionTreeView.refresh",
           "when": "view == defaultSolution",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cha0s2nd-vscode-cds.spkl.assembly.file",
+          "when": "viewItem == pluginAssembly",
+          "group": "inline"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.webresource.deploy",
+          "group": "z_commands",
+          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
         }
       ],
       "commandPalette": [
@@ -141,13 +163,6 @@
         }
       ],
       "editor/context": [
-        {
-          "command": "cha0s2nd-vscode-cds.webresource.deploy",
-          "group": "z_commands",
-          "when": "resourceExtname == .js || resourceExtname == .html || resourceExtname == .css || resourceExtname == .xml || resourceExtname == .xsl || resourceExtname == .svg || resourceExtname == .png"
-        }
-      ],
-      "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.webresource.deploy",
           "group": "z_commands",
@@ -404,6 +419,15 @@
         "command": "cha0s2nd-vscode-cds.spkl.assembly.deploy",
         "title": "Deploy Plugin Assemblies",
         "category": "Cha0s Data"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.spkl.assembly.file",
+        "title": "Update Plugin Assembly",
+        "category": "Cha0s Data",
+        "icon": {
+          "light": "media/light/upload.png",
+          "dark": "media/dark/upload.png"
+        }
       },
       {
         "command": "cha0s2nd-vscode-cds.spkl.webresource.deployAll",
