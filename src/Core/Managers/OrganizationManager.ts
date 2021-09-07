@@ -20,16 +20,32 @@ export default class OrganizationManager {
   }
 
   private async getAvailableOrganizations(): Promise<IOrganization[]> {
-    const response = await rp(`${Constants.DISCOVERY_URL}/api/discovery/v1.0/Instances`, {
-      headers: {
-        'Content-Type': 'application/ json',
-        'Prefer': 'odata.include-annotations="*"',
-        'OData-Version': '4.0',
-        'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [Constants.DISCOVERY_URL + '//user_impersonation'], { createIfNone: true })).accessToken
-      },
-      json: true
-    });
+    let response = null;
+
+    if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
+      response = await rp(`${(await vscode.authentication.getSession(AuthProviderType.crmonprem, ['openid'], { createIfNone: true })).id}/api/discovery/v8.2/Instances`, {
+        jar: true,
+        headers: {
+          'Content-Type': 'application/ json',
+          'Prefer': 'odata.include-annotations="*"',
+          'OData-Version': '4.0',
+          'OData-MaxVersion': '4.0'
+        },
+        json: true
+      });
+    }
+    else {
+      response = await rp(`${Constants.DISCOVERY_URL}/api/discovery/v1.0/Instances`, {
+        headers: {
+          'Content-Type': 'application/ json',
+          'Prefer': 'odata.include-annotations="*"',
+          'OData-Version': '4.0',
+          'OData-MaxVersion': '4.0',
+          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [Constants.DISCOVERY_URL + '//user_impersonation'], { createIfNone: true })).accessToken
+        },
+        json: true
+      });
+    }
 
     if (response) {
       return response.value.map((org: any) => {

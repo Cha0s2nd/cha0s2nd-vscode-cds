@@ -11,19 +11,27 @@ import WebResourceManager from './Core/Managers/WebResourceManager';
 import AuthProvider from './Auth/AuthProvider';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 import IOrganization from './Entities/IOrganization';
+import AuthProviderLegacy from './Auth/AuthProviderLegacy';
 
 export async function activate(context: vscode.ExtensionContext) {
-  const authProvider = new AuthProvider(context);
-  authProvider.registerCommands();
-
-  vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", authProvider, { supportsMultipleAccounts: false });
-
   new DependencyManager(context).checkAll();
 
   const settingManager = new SpklSettingManager(context);
   settingManager.registerCommands();
   settingManager.registerEvents();
   settingManager.initializeSettings();
+
+  if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
+    const authProviderLegacy = new AuthProviderLegacy(context);
+    authProviderLegacy.registerCommands();
+
+    vscode.authentication.registerAuthenticationProvider(AuthProviderType.crmonprem, "Dynamics 365 (Legacy)", authProviderLegacy, { supportsMultipleAccounts: false });
+  }
+  else {
+    const authProvider = new AuthProvider(context);
+    authProvider.registerCommands();
+    vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", authProvider, { supportsMultipleAccounts: false });
+  }
 
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();

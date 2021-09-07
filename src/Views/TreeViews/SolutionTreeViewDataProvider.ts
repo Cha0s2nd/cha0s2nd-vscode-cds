@@ -152,7 +152,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
 
         for (let c = 0; c < 20; c++) {
           if (components[c + i]) {
-            filter = filter.concat(`MetadataId eq '${components[c + i].objectid}'`);
+            filter = filter.concat(`MetadataId eq ${components[c + i].objectid}`);
           }
         }
 
@@ -262,7 +262,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
 
         for (let c = 0; c < 20; c++) {
           if (components[c + i]) {
-            filter = filter.concat(`pluginassemblyid eq '${components[c + i].objectid}'`);
+            filter = filter.concat(`pluginassemblyid eq ${components[c + i].objectid}`);
           }
         }
 

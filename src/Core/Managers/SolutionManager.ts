@@ -174,7 +174,7 @@ export default class SolutionManager {
           return solutionZipFileName;
         }
       }
-      catch (error) {
+      catch (error: any) {
         vscode.window.showErrorMessage(error);
       }
     }
@@ -207,7 +207,7 @@ export default class SolutionManager {
           );
         });
       }
-      catch (error) {
+      catch (error: any) {
         vscode.window.showErrorMessage(error);
       }
     }
@@ -317,7 +317,7 @@ export default class SolutionManager {
         });
       });
     }
-    catch (error) {
+    catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   }
@@ -363,7 +363,7 @@ export default class SolutionManager {
         return solutionZipFileName;
       });
     }
-    catch (error) {
+    catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   }

@@ -117,18 +117,37 @@ export default class WebApi {
 
   public static async request(url: string, method: string, body: any) {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    return rp(url, {
-      baseUrl: org!.url + '/api/data/v' + org!.version.substring(0, 3) + '/',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Prefer': 'odata.include-annotations="*", return=representation',
-        'OData-Version': '4.0',
-        'OData-MaxVersion': '4.0',
-        'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation'], { createIfNone: true })).accessToken
-      },
-      json: true,
-      method: method,
-      body: body
-    });
+
+    if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
+      return rp(url, {
+        baseUrl: (await vscode.authentication.getSession(AuthProviderType.crmonprem, ['openid'], { createIfNone: true })).id + '/api/data/v' + org!.version.substring(0, 3) + '/',
+        jar: true,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Prefer': 'odata.include-annotations="*", return=representation',
+          'OData-Version': '4.0',
+          'OData-MaxVersion': '4.0',
+        },
+        json: true,
+        method: method,
+        body: body
+      });
+    }
+    else {
+      return rp(url, {
+        baseUrl: org!.url + '/api/data/v' + org!.version.substring(0, 3) + '/',
+        jar: vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy'),
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Prefer': 'odata.include-annotations="*", return=representation',
+          'OData-Version': '4.0',
+          'OData-MaxVersion': '4.0',
+          'Authorization': vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy') ? null : 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation'], { createIfNone: true })).accessToken
+        },
+        json: true,
+        method: method,
+        body: body
+      });
+    }
   }
 }

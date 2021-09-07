@@ -141,6 +141,9 @@ export default class SpklManager {
 
         if (spkl) {
 
+          if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
+            params.unshift("/l");
+          }
           params.unshift(await this.getConnection());
           params.unshift(spklJson.fsPath);
           params.unshift(action);
