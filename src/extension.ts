@@ -12,6 +12,7 @@ import AuthProvider from './Auth/AuthProvider';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 import IOrganization from './Entities/IOrganization';
 import AuthProviderLegacy from './Auth/AuthProviderLegacy';
+import PluginManager from './Core/Managers/PluginManager';
 
 export async function activate(context: vscode.ExtensionContext) {
   new DependencyManager(context).checkAll();

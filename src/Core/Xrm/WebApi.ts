@@ -142,7 +142,7 @@ export default class WebApi {
           'Prefer': 'odata.include-annotations="*", return=representation',
           'OData-Version': '4.0',
           'OData-MaxVersion': '4.0',
-          'Authorization': vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy') ? null : 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation'], { createIfNone: true })).accessToken
+          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation'], { createIfNone: true })).accessToken
         },
         json: true,
         method: method,

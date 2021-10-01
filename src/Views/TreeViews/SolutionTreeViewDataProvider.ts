@@ -3,6 +3,7 @@ import { RelationshipTypes } from '../../Core/Enums/RelationshipTypes';
 import { SolutionComponentTypes } from '../../Core/Enums/SolutionComponentTypes';
 import WebApi from '../../Core/Xrm/WebApi';
 import IAttribute from '../../Entities/IAttribute';
+import IAttributeMetaData from '../../Entities/IAttributeMetadata';
 import IEntityMetadata from '../../Entities/IEntityMetadata';
 import IOptionSet from '../../Entities/IOptionSet';
 import IPluginAssembly from '../../Entities/IPluginAssembly';
@@ -93,7 +94,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         break;
       case 'attributeContainer':
         const attributes = await this.getAttributes((<ContainerTreeItem>element).logicalName);
-        children = attributes.map((attribute: IAttribute) => new AttributeTreeItem(attribute)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = attributes.map((attribute: IAttributeMetaData) => new AttributeTreeItem(attribute)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'optionSetContainer':
         const optionSets = await this.getOptionSets((<ContainerTreeItem>element).logicalName);
@@ -195,8 +196,8 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
     }
   }
 
-  async getAttributes(logicalName: string): Promise<IAttribute[]> {
-    return <IAttribute[]>(await WebApi.retrieveMultiplePaged(
+  async getAttributes(logicalName: string): Promise<IAttributeMetaData[]> {
+    return <IAttributeMetaData[]>(await WebApi.retrieveMultiplePaged(
       `EntityDefinitions(LogicalName='${logicalName}')/Attributes`,
       [
         'MetadataId',

@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
-import IAttribute from '../../../Entities/IAttribute';
+import IAttributeMetaData from '../../../Entities/IAttributeMetadata';
 
 export default class AttributeTreeItem extends vscode.TreeItem {
-    public logicalName: string;
+  public logicalName: string;
 
-    constructor(public attribute: IAttribute) {
-        super(attribute.LogicalName);
+  constructor(public attribute: IAttributeMetaData) {
+    super(attribute.LogicalName);
 
-        this.contextValue = 'attribute';
-        this.logicalName = attribute.LogicalName;
-        this.tooltip = attribute.Description?.UserLocalizedLabel?.Label || '';
-    }
+    this.contextValue = 'attribute';
+    this.logicalName = attribute.LogicalName;
+    this.tooltip = attribute.Description?.UserLocalizedLabel?.Label || '';
+  }
 }

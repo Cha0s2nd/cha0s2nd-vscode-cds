@@ -9,7 +9,7 @@ import IAuthSession from '../Entities/IAuthSession';
 export default class AuthProvider implements vscode.AuthenticationProvider {
   private client: msal.PublicClientApplication;
   private crypto: msal.CryptoProvider = new msal.CryptoProvider();
-  private sessions: IAuthSession[];
+  private session?: IAuthSession;
   private sessionChangeEventEmitter = new vscode.EventEmitter<vscode.AuthenticationProviderAuthenticationSessionsChangeEvent>();
   private uriHandler: AuthUriHandler;
   private context: vscode.ExtensionContext;
@@ -33,7 +33,7 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
 
     vscode.window.registerUriHandler(this.uriHandler);
 
-    this.sessions = this.context.workspaceState.get<IAuthSession[]>('cha0s2nd-vscode-cds.auth.sessions') || [];
+    this.session = this.context.workspaceState.get<IAuthSession>('cha0s2nd-vscode-cds.auth.session');
     this.client.getTokenCache().deserialize(this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.auth.tokenCache') || '');
   }
 
@@ -47,40 +47,28 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   }
 
   public async logout(): Promise<void> {
-    this.sessionChangeEventEmitter.fire({ added: [], removed: this.sessions.map(s => s.session), changed: [] });
-    this.sessions = [];
+    if (this.session) {
+      this.sessionChangeEventEmitter.fire({ added: [], removed: [this.session.session], changed: [] });
+      this.session = undefined;
+    }
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
-    const sessions = scopes
-      ? this.sessions.filter(session => session.session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined)
-      : this.sessions;
+    this.session = await this.createOrUpdateSession(scopes, this.session);
 
-    const newSessions = [];
-
-    for (let session of sessions) {
-      newSessions.push(await (await this.createOrUpdateSession(scopes, session)).session);
-    }
-
-    return newSessions;
+    return [this.session.session];
   }
 
   public async createSession(scopes: string[]): Promise<vscode.AuthenticationSession> {
-    const sessions = scopes
-      ? this.sessions.filter(session => session.session.scopes.find(scope => scopes.find(s => scope === s) !== undefined) !== undefined)
-      : this.sessions;
+    this.session = await this.createOrUpdateSession(scopes, this.session);
 
-    return await (await this.createOrUpdateSession(scopes, sessions.find(() => true))).session;
+    return this.session.session;
   }
 
   public async removeSession(sessionId: string): Promise<void> {
-    const sessionIndex = this.sessions.findIndex(s => s.session.id === sessionId);
-
-    if (sessionIndex >= 0) {
-      const session = this.sessions[sessionIndex];
-      this.sessions.splice(sessionIndex, 1);
-
-      this.sessionChangeEventEmitter.fire({ added: [], removed: [session.session], changed: [] });
+    if (this.session) {
+      this.sessionChangeEventEmitter.fire({ added: [], removed: [this.session.session], changed: [] });
+      this.session = undefined;
     }
   }
 
@@ -123,16 +111,14 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
       }
     };
 
-    const sessionIndex = this.sessions.findIndex(s => s.session.id === newSession.session.id);
-    if (sessionIndex > -1) {
-      this.sessions.splice(sessionIndex, 1, newSession);
+    if (this.session) {
       this.sessionChangeEventEmitter.fire({ added: [], removed: [], changed: [newSession.session] });
     } else {
-      this.sessions.push(newSession);
       this.sessionChangeEventEmitter.fire({ added: [newSession.session], removed: [], changed: [] });
     }
 
-    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.sessions', this.sessions);
+    this.session = newSession;
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.session', this.session);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenCache', this.client.getTokenCache().serialize());
 
     return newSession;

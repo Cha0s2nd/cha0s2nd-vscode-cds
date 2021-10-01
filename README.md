@@ -52,6 +52,7 @@ The following 3 simple steps should get you running:
 
 ## Extension Settings
 
+* `cha0s2nd-vscode-cds.auth.useLegacy`: Use legacy login for On-Prem CRM connections).
 * `cha0s2nd-vscode-cds.spkl.settings`: The path to the spkl.json file to use (leave blank to use workspace settings).
 * `cha0s2nd-vscode-cds.solution.folder`: The folder to extract the Solution to and package the Solution from.
 * `cha0s2nd-vscode-cds.solution.versionIncrement`: Increment the solution version when importing.
@@ -81,10 +82,9 @@ Organization Discovery tokens do not always refresh, this seems to be because of
 
 ## Release Notes
 
-### [0.1.1]
-Fixed
-- WebResource CodeLens
-- Updated Readme
+### [0.1.2]
+Added
+- Legacy login support for On-Prem
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 
