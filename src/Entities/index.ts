@@ -1,4 +1,4 @@
-export * from "./IAttribute";
+export * from "./IAttributeMetadata";
 export * from "./IAuthSession";
 export * from "./IDisplayName";
 export * from "./IEntityMetadata";

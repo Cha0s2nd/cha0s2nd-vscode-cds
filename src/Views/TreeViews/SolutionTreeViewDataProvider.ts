@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { RelationshipTypes } from '../../Core/Enums/RelationshipTypes';
 import { SolutionComponentTypes } from '../../Core/Enums/SolutionComponentTypes';
 import WebApi from '../../Core/Xrm/WebApi';
-import IAttribute from '../../Entities/IAttribute';
 import IAttributeMetaData from '../../Entities/IAttributeMetadata';
 import IEntityMetadata from '../../Entities/IEntityMetadata';
 import IOptionSet from '../../Entities/IOptionSet';

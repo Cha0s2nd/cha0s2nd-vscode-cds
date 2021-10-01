@@ -78,13 +78,16 @@ The following 3 simple steps should get you running:
 
 ## Known Issues
 
-Organization Discovery tokens do not always refresh, this seems to be because of refresh_token expiry times being unknown.
+Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.2]
-Added
-- Legacy login support for On-Prem
+### [0.1.3]
+Fixed
+- Organization Discovery tokens expiring too often
+
+Changed
+- 2 Tokens required to log in, now only 1
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 
