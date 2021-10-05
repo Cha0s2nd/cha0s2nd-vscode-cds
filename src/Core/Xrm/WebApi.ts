@@ -91,6 +91,17 @@ export default class WebApi {
     return entities;
   }
 
+  public static async remove(entitySet: string, id: string) {
+    const query: string[] = [];
+    let url: string = entitySet + '(' + id + ')';
+
+    if (query.length > 0) {
+      url = url + "?" + query.join("&");
+    }
+
+    return this.delete(url);
+  }
+
   public static async create(entitySet: string, entity: any) {
     return this.post(entitySet, entity);
   }
