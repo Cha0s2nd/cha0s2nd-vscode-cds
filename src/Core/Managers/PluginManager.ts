@@ -1,12 +1,16 @@
 import * as vscode from 'vscode';
+import * as Constants from "../Constants/Constants";
 import * as child_process from 'child_process';
+import * as jwt_decode from "jwt-decode";
 import * as uuid from 'node-uuid';
-import ISolution from '../../Entities/ISolution';
-import WebApi from '../Xrm/WebApi';
+import WebApi from '../xrm/WebApi';
 import { PluginSourceTypes } from '../Enums/PluginSourceTypes';
 import { IsolationModes } from '../Enums/IsolationModes';
+import IAuthToken from '../../Entities/IAuthToken';
+import IOrganization from '../../Entities/IOrganization';
+import ISolution from '../../Entities/ISolution';
 
-export default class PluginManager {
+export default class SolutionManager {
   private context: vscode.ExtensionContext;
 
   constructor(context: vscode.ExtensionContext) {
@@ -14,7 +18,13 @@ export default class PluginManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.deploy', async () => { return await this.updateAssembly(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.updateAssembly', async () => { return await this.updateAssembly(); }));
+  }
+
+  private async getConnection(): Promise<string> {
+    const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
+    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${this.context.asAbsolutePath('token_cache')}`;
   }
 
   private async getAvailableAssemblies(): Promise<ISolution[]> {
@@ -70,84 +80,23 @@ export default class PluginManager {
         throw new Error('Registering Plugin Assembly timed out.');
       }, 1000 * 60 * 15);
 
-      const pluginFullName = (await this.executePowershell(`[System.Reflection.Assembly]::ReflectionOnlyLoadFrom("${fileUri.fsPath}").GetName().FullName`)).split(',');
-      const name = pluginFullName[0];
-      const version = pluginFullName[1].replace('Version=', '').trim();
-      const culture = pluginFullName[2].replace('Culture=', '').trim();
-      const publicToken = pluginFullName[3].replace('PublicKeyToken=', '').trim();
+      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
-      const content = await vscode.workspace.fs.readFile(fileUri);
-
-      const response = await WebApi.retrieveMultiple('pluginassemblies', ['pluginassemblyid'], `name eq '${name}'`);
-
-      if (response && response[0]) {
-        await WebApi.update("pluginassemblies", {
-          pluginassemblyid: response[0].pluginassemblyid,
-          content: Buffer.from(content).toString('base64'),
-          name: name,
-          culture: culture,
-          version: version,
-          publickeytoken: publicToken,
-          sourcetype: PluginSourceTypes.Database,
-          isolationmode: IsolationModes.Sandbox
-        });
-      }
-      else {
-        await WebApi.create("pluginassemblies", {
-          pluginassemblyid: uuid.v4(),
-          content: Buffer.from(content).toString('base64'),
-          name: name,
-          culture: culture,
-          version: version,
-          publickeytoken: publicToken,
-          sourcetype: PluginSourceTypes.Database,
-          isolationmode: IsolationModes.Sandbox
-        });
-      }
+      await this.executeSDKWrapper(
+        "pluginassembly",
+        `\"${fileUri.fsPath}\"`,
+        "-c",
+        `\"${await this.getConnection()}\"`,
+        "-s",
+        `\"${solution?.uniqueName}\"`,
+      );
     }
     catch (error) {
       vscode.window.showErrorMessage(error);
     }
   }
 
-  private async executePluginRegistrationTool(...params: string[]): Promise<void> {
-    return new Promise(async (resolve, reject) => {
-
-      const sp = this.context.workspaceState.get<string>('cha0s2nd-vscode-cds.pluginRegToolFile');
-
-      if (sp) {
-        const output = vscode.window.createOutputChannel("Cha0s Data Tools: Plugin Registration");
-        output.show();
-
-        const process = child_process.spawn(sp, params);
-
-        process.stdout.on('data', async (data) => {
-          output.append(data.toString());
-        });
-
-        process.stderr.on('data', async (data) => {
-          output.append(data.toString());
-        });
-
-        process.addListener('exit', async (code) => {
-          output.append(`Plugin Registration exited with code '${code}'`);
-
-          if (code === 0) {
-            output.dispose();
-            resolve();
-          }
-          else {
-            reject();
-          }
-        });
-      }
-      else {
-        throw new Error('Could not locate PluginRegistration.exe');
-      }
-    });
-  }
-
-  private async executePowershell(...params: string[]): Promise<string> {
+  private async executeSDKWrapper(...params: string[]): Promise<string> {
     return new Promise(async (resolve, reject) => {
 
       let outData = '';
@@ -155,7 +104,9 @@ export default class PluginManager {
       const output = vscode.window.createOutputChannel("Cha0s Data Tools: Plugin Registration");
       output.show();
 
-      const process = child_process.spawn('powershell', params);
+      const process = child_process.spawn('.\\sdk-wrapper.exe', params, {
+        cwd: this.context.asAbsolutePath("\\sdk-wrapper\\dist\\"),
+      });
 
       process.stdout.on('data', async (data) => {
         outData += data.toString();
@@ -171,7 +122,7 @@ export default class PluginManager {
         output.append(`Plugin Registration exited with code '${code}'`);
 
         if (code === 0) {
-          output.dispose();
+          // output.dispose();
           resolve(outData);
         }
         else {

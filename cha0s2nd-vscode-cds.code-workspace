@@ -1,8 +1,136 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".",
+    },
+    {
+      "path": "sdk-wrapper"
     }
   ],
-  "settings": {}
+  "settings": {
+    "files.exclude": {
+      "out": false // set this to true to hide the "out" folder with the compiled JS files
+    },
+    "search.exclude": {
+      "out": true // set this to false to include "out" folder in search results
+    },
+    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
+    "typescript.tsc.autoDetect": "off"
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run Extension",
+        "type": "extensionHost",
+        "request": "launch",
+        "runtimeExecutable": "${execPath}",
+        "args": [
+          "--extensionDevelopmentPath=${workspaceFolder}"
+        ],
+        "outFiles": [
+          "${workspaceFolder}/dist/**/*.js"
+        ],
+        "preLaunchTask": "npm: compile",
+        "sourceMaps": true
+      },
+      {
+        "name": "Run SDK Wrapper",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build",
+        "program": "${workspaceFolder}/dist/sdk-wrapper.exe",
+        "args": [
+          "pluginassembly",
+          "c:\\Users\\FRossouw\\Source\\Repos\\BES_CRM\\K3 Source\\British Engineering Code\\vs projects\\crm development\\k3c.bes.crm16.phase1\\bin\\Debug\\K3C.BES.CRM16.Phase1.dll",
+          "-c",
+          "AuthType=ClientSecret;Url=https://britisheng-d03.crm4.dynamics.com;ClientId=8baff5d8-eb25-4ea5-bcf9-b667499e2226;ClientSecret=OQth8J~.EzyiJ-J03wq7_jZz31l46N5ar6;"
+        ],
+        "cwd": "${workspaceFolder}",
+        "console": "internalConsole",
+        "stopAtEntry": false
+      },
+      {
+        "name": "Extension Tests",
+        "type": "extensionHost",
+        "request": "launch",
+        "runtimeExecutable": "${execPath}",
+        "args": [
+          "--extensionDevelopmentPath=${workspaceFolder}",
+          "--extensionTestsPath=${workspaceFolder}/out/test"
+        ],
+        "outFiles": [
+          "${workspaceFolder}/out/test/**/*.js"
+        ],
+        "preLaunchTask": "npm: test-compile"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "command": "dotnet",
+        "type": "shell",
+        "args": [
+          "build",
+          "/property:GenerateFullPaths=true",
+          "/consoleloggerparameters:NoSummary",
+          "/p:OutputPath=\"..\\dist\"",
+        ],
+        "options": {
+          "cwd": "src"
+        },
+        "group": "msbuild",
+        "presentation": {
+          "reveal": "silent",
+          "echo": false
+        },
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "run",
+        "dependsOn": [
+          "msbuild"
+        ],
+        "command": "dotnet",
+        "args": [
+          "run"
+        ],
+        "options": {
+          "cwd": "src"
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "reveal": "always",
+          "echo": false
+        }
+      },
+      {
+        "label": "publish",
+        "command": "dotnet",
+        "type": "shell",
+        "args": [
+          "publish",
+          "-c",
+          "Release",
+          "-o",
+          "\"..\\dist\""
+        ],
+        "options": {
+          "cwd": "src"
+        },
+        "group": "msbuild",
+        "presentation": {
+          "reveal": "silent",
+          "echo": false
+        },
+        "problemMatcher": "$msCompile"
+      },
+    ]
+  }
 }
