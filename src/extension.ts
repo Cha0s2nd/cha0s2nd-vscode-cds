@@ -37,6 +37,7 @@ export async function activate(context: vscode.ExtensionContext) {
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
+  new PluginManager(context).registerCommands();
 
   // DLaB.EarlyBoundGenerator used here: https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator
   new EarlyBoundManager(context).registerCommands();

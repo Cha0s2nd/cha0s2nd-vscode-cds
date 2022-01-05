@@ -95,7 +95,7 @@ namespace sdk_wrapper.Managers
     {
       var requests = new List<OrganizationRequest>();
       var pluginTypes = assembly.GetExportedTypes().Where(p => p.GetInterfaces().FirstOrDefault(i => i.Name == typeof(Microsoft.Xrm.Sdk.IPlugin).Name) != null && !p.IsAbstract && p.IsClass);
-      var workflowTypes = assembly.DefinedTypes.Where(p => p.BaseType != null && p.BaseType.Name == typeof(System.Activities.CodeActivity).Name && !p.IsAbstract && p.IsClass);
+      var workflowTypes = assembly.DefinedTypes.Where(p => p.IsSubclassOf(typeof(System.Activities.CodeActivity)) && !p.IsAbstract && p.IsClass);
       var allTypes = pluginTypes.Concat(workflowTypes);
 
       Console.Out.WriteLine($"Found {allTypes.Count()} types ({pluginTypes.Count()} Plugins) ({workflowTypes.Count()} Workflow Activities)");

@@ -2,13 +2,9 @@ import * as vscode from 'vscode';
 import * as Constants from "../Constants/Constants";
 import * as child_process from 'child_process';
 import * as jwt_decode from "jwt-decode";
-import * as uuid from 'node-uuid';
-import WebApi from '../xrm/WebApi';
-import { PluginSourceTypes } from '../Enums/PluginSourceTypes';
-import { IsolationModes } from '../Enums/IsolationModes';
-import IAuthToken from '../../Entities/IAuthToken';
 import IOrganization from '../../Entities/IOrganization';
 import ISolution from '../../Entities/ISolution';
+import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class SolutionManager {
   private context: vscode.ExtensionContext;
@@ -18,42 +14,13 @@ export default class SolutionManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.updateAssembly', async () => { return await this.updateAssembly(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.assembly.file', async () => { return await this.updateAssembly(); }));
   }
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode.default<any>((await vscode.commands.executeCommand<IAuthToken>('cha0s2nd-vscode-cds.auth.organizationToken.get', org))?.access_token || '');
+    const token = jwt_decode.default<any>((await vscode.authentication.getSession(AuthProviderType.crm, [org?.url + '//user_impersonation']))?.accessToken || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${this.context.asAbsolutePath('token_cache')}`;
-  }
-
-  private async getAvailableAssemblies(): Promise<ISolution[]> {
-    const response = await WebApi.retrieveMultiple(
-      'pluginassemblies',
-      [
-        'createdon',
-        'culture',
-        'customizationlevel',
-        'description',
-        'isolationmode',
-        'major',
-        'minor',
-        'modifiedon',
-        'name',
-        'pluginassemblyid',
-        'publickeytoken',
-        'version'
-      ],
-      'ishidden/Value eq false'
-    );
-
-    if (response) {
-      return response.map((assembly: any) => {
-        return assembly;
-      });
-    }
-
-    return [];
   }
 
   public async updateAssembly(): Promise<void> {
@@ -91,7 +58,7 @@ export default class SolutionManager {
         `\"${solution?.uniqueName}\"`,
       );
     }
-    catch (error) {
+    catch (error: any) {
       vscode.window.showErrorMessage(error);
     }
   }
@@ -119,13 +86,11 @@ export default class SolutionManager {
       });
 
       process.addListener('exit', async (code) => {
-        output.append(`Plugin Registration exited with code '${code}'`);
-
         if (code === 0) {
-          // output.dispose();
           resolve(outData);
         }
         else {
+          output.append(`Plugin Registration exited with code '${code}'`);
           reject();
         }
       });

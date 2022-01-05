@@ -4,8 +4,8 @@
     <RootNamespace>dotnet_dependencies</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="dlab.xrm.earlyboundgenerator.api" Version="1.2021.6.14" />
-    <PackageReference Include="microsoft.crmsdk.coretools" Version="9.1.0.90" />
+    <PackageReference Include="dlab.xrm.earlyboundgenerator.api" Version="1.2021.12.12" />
+    <PackageReference Include="microsoft.crmsdk.coretools" Version="9.1.0.92" />
     <PackageReference Include="spkl" Version="1.0.640" />
   </ItemGroup>
 </Project>

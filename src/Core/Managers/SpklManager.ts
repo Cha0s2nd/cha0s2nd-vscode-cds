@@ -113,15 +113,13 @@ export default class SpklManager {
         });
 
         process.addListener('exit', async (code) => {
-          output.append(`Spkl exited with code '${code}'`);
-
           if (code === 0) {
-            // output.dispose();
             resolve(outData);
 
             vscode.workspace.fs.delete(tempFolder, { recursive: true, useTrash: false });
           }
           else {
+            output.append(`Spkl exited with code '${code}'`);
             reject();
           }
         });
@@ -168,13 +166,11 @@ export default class SpklManager {
           });
 
           process.addListener('exit', async (code) => {
-            output.append(`Spkl exited with code '${code}'`);
-
             if (code === 0) {
-              // output.dispose();
               resolve(outData);
             }
             else {
+              output.append(`Spkl exited with code '${code}'`);
               reject();
             }
           });
@@ -205,28 +201,30 @@ export default class SpklManager {
   }
 
   private async deployAssembly() {
-    const assemblyFile = await this.pickAssembly();
+    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.plugin.assembly.file');
 
-    if (assemblyFile) {
-      const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
-      const tempFolder = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'temp');
-      const fileName = path.basename(assemblyFile.fsPath);
+    // const assemblyFile = await this.pickAssembly();
 
-      vscode.workspace.fs.copy(assemblyFile, vscode.Uri.joinPath(tempFolder, fileName));
+    // if (assemblyFile) {
+    //   const workspaceFolder = vscode.workspace.workspaceFolders?.find(wsf => wsf);
+    //   const tempFolder = vscode.Uri.joinPath(workspaceFolder?.uri || vscode.Uri.parse(''), '.vscode', 'temp');
+    //   const fileName = path.basename(assemblyFile.fsPath);
 
-      const settings: ISpklSettings = {
-        plugins: [{
-          assemblypath: fileName,
-          solution: 'Default',
-          profile: 'default'
-        }]
-      };
+    //   vscode.workspace.fs.copy(assemblyFile, vscode.Uri.joinPath(tempFolder, fileName));
 
-      const params = new Array<string>();
-      params.push('/e');
+    //   const settings: ISpklSettings = {
+    //     plugins: [{
+    //       assemblypath: fileName,
+    //       solution: 'Default',
+    //       profile: 'default'
+    //     }]
+    //   };
 
-      this.executeSpklWithTempSettings(SpklActions.deployPlugins, settings, ...params);
-    }
+    //   const params = new Array<string>();
+    //   params.push('/e');
+
+    //   this.executeSpklWithTempSettings(SpklActions.deployPlugins, settings, ...params);
+    // }
   }
 
   private async deployAssemblies() {

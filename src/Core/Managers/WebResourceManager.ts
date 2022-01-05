@@ -80,9 +80,15 @@ export default class WebResourceManager {
         let webResource = webResourceFolder.files.find(wr => wr.file === path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath));
 
         if (!webResource) {
+
+          let uniqueName = path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).path, resource.path);
+          while (uniqueName.indexOf('\\') >= 0) {
+            uniqueName = uniqueName.replace('\\', '/');
+          }
+
           webResource = {
             displayname: path.basename(resource.fsPath),
-            uniquename: path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).path, resource.path),
+            uniquename: uniqueName,
             file: path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath)
           };
 
@@ -148,7 +154,7 @@ export default class WebResourceManager {
           message: `Uploading ${webResources[0].displayname}`,
         });
 
-        this.createOrUpdateWebResource(webResources[0]);
+        await this.createOrUpdateWebResource(webResources[0]);
       }
     });
   }
@@ -174,7 +180,7 @@ export default class WebResourceManager {
             increment: count += 100 / total
           });
 
-          this.createOrUpdateWebResource(webResource);
+          await this.createOrUpdateWebResource(webResource);
         }
       }
     });

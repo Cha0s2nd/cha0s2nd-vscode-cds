@@ -179,13 +179,11 @@ export default class EarlyBoundManager {
         });
 
         process.addListener('exit', async (code) => {
-          output.append(`CrmSvcUtil exited with code '${code}'`);
-
           if (code === 0) {
-            // output.dispose();
             resolve();
           }
           else {
+            output.append(`CrmSvcUtil exited with code '${code}'`);
             reject();
           }
         });

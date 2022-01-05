@@ -9,10 +9,10 @@
         "build",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary",
-        "/p:OutputPath=\"..\\dist\"",
+        "/p:OutputPath=\"..\\dist\""
       ],
       "options": {
-        "cwd": "src"
+        "cwd": "${workspaceFolder}/src"
       },
       "group": "msbuild",
       "presentation": {
@@ -31,16 +31,14 @@
         "run"
       ],
       "options": {
-        "cwd": "src"
+        "cwd": "${workspaceFolder}/src"
       },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "presentation": {
         "reveal": "always",
         "echo": false
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "publish",
@@ -54,7 +52,7 @@
         "\"..\\dist\""
       ],
       "options": {
-        "cwd": "src"
+        "cwd": "${workspaceFolder}/src"
       },
       "group": "msbuild",
       "presentation": {
@@ -62,6 +60,6 @@
         "echo": false
       },
       "problemMatcher": "$msCompile"
-    },
+    }
   ]
 }

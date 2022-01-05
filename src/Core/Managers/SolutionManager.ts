@@ -388,13 +388,11 @@ export default class SolutionManager {
         });
 
         process.addListener('exit', async (code) => {
-          output.append(`Solution Packager exited with code '${code}'`);
-
           if (code === 0) {
-            // output.dispose();
             resolve();
           }
           else {
+            output.append(`Solution Packager exited with code '${code}'`);
             reject();
           }
         });

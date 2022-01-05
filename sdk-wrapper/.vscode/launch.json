@@ -1,8 +1,4 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
   "configurations": [
     {
       "name": "Run SDK Wrapper",
@@ -14,7 +10,7 @@
         "pluginassembly",
         "c:\\Users\\FRossouw\\Source\\Repos\\BES_CRM\\K3 Source\\British Engineering Code\\vs projects\\crm development\\k3c.bes.crm16.phase1\\bin\\Debug\\K3C.BES.CRM16.Phase1.dll",
         "-c",
-        "AuthType=ClientSecret;Url=https://britisheng-d02.crm4.dynamics.com;ClientId=8baff5d8-eb25-4ea5-bcf9-b667499e2226;ClientSecret=OQth8J~.EzyiJ-J03wq7_jZz31l46N5ar6;"
+        "AuthType=ClientSecret;Url=https://britisheng-d03.crm4.dynamics.com;ClientId=8baff5d8-eb25-4ea5-bcf9-b667499e2226;ClientSecret=OQth8J~.EzyiJ-J03wq7_jZz31l46N5ar6;"
       ],
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",

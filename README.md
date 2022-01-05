@@ -82,7 +82,7 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.3]
+### [0.1.4]
 Fixed
 - Organization Discovery tokens expiring too often
 

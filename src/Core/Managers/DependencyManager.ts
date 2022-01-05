@@ -109,12 +109,11 @@ export default class DependencyManager {
       });
 
       process.addListener('exit', async (code) => {
-        this.output?.appendLine(`dotnet exited with code '${code}'`);
-
         if (code === 0) {
           resolve();
         }
         else {
+          this.output?.appendLine(`dotnet exited with code '${code}'`);
           reject();
         }
       });
