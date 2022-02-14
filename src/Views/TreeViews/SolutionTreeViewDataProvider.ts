@@ -5,6 +5,7 @@ import WebApi from '../../Core/Xrm/WebApi';
 import IAttributeMetaData from '../../Entities/IAttributeMetadata';
 import IEntityMetadata from '../../Entities/IEntityMetadata';
 import IOptionSet from '../../Entities/IOptionSet';
+import IOrganization from '../../Entities/IOrganization';
 import IPluginAssembly from '../../Entities/IPluginAssembly';
 import IPluginType from '../../Entities/IPluginType';
 import IRelationship from '../../Entities/IRelationship';
@@ -28,7 +29,13 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
   readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> = this._onDidChangeTreeData.event;
 
-  constructor(private solution?: ISolution) { }
+  constructor(private organization?: IOrganization, private solution?: ISolution) { }
+
+  changeSolution(organization?: IOrganization, solution?: ISolution): void {
+    this.organization = organization;
+    this.solution = solution;
+    this._onDidChangeTreeData.fire();
+  }
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
@@ -44,11 +51,11 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
     switch (element?.contextValue) {
       case 'entityContainer':
         const entities = await this.getEntities(this.solution?.solutionId);
-        children = entities.map(entity => new EntityTreeItem(entity)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = entities.map(entity => new EntityTreeItem(entity, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'globalOptionSetContainer':
         const globalOptionSets = await this.getGlobalOptionSets(this.solution?.solutionId);
-        children = globalOptionSets.map(globalOptionSet => new OptionSetTreeItem(globalOptionSet)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = globalOptionSets.map(globalOptionSet => new OptionSetTreeItem(globalOptionSet, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'assemblyContainer':
         const assemblies = await this.getPluginAssemblies(this.solution?.solutionId);
@@ -93,7 +100,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         break;
       case 'attributeContainer':
         const attributes = await this.getAttributes((<ContainerTreeItem>element).logicalName);
-        children = attributes.map((attribute: IAttributeMetaData) => new AttributeTreeItem(attribute)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = attributes.map((attribute: IAttributeMetaData) => new AttributeTreeItem(attribute, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'optionSetContainer':
         const optionSets = await this.getOptionSets((<ContainerTreeItem>element).logicalName);
@@ -101,15 +108,15 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         break;
       case 'oneToManyContainer':
         const oneNRelationships = await this.getRelationships(RelationshipTypes.OneToManyRelationship, (<ContainerTreeItem>element).logicalName);
-        children = oneNRelationships.map(relationship => new RelationshipTreeItem(relationship)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = oneNRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, this.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'manyToOneContainer':
         const nOneRelationships = await this.getRelationships(RelationshipTypes.ManyToOneRelationship, (<ContainerTreeItem>element).logicalName);
-        children = nOneRelationships.map(relationship => new RelationshipTreeItem(relationship)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = nOneRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, this.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'manyToManyContainer':
         const nnRelationships = await this.getRelationships(RelationshipTypes.ManyToManyRelationship, (<ContainerTreeItem>element).logicalName);
-        children = nnRelationships.map(relationship => new RelationshipTreeItem(relationship)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        children = nnRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, this.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'pluginImage':
       case 'value':

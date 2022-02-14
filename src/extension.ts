@@ -13,6 +13,7 @@ import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLen
 import IOrganization from './Entities/IOrganization';
 import AuthProviderLegacy from './Auth/AuthProviderLegacy';
 import PluginManager from './Core/Managers/PluginManager';
+import EntityGenerationManager from './Core/Managers/EntityGenerationManager';
 
 export async function activate(context: vscode.ExtensionContext) {
   new DependencyManager(context).checkAll();
@@ -34,10 +35,16 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", authProvider, { supportsMultipleAccounts: false });
   }
 
+  // Global commands
+  context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.link.open', async (treeItem: vscode.TreeItem) => {
+    if (treeItem.resourceUri) { await vscode.env.openExternal(treeItem.resourceUri); }
+  }));
+
   new OrganizationManager(context).registerCommands();
   new SolutionManager(context).registerCommands();
   new WebResourceManager(context).registerCommands();
   new PluginManager(context).registerCommands();
+  new EntityGenerationManager(context).registerCommands();
 
   // DLaB.EarlyBoundGenerator used here: https://github.com/daryllabar/DLaB.Xrm.XrmToolBoxTools/wiki/Early-Bound-Generator
   new EarlyBoundManager(context).registerCommands();

@@ -115,8 +115,8 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
                 'Connection': 'keep-alive'
               },
               form: {
-                'UserName': 'xlink\\frederikr',
-                'Password': "<*#'wS[K$u[:%7W7",
+                'UserName': username,
+                'Password': password,
                 'AuthMethod': 'FormsAuthentication'
               },
               followAllRedirects: true,

@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -87,6 +87,11 @@
         {
           "command": "cha0s2nd-vscode-cds.spkl.assembly.file",
           "when": "viewItem == pluginAssembly",
+          "group": "inline"
+        },
+        {
+          "command": "cha0s2nd-vscode-cds.link.open",
+          "when": "viewItem == entity || viewItem == attribute || viewItem == optionSet || viewItem == relationship",
           "group": "inline"
         },
         {
@@ -389,6 +394,15 @@
         "category": "Cha0s Data"
       },
       {
+        "command": "cha0s2nd-vscode-cds.link.open",
+        "title": "Open Link",
+        "category": "Cha0s Data",
+        "icon": {
+          "light": "media/light/external.png",
+          "dark": "media/dark/external.png"
+        }
+      },
+      {
         "command": "cha0s2nd-vscode-cds.organization.change",
         "title": "Change Organization",
         "category": "Cha0s Data"
@@ -410,6 +424,16 @@
       {
         "command": "cha0s2nd-vscode-cds.spkl.earlybound.generate",
         "title": "Generate Early-bound Types",
+        "category": "Cha0s Data"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.entity.generateAll",
+        "title": "Generate Javascript Entities",
+        "category": "Cha0s Data"
+      },
+      {
+        "command": "cha0s2nd-vscode-cds.entity.generate",
+        "title": "Generate a Specific Javascript Entity",
         "category": "Cha0s Data"
       },
       {

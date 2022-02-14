@@ -82,12 +82,11 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.4]
-Fixed
-- Organization Discovery tokens expiring too often
-
+### [0.1.5]
+Added
+- Added links to PowerApps for Treeview items
 Changed
-- 2 Tokens required to log in, now only 1
+- Treeview icons
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 

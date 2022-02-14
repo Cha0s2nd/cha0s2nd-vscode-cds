@@ -3,6 +3,7 @@ import * as rp from 'request-promise';
 import * as Constants from "../Constants/Constants";
 import IOrganization from "../../Entities/IOrganization";
 import { AuthProviderType } from '../../Core/Enums/AuthProviderType';
+import WebApi from '../Xrm/WebApi';
 
 export default class OrganizationManager {
   private context: vscode.ExtensionContext;
@@ -86,6 +87,10 @@ export default class OrganizationManager {
         placeHolder: 'Organization',
       });
     }
+
+    const orgDetails = await WebApi.get(`RetrieveCurrentOrganization(AccessType='Default')`);
+
+    organization!.environmentId = orgDetails.Detail.EnvironmentId;
 
     this.updateStatusBar(organization);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', organization);

@@ -23,6 +23,7 @@ export default class SolutionManager {
 
   public registerCommands(): void {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.get', async () => { return await this.getSolution(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.getDefault', async () => { return await this.getDefaultSolution(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.change', async () => { return await this.changeSolution(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.import', async () => { return await this.importSolution(); }));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.solution.export', async () => { return await this.exportSolution(); }));
@@ -70,6 +71,30 @@ export default class SolutionManager {
     return solution;
   }
 
+  private async getDefaultSolution(): Promise<ISolution | undefined> {
+    const solution = await WebApi.retrieveMultiple(
+      'solutions', [
+      '_organizationid_value',
+      'uniquename',
+      'friendlyname',
+      'version'
+    ],
+      "uniquename eq 'Default'");
+
+    return {
+      uniqueName: solution[0].uniquename,
+      friendlyName: solution[0].friendlyname,
+      solutionId: solution[0].solutionid,
+      organizationId: solution[0]['_organizationid_value'],
+      organizationName: solution[0]['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
+      version: solution[0].version,
+      label: solution[0].friendlyname,
+      description: solution[0].uniquename,
+      detail: solution[0].version,
+      alwaysShow: true
+    };
+  }
+
   private async changeSolution(solution?: ISolution): Promise<ISolution | undefined> {
     if (solution === undefined) {
       solution = await vscode.window.showQuickPick<ISolution>(
@@ -82,6 +107,9 @@ export default class SolutionManager {
 
     this.updateStatusBar(solution);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', solution);
+
+    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solutionTreeView.changeSolution', solution);
+
     return solution;
   }
 

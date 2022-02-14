@@ -1,4 +1,5 @@
 export enum AttributeTypes {
-    Picklist = 'Picklist',
-    String = 'String'
+  Lookup = 'Lookup',
+  Picklist = 'Picklist',
+  String = 'String'
 }
