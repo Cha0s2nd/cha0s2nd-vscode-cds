@@ -6,459 +6,636 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
+// Created via this command line: "C:\Users\FRossouw\AppData\Roaming\MscrmTools\XrmToolBox\Plugins\DLaB.EarlyBoundGenerator\crmsvcutil.exe" /url:"https://britisheng-d03.api.crm4.dynamics.com" /namespace:"sdk_wrapper.Entities" /out:"D:\Personal\PetProjects\VS Code Extensions\cha0s2nd-vscode-cds\sdk-wrapper\src\Entities\OptionSets.cs" /SuppressGeneratedCodeAttribute:"true" /codecustomization:"DLaB.CrmSvcUtilExtensions.OptionSet.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions" /codegenerationservice:"DLaB.CrmSvcUtilExtensions.OptionSet.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions" /codewriterfilter:"DLaB.CrmSvcUtilExtensions.OptionSet.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions" /namingservice:"DLaB.CrmSvcUtilExtensions.NamingService,DLaB.CrmSvcUtilExtensions" /metadataproviderservice:"DLaB.CrmSvcUtilExtensions.BaseMetadataProviderService,DLaB.CrmSvcUtilExtensions" 
 //------------------------------------------------------------------------------
 
 namespace sdk_wrapper.Entities
 {
-
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  public enum ComponentState
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Deleted", 2)]
-    Deleted = 2,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Deleted Unpublished", 3)]
-    DeletedUnpublished = 3,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Published", 0)]
-    Published = 0,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Unpublished", 1)]
-    Unpublished = 1,
-  }
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  public enum ComponentType
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("AI Configuration", 86)]
-    AIConfiguration = 402,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("AI Project", 85)]
-    AIProject = 401,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("AI Project Type", 84)]
-    AIProjectType = 400,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Attachment", 28)]
-    Attachment = 35,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Attribute", 1)]
-    Attribute = 2,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Attribute Image Configuration", 88)]
-    AttributeImageConfiguration = 431,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Attribute Lookup Value", 4)]
-    AttributeLookupValue = 5,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Attribute Map", 36)]
-    AttributeMap = 47,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Attribute Picklist Value", 3)]
-    AttributePicklistValue = 4,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Canvas App", 79)]
-    CanvasApp = 300,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Complex Control", 48)]
-    ComplexControl = 64,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Connection Role", 47)]
-    ConnectionRole = 63,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Connector", 80)]
-    Connector_371 = 371,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Connector", 81)]
-    Connector_372 = 372,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Contract Template", 30)]
-    ContractTemplate = 37,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Convert Rule", 60)]
-    ConvertRule = 154,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Convert Rule Item", 61)]
-    ConvertRuleItem = 155,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Custom Control", 66)]
-    CustomControl = 66,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Custom Control Default Config", 67)]
-    CustomControlDefaultConfig = 68,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Data Source Mapping", 68)]
-    DataSourceMapping = 166,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Display String", 18)]
-    DisplayString = 22,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Display String Map", 19)]
-    DisplayStringMap = 23,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Duplicate Rule", 33)]
-    DuplicateRule = 44,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Duplicate Rule Condition", 34)]
-    DuplicateRuleCondition = 45,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Email Template", 29)]
-    EmailTemplate = 36,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity", 0)]
-    Entity = 1,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Analytics Configuration", 87)]
-    EntityAnalyticsConfiguration = 430,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Image Configuration", 89)]
-    EntityImageConfiguration = 432,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Key", 13)]
-    EntityKey = 14,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Map", 35)]
-    EntityMap = 46,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Relationship", 9)]
-    EntityRelationship = 10,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Relationship Relationships", 11)]
-    EntityRelationshipRelationships = 12,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Entity Relationship Role", 10)]
-    EntityRelationshipRole = 11,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Environment Variable Definition", 82)]
-    EnvironmentVariableDefinition = 380,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Environment Variable Value", 83)]
-    EnvironmentVariableValue = 381,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Field Permission", 50)]
-    FieldPermission = 71,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Field Security Profile", 49)]
-    FieldSecurityProfile = 70,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Form", 20)]
-    Form = 24,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Hierarchy Rule", 62)]
-    HierarchyRule = 65,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Import Map", 78)]
-    ImportMap = 208,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Index", 77)]
-    Index = 18,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("KB Article Template", 31)]
-    KBArticleTemplate = 38,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Localized Label", 6)]
-    LocalizedLabel = 7,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Mail Merge Template", 32)]
-    MailMergeTemplate = 39,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Managed Property", 12)]
-    ManagedProperty = 13,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Mobile Offline Profile", 63)]
-    MobileOfflineProfile = 161,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Mobile Offline Profile Item", 64)]
-    MobileOfflineProfileItem = 162,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Option Set", 8)]
-    OptionSet = 9,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Organization", 21)]
-    Organization = 25,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Plugin Assembly", 52)]
-    PluginAssembly = 91,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Plugin Type", 51)]
-    PluginType = 90,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Privilege", 14)]
-    Privilege = 16,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("PrivilegeObjectTypeCode", 15)]
-    PrivilegeObjectTypeCode = 17,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Relationship", 2)]
-    Relationship = 3,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Relationship Extra Condition", 7)]
-    RelationshipExtraCondition = 8,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Report", 24)]
-    Report = 31,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Report Category", 26)]
-    ReportCategory = 33,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Report Entity", 25)]
-    ReportEntity = 32,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Report Visibility", 27)]
-    ReportVisibility = 34,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Ribbon Command", 37)]
-    RibbonCommand = 48,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Ribbon Context Group", 38)]
-    RibbonContextGroup = 49,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Ribbon Customization", 39)]
-    RibbonCustomization = 50,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Ribbon Diff", 42)]
-    RibbonDiff = 55,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Ribbon Rule", 40)]
-    RibbonRule = 52,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Ribbon Tab To Command Map", 41)]
-    RibbonTabToCommandMap = 53,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Role", 16)]
-    Role = 20,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Role Privilege", 17)]
-    RolePrivilege = 21,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Routing Rule", 56)]
-    RoutingRule = 150,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Routing Rule Item", 57)]
-    RoutingRuleItem = 151,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Saved Query", 22)]
-    SavedQuery = 26,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Saved Query Visualization", 43)]
-    SavedQueryVisualization = 59,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SDKMessage", 69)]
-    SDKMessage = 201,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SDKMessageFilter", 70)]
-    SDKMessageFilter = 202,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SdkMessagePair", 71)]
-    SdkMessagePair = 203,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SDK Message Processing Step", 53)]
-    SDKMessageProcessingStep = 92,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SDK Message Processing Step Image", 54)]
-    SDKMessageProcessingStepImage = 93,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SdkMessageRequest", 72)]
-    SdkMessageRequest = 204,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SdkMessageRequestField", 73)]
-    SdkMessageRequestField = 205,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SdkMessageResponse", 74)]
-    SdkMessageResponse = 206,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SdkMessageResponseField", 75)]
-    SdkMessageResponseField = 207,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Service Endpoint", 55)]
-    ServiceEndpoint = 95,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Similarity Rule", 65)]
-    SimilarityRule = 165,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Site Map", 46)]
-    SiteMap = 62,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SLA", 58)]
-    SLA = 152,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("SLA Item", 59)]
-    SLAItem = 153,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("System Form", 44)]
-    SystemForm = 60,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("View Attribute", 5)]
-    ViewAttribute = 6,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Web Resource", 45)]
-    WebResource = 61,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("WebWizard", 76)]
-    WebWizard = 210,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Workflow", 23)]
-    Workflow = 29,
-  }
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  public enum PluginAssembly_AuthType
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("BasicAuth", 0)]
-    BasicAuth = 0,
-  }
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  public enum PluginAssembly_IsolationMode
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("External", 2)]
-    External = 3,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("None", 0)]
-    None = 1,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Sandbox", 1)]
-    Sandbox = 2,
-  }
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  public enum PluginAssembly_SourceType
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("AzureWebApp", 3)]
-    AzureWebApp = 3,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Database", 0)]
-    Database = 0,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Disk", 1)]
-    Disk = 1,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Normal", 2)]
-    Normal = 2,
-  }
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  public enum SolutionComponent_RootComponentBehavior
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Do not include subcomponents", 1)]
-    Donotincludesubcomponents = 1,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Include As Shell Only", 2)]
-    IncludeAsShellOnly = 2,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    [OptionSetMetadataAttribute("Include Subcomponents", 0)]
-    IncludeSubcomponents = 0,
-  }
+	
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum ComponentState
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Deleted", 2)]
+		Deleted = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Deleted Unpublished", 3)]
+		DeletedUnpublished = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Published", 0)]
+		Published = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Unpublished", 1)]
+		Unpublished = 1,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum ComponentType
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("AI Configuration", 86)]
+		AIConfiguration = 402,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("AI Project", 85)]
+		AIProject = 401,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("AI Project Type", 84)]
+		AIProjectType = 400,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Attachment", 28)]
+		Attachment = 35,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Attribute", 1)]
+		Attribute = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Attribute Image Configuration", 88)]
+		AttributeImageConfiguration = 431,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Attribute Lookup Value", 4)]
+		AttributeLookupValue = 5,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Attribute Map", 36)]
+		AttributeMap = 47,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Attribute Picklist Value", 3)]
+		AttributePicklistValue = 4,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Canvas App", 79)]
+		CanvasApp = 300,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Complex Control", 48)]
+		ComplexControl = 64,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Connection Role", 47)]
+		ConnectionRole = 63,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Connector", 80)]
+		Connector_371 = 371,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Connector", 81)]
+		Connector_372 = 372,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Contract Template", 30)]
+		ContractTemplate = 37,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Convert Rule", 60)]
+		ConvertRule = 154,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Convert Rule Item", 61)]
+		ConvertRuleItem = 155,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Custom Control", 66)]
+		CustomControl = 66,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Custom Control Default Config", 67)]
+		CustomControlDefaultConfig = 68,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Data Source Mapping", 68)]
+		DataSourceMapping = 166,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Display String", 18)]
+		DisplayString = 22,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Display String Map", 19)]
+		DisplayStringMap = 23,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Duplicate Rule", 33)]
+		DuplicateRule = 44,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Duplicate Rule Condition", 34)]
+		DuplicateRuleCondition = 45,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Email Template", 29)]
+		EmailTemplate = 36,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity", 0)]
+		Entity = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Analytics Configuration", 87)]
+		EntityAnalyticsConfiguration = 430,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Image Configuration", 89)]
+		EntityImageConfiguration = 432,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Key", 13)]
+		EntityKey = 14,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Map", 35)]
+		EntityMap = 46,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Relationship", 9)]
+		EntityRelationship = 10,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Relationship Relationships", 11)]
+		EntityRelationshipRelationships = 12,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Entity Relationship Role", 10)]
+		EntityRelationshipRole = 11,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Environment Variable Definition", 82)]
+		EnvironmentVariableDefinition = 380,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Environment Variable Value", 83)]
+		EnvironmentVariableValue = 381,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Field Permission", 50)]
+		FieldPermission = 71,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Field Security Profile", 49)]
+		FieldSecurityProfile = 70,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Form", 20)]
+		Form = 24,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Hierarchy Rule", 62)]
+		HierarchyRule = 65,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Import Map", 78)]
+		ImportMap = 208,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Index", 77)]
+		Index = 18,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("KB Article Template", 31)]
+		KBArticleTemplate = 38,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Localized Label", 6)]
+		LocalizedLabel = 7,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Mail Merge Template", 32)]
+		MailMergeTemplate = 39,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Managed Property", 12)]
+		ManagedProperty = 13,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Mobile Offline Profile", 63)]
+		MobileOfflineProfile = 161,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Mobile Offline Profile Item", 64)]
+		MobileOfflineProfileItem = 162,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Option Set", 8)]
+		OptionSet = 9,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Organization", 21)]
+		Organization = 25,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Plugin Assembly", 52)]
+		PluginAssembly = 91,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Plugin Type", 51)]
+		PluginType = 90,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Privilege", 14)]
+		Privilege = 16,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("PrivilegeObjectTypeCode", 15)]
+		PrivilegeObjectTypeCode = 17,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Relationship", 2)]
+		Relationship = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Relationship Extra Condition", 7)]
+		RelationshipExtraCondition = 8,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Report", 24)]
+		Report = 31,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Report Category", 26)]
+		ReportCategory = 33,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Report Entity", 25)]
+		ReportEntity = 32,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Report Visibility", 27)]
+		ReportVisibility = 34,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Ribbon Command", 37)]
+		RibbonCommand = 48,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Ribbon Context Group", 38)]
+		RibbonContextGroup = 49,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Ribbon Customization", 39)]
+		RibbonCustomization = 50,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Ribbon Diff", 42)]
+		RibbonDiff = 55,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Ribbon Rule", 40)]
+		RibbonRule = 52,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Ribbon Tab To Command Map", 41)]
+		RibbonTabToCommandMap = 53,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Role", 16)]
+		Role = 20,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Role Privilege", 17)]
+		RolePrivilege = 21,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Routing Rule", 56)]
+		RoutingRule = 150,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Routing Rule Item", 57)]
+		RoutingRuleItem = 151,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Saved Query", 22)]
+		SavedQuery = 26,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Saved Query Visualization", 43)]
+		SavedQueryVisualization = 59,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SDKMessage", 69)]
+		SDKMessage = 201,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SDKMessageFilter", 70)]
+		SDKMessageFilter = 202,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SdkMessagePair", 71)]
+		SdkMessagePair = 203,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SDK Message Processing Step", 53)]
+		SDKMessageProcessingStep = 92,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SDK Message Processing Step Image", 54)]
+		SDKMessageProcessingStepImage = 93,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SdkMessageRequest", 72)]
+		SdkMessageRequest = 204,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SdkMessageRequestField", 73)]
+		SdkMessageRequestField = 205,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SdkMessageResponse", 74)]
+		SdkMessageResponse = 206,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SdkMessageResponseField", 75)]
+		SdkMessageResponseField = 207,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Service Endpoint", 55)]
+		ServiceEndpoint = 95,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Similarity Rule", 65)]
+		SimilarityRule = 165,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Site Map", 46)]
+		SiteMap = 62,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SLA", 58)]
+		SLA = 152,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("SLA Item", 59)]
+		SLAItem = 153,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("System Form", 44)]
+		SystemForm = 60,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("View Attribute", 5)]
+		ViewAttribute = 6,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Web Resource", 45)]
+		WebResource = 61,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("WebWizard", 76)]
+		WebWizard = 210,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Workflow", 23)]
+		Workflow = 29,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum PluginAssembly_AuthType
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("BasicAuth", 0)]
+		BasicAuth = 0,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum PluginAssembly_IsolationMode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("External", 2)]
+		External = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("None", 0)]
+		None = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Sandbox", 1)]
+		Sandbox = 2,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum PluginAssembly_SourceType
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("AzureWebApp", 3)]
+		AzureWebApp = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Database", 0)]
+		Database = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Disk", 1)]
+		Disk = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("File Store", 4)]
+		FileStore = 4,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Normal", 2)]
+		Normal = 2,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStep_InvocationSource
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Child", 2)]
+		Child = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Internal", 0)]
+		Internal = -1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Parent", 1)]
+		Parent = 0,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStep_Mode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Asynchronous", 1)]
+		Asynchronous = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Synchronous", 0)]
+		Synchronous = 0,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStep_Stage
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Final Post-operation (For internal use only)", 10)]
+		FinalPostoperation_Forinternaluseonly = 55,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Initial Pre-operation (For internal use only)", 0)]
+		InitialPreoperation_Forinternaluseonly = 5,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Internal Post-operation After External Plugins (For internal use only)", 8)]
+		InternalPostoperationAfterExternalPlugins_Forinternaluseonly = 45,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Internal Post-operation Before External Plugins (For internal use only)", 6)]
+		InternalPostoperationBeforeExternalPlugins_Forinternaluseonly = 35,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Internal Pre-operation After External Plugins (For internal use only)", 4)]
+		InternalPreoperationAfterExternalPlugins_Forinternaluseonly = 25,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Internal Pre-operation Before External Plugins (For internal use only)", 2)]
+		InternalPreoperationBeforeExternalPlugins_Forinternaluseonly = 15,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Main Operation (For internal use only)", 5)]
+		MainOperation_Forinternaluseonly = 30,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Post-Commit stage fired after transaction commit (For internal use only)", 12)]
+		PostCommitstagefiredaftertransactioncommit_Forinternaluseonly = 90,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Post-operation", 7)]
+		Postoperation = 40,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Post-operation (Deprecated)", 9)]
+		Postoperation_Deprecated = 50,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Pre-Commit stage fired before transaction commit (For internal use only)", 11)]
+		PreCommitstagefiredbeforetransactioncommit_Forinternaluseonly = 80,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Pre-operation", 3)]
+		Preoperation = 20,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Pre-validation", 1)]
+		Prevalidation = 10,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStep_StatusCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Disabled", 1)]
+		Disabled = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Enabled", 0)]
+		Enabled = 1,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStep_SupportedDeployment
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Both", 2)]
+		Both = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Microsoft Dynamics 365 Client for Outlook Only", 1)]
+		MicrosoftDynamics365ClientforOutlookOnly = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Server Only", 0)]
+		ServerOnly = 0,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStepImage_ImageType
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Both", 2)]
+		Both = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("PostImage", 1)]
+		PostImage = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("PreImage", 0)]
+		PreImage = 0,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SolutionComponent_RootComponentBehavior
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Do not include subcomponents", 1)]
+		Donotincludesubcomponents = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Include As Shell Only", 2)]
+		IncludeAsShellOnly = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Include Subcomponents", 0)]
+		IncludeSubcomponents = 0,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum appaction_ClientType
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Browser", 0, "#0000ff")]
+		Browser = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Mobile", 1, "#0000ff")]
+		Mobile = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Mail App", 2, "#0000ff")]
+		MailApp = 2,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum msdyn_knowledgemanagementsetting_msdyn_actionlist
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Link / unlink article", 0, "#0000ff")]
+		Linkunlinkarticle = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Copy URL", 1, "#0000ff")]
+		CopyURL = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Link article and email URL", 2, "#0000ff")]
+		LinkarticleandemailURL = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Link article and send article content", 3, "#0000ff")]
+		Linkarticleandsendarticlecontent = 3,
+	}
 }

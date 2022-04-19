@@ -5,7 +5,7 @@
   <IncludeCommandLine>true</IncludeCommandLine>
   <MaskPassword>true</MaskPassword>
   <SettingsVersion>1.2021.1.23</SettingsVersion>
-  <Version>1.2021.1.23</Version>
+  <Version>1.2021.10.6</Version>
   <ExtensionConfig>
     <ActionPrefixesWhitelist />
     <ActionsWhitelist />
@@ -26,6 +26,9 @@ saveappsetting</ActionsToSkip>
     <EntitiesToSkip />
     <EntitiesWhitelist>pluginassembly|
 plugintype|
+sdkmessageprocessingstep|
+sdkmessageprocessingstepimage|
+sdkmessageprocessingstepsecureconfig|
 solutioncomponent</EntitiesWhitelist>
     <EntityAttributeSpecifiedNames />
     <EntityPrefixesToSkip />
@@ -39,6 +42,7 @@ solutioncomponent</EntitiesWhitelist>
     <GenerateEnumProperties>true</GenerateEnumProperties>
     <GenerateOnlyReferencedOptionSets>true</GenerateOnlyReferencedOptionSets>
     <GenerateOptionSetMetadataAttribute>true</GenerateOptionSetMetadataAttribute>
+    <GroupLocalOptionSetsByEntity>false</GroupLocalOptionSetsByEntity>
     <InvalidCSharpNamePrefix>_</InvalidCSharpNamePrefix>
     <MakeAllFieldsEditable>false</MakeAllFieldsEditable>
     <MakeReadonlyFieldsEditable>false</MakeReadonlyFieldsEditable>
@@ -48,6 +52,7 @@ solutioncomponent</EntitiesWhitelist>
       xsi:nil="true" />
     <OptionSetPrefixesToSkip />
     <OptionSetsToSkip />
+    <OptionSetNames />
     <ProjectNameForEarlyBoundFiles />
     <PropertyEnumMappings />
     <ReadSerializedMetadata>false</ReadSerializedMetadata>

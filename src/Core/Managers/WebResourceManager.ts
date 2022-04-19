@@ -126,11 +126,11 @@ export default class WebResourceManager {
     const webResourceMeta = await this.getAllWebResourceMetadata();
 
     for (let resource of resources) {
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.file.startsWith(resourceFolder.root));
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file === resource.file));
       if (webResourceFolder) {
         const index = webResourceFolder.files.findIndex((file: IWebResource) => file.file === resource.file);
 
-        if (index && index > -1) {
+        if (index != null && index > -1) {
           webResourceFolder.files.splice(index, 1, resource);
         }
         else {

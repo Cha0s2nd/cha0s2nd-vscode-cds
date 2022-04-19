@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -71,18 +71,6 @@
       ]
     },
     "menus": {
-      "view/title": [
-        {
-          "command": "cha0s2nd-vscode-cds.solutionTreeView.refresh",
-          "when": "view == solution",
-          "group": "navigation"
-        },
-        {
-          "command": "cha0s2nd-vscode-cds.defaultSolutionTreeView.refresh",
-          "when": "view == defaultSolution",
-          "group": "navigation"
-        }
-      ],
       "view/item/context": [
         {
           "command": "cha0s2nd-vscode-cds.spkl.assembly.file",

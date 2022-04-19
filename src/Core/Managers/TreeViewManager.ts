@@ -42,9 +42,10 @@ export default class TreeViewManager {
       });
     }
 
-
     this.defaultSolutionProvider = new SolutionTreeViewDataProvider(org, defaultSolution);
-    vscode.window.registerTreeDataProvider('defaultSolution', this.defaultSolutionProvider);
+    vscode.window.createTreeView('defaultSolution', {
+      treeDataProvider: this.defaultSolutionProvider
+    });
   }
 
   private async changeSolution(solution: ISolution, organization?: IOrganization): Promise<void> {

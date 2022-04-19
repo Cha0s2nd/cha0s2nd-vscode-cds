@@ -92,11 +92,14 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
       url = await this.getCRMUrl();
     }
 
+    let passwordPrompt: string | undefined;
+
     if (!username) {
       username = await this.getUsername();
     }
-
-    const password = await this.getPassword();
+    else {
+      passwordPrompt = 'Please re-enter your password for Dynamics CRM';
+    }
 
     if (url) {
       try {
@@ -116,7 +119,7 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
               },
               form: {
                 'UserName': username,
-                'Password': password,
+                'Password': await this.getPassword(passwordPrompt),
                 'AuthMethod': 'FormsAuthentication'
               },
               followAllRedirects: true,
@@ -175,11 +178,12 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     return await Promise.race([inputPromise, timeoutPromise]);
   }
 
-  private async getPassword(): Promise<string | undefined> {
+  private async getPassword(prompt?: string): Promise<string | undefined> {
     const inputPromise = vscode.window.showInputBox({
       ignoreFocusOut: true,
       placeHolder: 'Password',
-      password: true
+      password: true,
+      prompt: prompt
     });
 
     const timeoutPromise = new Promise<string>((resolve, reject) => {

@@ -33,8 +33,11 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
 
   changeSolution(organization?: IOrganization, solution?: ISolution): void {
     this.organization = organization;
-    this.solution = solution;
-    this._onDidChangeTreeData.fire();
+
+    if (this.solution?.uniqueName !== solution?.uniqueName) {
+      this.solution = solution;
+      this._onDidChangeTreeData.fire();
+    }
   }
 
   refresh(): void {
@@ -133,8 +136,6 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getSolutionComponents(solutionId?: string, type?: SolutionComponentTypes): Promise<ISolutionComponent[]> {
-    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
-
     return <ISolutionComponent[]>(await WebApi.retrieveMultiplePaged(
       'solutioncomponents',
       [
@@ -144,7 +145,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         'rootsolutioncomponentid',
         'objectid'
       ],
-      `_solutionid_value eq ${solution?.solutionId}${type ? ` and componenttype eq ${type}` : ''}`
+      `_solutionid_value eq ${solutionId}${type ? ` and componenttype eq ${type}` : ''}`
     ));
   }
 

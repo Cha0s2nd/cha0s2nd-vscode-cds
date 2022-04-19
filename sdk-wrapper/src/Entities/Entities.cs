@@ -6,2042 +6,4165 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
+// Created via this command line: "C:\Users\FRossouw\AppData\Roaming\MscrmTools\XrmToolBox\Plugins\DLaB.EarlyBoundGenerator\crmsvcutil.exe" /url:"https://britisheng-d03.api.crm4.dynamics.com" /namespace:"sdk_wrapper.Entities" /out:"D:\Personal\PetProjects\VS Code Extensions\cha0s2nd-vscode-cds\sdk-wrapper\src\Entities\Entities.cs" /servicecontextname:"CrmServiceContext" /SuppressGeneratedCodeAttribute:"true" /codecustomization:"DLaB.CrmSvcUtilExtensions.Entity.CustomizeCodeDomService,DLaB.CrmSvcUtilExtensions" /codegenerationservice:"DLaB.CrmSvcUtilExtensions.Entity.CustomCodeGenerationService,DLaB.CrmSvcUtilExtensions" /codewriterfilter:"DLaB.CrmSvcUtilExtensions.Entity.CodeWriterFilterService,DLaB.CrmSvcUtilExtensions" /namingservice:"DLaB.CrmSvcUtilExtensions.NamingService,DLaB.CrmSvcUtilExtensions" /metadataproviderservice:"DLaB.CrmSvcUtilExtensions.Entity.MetadataProviderService,DLaB.CrmSvcUtilExtensions" 
 //------------------------------------------------------------------------------
 
 [assembly: Microsoft.Xrm.Sdk.Client.ProxyTypesAssemblyAttribute()]
-[assembly: System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "9.1.0.71")]
+[assembly: System.CodeDom.Compiler.GeneratedCodeAttribute("CrmSvcUtil", "9.1.0.93")]
 
 namespace sdk_wrapper.Entities
 {
-
-
-  /// <summary>
-  /// Assembly that contains one or more plug-in types.
-  /// </summary>
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("pluginassembly")]
-  public partial class PluginAssembly : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
-  {
-
-    public static class Fields
-    {
-      public const string AuthType = "authtype";
-      public const string ComponentState = "componentstate";
-      public const string Content = "content";
-      public const string CreatedBy = "createdby";
-      public const string CreatedOn = "createdon";
-      public const string CreatedOnBehalfBy = "createdonbehalfby";
-      public const string Culture = "culture";
-      public const string CustomizationLevel = "customizationlevel";
-      public const string Description = "description";
-      public const string IntroducedVersion = "introducedversion";
-      public const string IsCustomizable = "iscustomizable";
-      public const string IsHidden = "ishidden";
-      public const string IsManaged = "ismanaged";
-      public const string IsolationMode = "isolationmode";
-      public const string IsPasswordSet = "ispasswordset";
-      public const string Major = "major";
-      public const string ManagedIdentityId = "managedidentityid";
-      public const string Minor = "minor";
-      public const string ModifiedBy = "modifiedby";
-      public const string ModifiedOn = "modifiedon";
-      public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
-      public const string Name = "name";
-      public const string OrganizationId = "organizationid";
-      public const string OverwriteTime = "overwritetime";
-      public const string Password = "password";
-      public const string Path = "path";
-      public const string PluginAssemblyId = "pluginassemblyid";
-      public const string Id = "pluginassemblyid";
-      public const string PluginAssemblyIdUnique = "pluginassemblyidunique";
-      public const string PublicKeyToken = "publickeytoken";
-      public const string SolutionId = "solutionid";
-      public const string SourceHash = "sourcehash";
-      public const string SourceType = "sourcetype";
-      public const string Url = "url";
-      public const string UserName = "username";
-      public const string Version = "version";
-      public const string VersionNumber = "versionnumber";
-    }
-
-    /// <summary>
-    /// Default Constructor.
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public PluginAssembly() :
-        base(EntityLogicalName)
-    {
-    }
-
-    public const string EntityLogicalName = "pluginassembly";
-
-    public const string EntitySchemaName = "PluginAssembly";
-
-    public const string PrimaryIdAttribute = "pluginassemblyid";
-
-    public const string PrimaryNameAttribute = "name";
-
-    public const string EntityLogicalCollectionName = "pluginassemblies";
-
-    public const string EntitySetName = "pluginassemblies";
-
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-    public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    private void OnPropertyChanged(string propertyName)
-    {
-      if ((this.PropertyChanged != null))
-      {
-        this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-      }
-    }
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    private void OnPropertyChanging(string propertyName)
-    {
-      if ((this.PropertyChanging != null))
-      {
-        this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
-      }
-    }
-
-    /// <summary>
-    /// Specifies mode of authentication with web sources like WebApp
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("authtype")]
-    public Microsoft.Xrm.Sdk.OptionSetValue AuthType
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("authtype");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("AuthType");
-        this.SetAttributeValue("authtype", value);
-        this.OnPropertyChanged("AuthType");
-      }
-    }
-
-    /// <summary>
-    /// Specifies mode of authentication with web sources like WebApp
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("authtype")]
-    public virtual PluginAssembly_AuthType? AuthTypeEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((PluginAssembly_AuthType?)(EntityOptionSetEnum.GetEnum(this, "authtype")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("AuthType");
-        this.SetAttributeValue("authtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-        this.OnPropertyChanged("AuthType");
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-    public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-    public virtual ComponentState? ComponentStateEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((ComponentState?)(EntityOptionSetEnum.GetEnum(this, "componentstate")));
-      }
-    }
-
-    /// <summary>
-    /// Bytes of the assembly, in Base64 format.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("content")]
-    public string Content
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("content");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Content");
-        this.SetAttributeValue("content", value);
-        this.OnPropertyChanged("Content");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who created the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the plug-in assembly was created.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-    public System.Nullable<System.DateTime> CreatedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who created the pluginassembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("CreatedOnBehalfBy");
-        this.SetAttributeValue("createdonbehalfby", value);
-        this.OnPropertyChanged("CreatedOnBehalfBy");
-      }
-    }
-
-    /// <summary>
-    /// Culture code for the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("culture")]
-    public string Culture
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("culture");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Culture");
-        this.SetAttributeValue("culture", value);
-        this.OnPropertyChanged("Culture");
-      }
-    }
-
-    /// <summary>
-    /// Customization Level.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
-    public System.Nullable<int> CustomizationLevel
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
-      }
-    }
-
-    /// <summary>
-    /// Description of the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
-    public string Description
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("description");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Description");
-        this.SetAttributeValue("description", value);
-        this.OnPropertyChanged("Description");
-      }
-    }
-
-    /// <summary>
-    /// Version in which the form is introduced.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("introducedversion")]
-    public string IntroducedVersion
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("introducedversion");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("IntroducedVersion");
-        this.SetAttributeValue("introducedversion", value);
-        this.OnPropertyChanged("IntroducedVersion");
-      }
-    }
-
-    /// <summary>
-    /// Information that specifies whether this component can be customized.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("iscustomizable")]
-    public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("IsCustomizable");
-        this.SetAttributeValue("iscustomizable", value);
-        this.OnPropertyChanged("IsCustomizable");
-      }
-    }
-
-    /// <summary>
-    /// Information that specifies whether this component should be hidden.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ishidden")]
-    public Microsoft.Xrm.Sdk.BooleanManagedProperty IsHidden
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("ishidden");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("IsHidden");
-        this.SetAttributeValue("ishidden", value);
-        this.OnPropertyChanged("IsHidden");
-      }
-    }
-
-    /// <summary>
-    /// Information that specifies whether this component is managed.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
-    public System.Nullable<bool> IsManaged
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
-      }
-    }
-
-    /// <summary>
-    /// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isolationmode")]
-    public Microsoft.Xrm.Sdk.OptionSetValue IsolationMode
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("isolationmode");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("IsolationMode");
-        this.SetAttributeValue("isolationmode", value);
-        this.OnPropertyChanged("IsolationMode");
-      }
-    }
-
-    /// <summary>
-    /// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isolationmode")]
-    public virtual PluginAssembly_IsolationMode? IsolationModeEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((PluginAssembly_IsolationMode?)(EntityOptionSetEnum.GetEnum(this, "isolationmode")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("IsolationMode");
-        this.SetAttributeValue("isolationmode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-        this.OnPropertyChanged("IsolationMode");
-      }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ispasswordset")]
-    public System.Nullable<bool> IsPasswordSet
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<bool>>("ispasswordset");
-      }
-    }
-
-    /// <summary>
-    /// Major of the assembly version.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("major")]
-    public System.Nullable<int> Major
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("major");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for managedidentity associated with pluginassembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("managedidentityid")]
-    public Microsoft.Xrm.Sdk.EntityReference ManagedIdentityId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("managedidentityid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("ManagedIdentityId");
-        this.SetAttributeValue("managedidentityid", value);
-        this.OnPropertyChanged("ManagedIdentityId");
-      }
-    }
-
-    /// <summary>
-    /// Minor of the assembly version.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("minor")]
-    public System.Nullable<int> Minor
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("minor");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who last modified the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the plug-in assembly was last modified.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-    public System.Nullable<System.DateTime> ModifiedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who last modified the pluginassembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("ModifiedOnBehalfBy");
-        this.SetAttributeValue("modifiedonbehalfby", value);
-        this.OnPropertyChanged("ModifiedOnBehalfBy");
-      }
-    }
-
-    /// <summary>
-    /// Name of the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
-    public string Name
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("name");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Name");
-        this.SetAttributeValue("name", value);
-        this.OnPropertyChanged("Name");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the organization with which the plug-in assembly is associated.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
-    public Microsoft.Xrm.Sdk.EntityReference OrganizationId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
-    public System.Nullable<System.DateTime> OverwriteTime
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
-      }
-    }
-
-    /// <summary>
-    /// User Password
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("password")]
-    public string Password
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("password");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Password");
-        this.SetAttributeValue("password", value);
-        this.OnPropertyChanged("Password");
-      }
-    }
-
-    /// <summary>
-    /// File name of the plug-in assembly. Used when the source type is set to 1.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("path")]
-    public string Path
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("path");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Path");
-        this.SetAttributeValue("path", value);
-        this.OnPropertyChanged("Path");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
-    public System.Nullable<System.Guid> PluginAssemblyId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("pluginassemblyid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("PluginAssemblyId");
-        this.SetAttributeValue("pluginassemblyid", value);
-        if (value.HasValue)
-        {
-          base.Id = value.Value;
-        }
-        else
-        {
-          base.Id = System.Guid.Empty;
-        }
-        this.OnPropertyChanged("PluginAssemblyId");
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
-    public override System.Guid Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return base.Id;
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.PluginAssemblyId = value;
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyidunique")]
-    public System.Nullable<System.Guid> PluginAssemblyIdUnique
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("pluginassemblyidunique");
-      }
-    }
-
-    /// <summary>
-    /// Public key token of the assembly. This value can be obtained from the assembly by using reflection.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("publickeytoken")]
-    public string PublicKeyToken
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("publickeytoken");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("PublicKeyToken");
-        this.SetAttributeValue("publickeytoken", value);
-        this.OnPropertyChanged("PublicKeyToken");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the associated solution.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
-    public System.Nullable<System.Guid> SolutionId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
-      }
-    }
-
-    /// <summary>
-    /// Hash of the source of the assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcehash")]
-    public string SourceHash
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("sourcehash");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("SourceHash");
-        this.SetAttributeValue("sourcehash", value);
-        this.OnPropertyChanged("SourceHash");
-      }
-    }
-
-    /// <summary>
-    /// Location of the assembly, for example 0=database, 1=on-disk.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcetype")]
-    public Microsoft.Xrm.Sdk.OptionSetValue SourceType
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("sourcetype");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("SourceType");
-        this.SetAttributeValue("sourcetype", value);
-        this.OnPropertyChanged("SourceType");
-      }
-    }
-
-    /// <summary>
-    /// Location of the assembly, for example 0=database, 1=on-disk.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcetype")]
-    public virtual PluginAssembly_SourceType? SourceTypeEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((PluginAssembly_SourceType?)(EntityOptionSetEnum.GetEnum(this, "sourcetype")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("SourceType");
-        this.SetAttributeValue("sourcetype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-        this.OnPropertyChanged("SourceType");
-      }
-    }
-
-    /// <summary>
-    /// Web Url
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("url")]
-    public string Url
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("url");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Url");
-        this.SetAttributeValue("url", value);
-        this.OnPropertyChanged("Url");
-      }
-    }
-
-    /// <summary>
-    /// User Name
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("username")]
-    public string UserName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("username");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("UserName");
-        this.SetAttributeValue("username", value);
-        this.OnPropertyChanged("UserName");
-      }
-    }
-
-    /// <summary>
-    /// Version number of the assembly. The value can be obtained from the assembly through reflection.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("version")]
-    public string Version
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("version");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Version");
-        this.SetAttributeValue("version", value);
-        this.OnPropertyChanged("Version");
-      }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
-    public System.Nullable<long> VersionNumber
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-      }
-    }
-
-    /// <summary>
-    /// 1:N pluginassembly_plugintype
-    /// </summary>
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("pluginassembly_plugintype")]
-    public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.PluginType> pluginassembly_plugintype
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntities<sdk_wrapper.Entities.PluginType>("pluginassembly_plugintype", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("pluginassembly_plugintype");
-        this.SetRelatedEntities<sdk_wrapper.Entities.PluginType>("pluginassembly_plugintype", null, value);
-        this.OnPropertyChanged("pluginassembly_plugintype");
-      }
-    }
-
-    /// <summary>
-    /// Constructor for populating via LINQ queries given a LINQ anonymous type
-    /// <param name="anonymousType">LINQ anonymous type.</param>
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public PluginAssembly(object anonymousType) :
-        this()
-    {
-      foreach (var p in anonymousType.GetType().GetProperties())
-      {
-        var value = p.GetValue(anonymousType, null);
-        var name = p.Name.ToLower();
-
-        if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
-        {
-          value = new Microsoft.Xrm.Sdk.OptionSetValue((int)value);
-          name = name.Remove(name.Length - "enum".Length);
-        }
-
-        switch (name)
-        {
-          case "id":
-            base.Id = (System.Guid)value;
-            Attributes["pluginassemblyid"] = base.Id;
-            break;
-          case "pluginassemblyid":
-            var id = (System.Nullable<System.Guid>)value;
-            if (id == null) { continue; }
-            base.Id = id.Value;
-            Attributes[name] = base.Id;
-            break;
-          case "formattedvalues":
-            // Add Support for FormattedValues
-            FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
-            break;
-          default:
-            Attributes[name] = value;
-            break;
-        }
-      }
-    }
-  }
-
-  /// <summary>
-  /// Type that inherits from the IPlugin interface and is contained within a plug-in assembly.
-  /// </summary>
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("plugintype")]
-  public partial class PluginType : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
-  {
-
-    public static class Fields
-    {
-      public const string AssemblyName = "assemblyname";
-      public const string ComponentState = "componentstate";
-      public const string CreatedBy = "createdby";
-      public const string CreatedOn = "createdon";
-      public const string CreatedOnBehalfBy = "createdonbehalfby";
-      public const string Culture = "culture";
-      public const string CustomizationLevel = "customizationlevel";
-      public const string CustomWorkflowActivityInfo = "customworkflowactivityinfo";
-      public const string Description = "description";
-      public const string FriendlyName = "friendlyname";
-      public const string IsManaged = "ismanaged";
-      public const string IsWorkflowActivity = "isworkflowactivity";
-      public const string Major = "major";
-      public const string Minor = "minor";
-      public const string ModifiedBy = "modifiedby";
-      public const string ModifiedOn = "modifiedon";
-      public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
-      public const string Name = "name";
-      public const string OrganizationId = "organizationid";
-      public const string OverwriteTime = "overwritetime";
-      public const string PluginAssemblyId = "pluginassemblyid";
-      public const string PluginTypeId = "plugintypeid";
-      public const string Id = "plugintypeid";
-      public const string PluginTypeIdUnique = "plugintypeidunique";
-      public const string PublicKeyToken = "publickeytoken";
-      public const string SolutionId = "solutionid";
-      public const string TypeName = "typename";
-      public const string Version = "version";
-      public const string VersionNumber = "versionnumber";
-      public const string WorkflowActivityGroupName = "workflowactivitygroupname";
-      public const string pluginassembly_plugintype = "pluginassembly_plugintype";
-    }
-
-    /// <summary>
-    /// Default Constructor.
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public PluginType() :
-        base(EntityLogicalName)
-    {
-    }
-
-    public const string EntityLogicalName = "plugintype";
-
-    public const string EntitySchemaName = "PluginType";
-
-    public const string PrimaryIdAttribute = "plugintypeid";
-
-    public const string PrimaryNameAttribute = "name";
-
-    public const string EntityLogicalCollectionName = "plugintypes";
-
-    public const string EntitySetName = "plugintypes";
-
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-    public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    private void OnPropertyChanged(string propertyName)
-    {
-      if ((this.PropertyChanged != null))
-      {
-        this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-      }
-    }
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    private void OnPropertyChanging(string propertyName)
-    {
-      if ((this.PropertyChanging != null))
-      {
-        this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
-      }
-    }
-
-    /// <summary>
-    /// Full path name of the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("assemblyname")]
-    public string AssemblyName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("assemblyname");
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-    public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
-    public virtual ComponentState? ComponentStateEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((ComponentState?)(EntityOptionSetEnum.GetEnum(this, "componentstate")));
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who created the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the plug-in type was created.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-    public System.Nullable<System.DateTime> CreatedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who created the plugintype.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("CreatedOnBehalfBy");
-        this.SetAttributeValue("createdonbehalfby", value);
-        this.OnPropertyChanged("CreatedOnBehalfBy");
-      }
-    }
-
-    /// <summary>
-    /// Culture code for the plug-in assembly.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("culture")]
-    public string Culture
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("culture");
-      }
-    }
-
-    /// <summary>
-    /// Customization level of the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
-    public System.Nullable<int> CustomizationLevel
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
-      }
-    }
-
-    /// <summary>
-    /// Serialized Custom Activity Type information, including required arguments. For more information, see SandboxCustomActivityInfo.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customworkflowactivityinfo")]
-    public string CustomWorkflowActivityInfo
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("customworkflowactivityinfo");
-      }
-    }
-
-    /// <summary>
-    /// Description of the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
-    public string Description
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("description");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Description");
-        this.SetAttributeValue("description", value);
-        this.OnPropertyChanged("Description");
-      }
-    }
-
-    /// <summary>
-    /// User friendly name for the plug-in.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("friendlyname")]
-    public string FriendlyName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("friendlyname");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("FriendlyName");
-        this.SetAttributeValue("friendlyname", value);
-        this.OnPropertyChanged("FriendlyName");
-      }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
-    public System.Nullable<bool> IsManaged
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
-      }
-    }
-
-    /// <summary>
-    /// Indicates if the plug-in is a custom activity for workflows.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isworkflowactivity")]
-    public System.Nullable<bool> IsWorkflowActivity
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<bool>>("isworkflowactivity");
-      }
-    }
-
-    /// <summary>
-    /// Major of the version number of the assembly for the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("major")]
-    public System.Nullable<int> Major
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("major");
-      }
-    }
-
-    /// <summary>
-    /// Minor of the version number of the assembly for the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("minor")]
-    public System.Nullable<int> Minor
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("minor");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who last modified the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the plug-in type was last modified.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-    public System.Nullable<System.DateTime> ModifiedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who last modified the plugintype.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("ModifiedOnBehalfBy");
-        this.SetAttributeValue("modifiedonbehalfby", value);
-        this.OnPropertyChanged("ModifiedOnBehalfBy");
-      }
-    }
-
-    /// <summary>
-    /// Name of the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
-    public string Name
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("name");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Name");
-        this.SetAttributeValue("name", value);
-        this.OnPropertyChanged("Name");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the organization with which the plug-in type is associated.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
-    public Microsoft.Xrm.Sdk.EntityReference OrganizationId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
-    public System.Nullable<System.DateTime> OverwriteTime
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the plug-in assembly that contains this plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
-    public Microsoft.Xrm.Sdk.EntityReference PluginAssemblyId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("pluginassemblyid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("PluginAssemblyId");
-        this.SetAttributeValue("pluginassemblyid", value);
-        this.OnPropertyChanged("PluginAssemblyId");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
-    public System.Nullable<System.Guid> PluginTypeId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("plugintypeid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("PluginTypeId");
-        this.SetAttributeValue("plugintypeid", value);
-        if (value.HasValue)
-        {
-          base.Id = value.Value;
-        }
-        else
-        {
-          base.Id = System.Guid.Empty;
-        }
-        this.OnPropertyChanged("PluginTypeId");
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
-    public override System.Guid Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return base.Id;
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.PluginTypeId = value;
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeidunique")]
-    public System.Nullable<System.Guid> PluginTypeIdUnique
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("plugintypeidunique");
-      }
-    }
-
-    /// <summary>
-    /// Public key token of the assembly for the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("publickeytoken")]
-    public string PublicKeyToken
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("publickeytoken");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the associated solution.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
-    public System.Nullable<System.Guid> SolutionId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
-      }
-    }
-
-    /// <summary>
-    /// Fully qualified type name of the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("typename")]
-    public string TypeName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("typename");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("TypeName");
-        this.SetAttributeValue("typename", value);
-        this.OnPropertyChanged("TypeName");
-      }
-    }
-
-    /// <summary>
-    /// Version number of the assembly for the plug-in type.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("version")]
-    public string Version
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("version");
-      }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
-    public System.Nullable<long> VersionNumber
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-      }
-    }
-
-    /// <summary>
-    /// Group name of workflow custom activity.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("workflowactivitygroupname")]
-    public string WorkflowActivityGroupName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("workflowactivitygroupname");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("WorkflowActivityGroupName");
-        this.SetAttributeValue("workflowactivitygroupname", value);
-        this.OnPropertyChanged("WorkflowActivityGroupName");
-      }
-    }
-
-    /// <summary>
-    /// N:1 pluginassembly_plugintype
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("pluginassembly_plugintype")]
-    public sdk_wrapper.Entities.PluginAssembly pluginassembly_plugintype
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<sdk_wrapper.Entities.PluginAssembly>("pluginassembly_plugintype", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("pluginassembly_plugintype");
-        this.SetRelatedEntity<sdk_wrapper.Entities.PluginAssembly>("pluginassembly_plugintype", null, value);
-        this.OnPropertyChanged("pluginassembly_plugintype");
-      }
-    }
-
-    /// <summary>
-    /// Constructor for populating via LINQ queries given a LINQ anonymous type
-    /// <param name="anonymousType">LINQ anonymous type.</param>
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public PluginType(object anonymousType) :
-        this()
-    {
-      foreach (var p in anonymousType.GetType().GetProperties())
-      {
-        var value = p.GetValue(anonymousType, null);
-        var name = p.Name.ToLower();
-
-        if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
-        {
-          value = new Microsoft.Xrm.Sdk.OptionSetValue((int)value);
-          name = name.Remove(name.Length - "enum".Length);
-        }
-
-        switch (name)
-        {
-          case "id":
-            base.Id = (System.Guid)value;
-            Attributes["plugintypeid"] = base.Id;
-            break;
-          case "plugintypeid":
-            var id = (System.Nullable<System.Guid>)value;
-            if (id == null) { continue; }
-            base.Id = id.Value;
-            Attributes[name] = base.Id;
-            break;
-          case "formattedvalues":
-            // Add Support for FormattedValues
-            FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
-            break;
-          default:
-            Attributes[name] = value;
-            break;
-        }
-      }
-    }
-  }
-
-  /// <summary>
-  /// A component of a CRM solution.
-  /// </summary>
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("solutioncomponent")]
-  public partial class SolutionComponent : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
-  {
-
-    public static class Fields
-    {
-      public const string ComponentType = "componenttype";
-      public const string CreatedBy = "createdby";
-      public const string CreatedOn = "createdon";
-      public const string CreatedOnBehalfBy = "createdonbehalfby";
-      public const string IsMetadata = "ismetadata";
-      public const string ModifiedBy = "modifiedby";
-      public const string ModifiedOn = "modifiedon";
-      public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
-      public const string ObjectId = "objectid";
-      public const string RootComponentBehavior = "rootcomponentbehavior";
-      public const string RootSolutionComponentId = "rootsolutioncomponentid";
-      public const string SolutionComponentId = "solutioncomponentid";
-      public const string Id = "solutioncomponentid";
-      public const string SolutionId = "solutionid";
-      public const string VersionNumber = "versionnumber";
-      public const string Referencingsolutioncomponent_parent_solutioncomponent = "solutioncomponent_parent_solutioncomponent";
-    }
-
-    /// <summary>
-    /// Default Constructor.
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public SolutionComponent() :
-        base(EntityLogicalName)
-    {
-    }
-
-    public const string EntityLogicalName = "solutioncomponent";
-
-    public const string EntitySchemaName = "SolutionComponent";
-
-    public const string PrimaryIdAttribute = "solutioncomponentid";
-
-    public const string EntityLogicalCollectionName = "solutioncomponentss";
-
-    public const string EntitySetName = "solutioncomponents";
-
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-    public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    private void OnPropertyChanged(string propertyName)
-    {
-      if ((this.PropertyChanged != null))
-      {
-        this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-      }
-    }
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    private void OnPropertyChanging(string propertyName)
-    {
-      if ((this.PropertyChanging != null))
-      {
-        this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
-      }
-    }
-
-    /// <summary>
-    /// The object type code of the component.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componenttype")]
-    public Microsoft.Xrm.Sdk.OptionSetValue ComponentType
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componenttype");
-      }
-    }
-
-    /// <summary>
-    /// The object type code of the component.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componenttype")]
-    public virtual ComponentType? ComponentTypeEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((ComponentType?)(EntityOptionSetEnum.GetEnum(this, "componenttype")));
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who created the solution
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the solution was created.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-    public System.Nullable<System.DateTime> CreatedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who created the solution.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("CreatedOnBehalfBy");
-        this.SetAttributeValue("createdonbehalfby", value);
-        this.OnPropertyChanged("CreatedOnBehalfBy");
-      }
-    }
-
-    /// <summary>
-    /// Indicates whether this component is metadata or data.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismetadata")]
-    public System.Nullable<bool> IsMetadata
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<bool>>("ismetadata");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who last modified the solution.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the solution was last modified.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-    public System.Nullable<System.DateTime> ModifiedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who modified the solution.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("ModifiedOnBehalfBy");
-        this.SetAttributeValue("modifiedonbehalfby", value);
-        this.OnPropertyChanged("ModifiedOnBehalfBy");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the object with which the component is associated.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objectid")]
-    public System.Nullable<System.Guid> ObjectId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("objectid");
-      }
-    }
-
-    /// <summary>
-    /// Indicates the include behavior of the root component.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootcomponentbehavior")]
-    public Microsoft.Xrm.Sdk.OptionSetValue RootComponentBehavior
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("rootcomponentbehavior");
-      }
-    }
-
-    /// <summary>
-    /// Indicates the include behavior of the root component.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootcomponentbehavior")]
-    public virtual SolutionComponent_RootComponentBehavior? RootComponentBehaviorEnum
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((SolutionComponent_RootComponentBehavior?)(EntityOptionSetEnum.GetEnum(this, "rootcomponentbehavior")));
-      }
-    }
-
-    /// <summary>
-    /// The parent ID of the subcomponent, which will be a root
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootsolutioncomponentid")]
-    public System.Nullable<System.Guid> RootSolutionComponentId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("rootsolutioncomponentid");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the solution component.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutioncomponentid")]
-    public System.Nullable<System.Guid> SolutionComponentId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("solutioncomponentid");
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutioncomponentid")]
-    public override System.Guid Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return base.Id;
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        base.Id = value;
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the solution.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
-    public Microsoft.Xrm.Sdk.EntityReference SolutionId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("solutionid");
-      }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
-    public System.Nullable<long> VersionNumber
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-      }
-    }
-
-    /// <summary>
-    /// 1:N solutioncomponent_parent_solutioncomponent
-    /// </summary>
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
-    public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.SolutionComponent> Referencedsolutioncomponent_parent_solutioncomponent
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntities<sdk_wrapper.Entities.SolutionComponent>("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referenced);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.OnPropertyChanging("Referencedsolutioncomponent_parent_solutioncomponent");
-        this.SetRelatedEntities<sdk_wrapper.Entities.SolutionComponent>("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
-        this.OnPropertyChanged("Referencedsolutioncomponent_parent_solutioncomponent");
-      }
-    }
-
-    /// <summary>
-    /// N:1 solutioncomponent_parent_solutioncomponent
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootsolutioncomponentid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
-    public sdk_wrapper.Entities.SolutionComponent Referencingsolutioncomponent_parent_solutioncomponent
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<sdk_wrapper.Entities.SolutionComponent>("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referencing);
-      }
-    }
-
-    /// <summary>
-    /// Constructor for populating via LINQ queries given a LINQ anonymous type
-    /// <param name="anonymousType">LINQ anonymous type.</param>
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public SolutionComponent(object anonymousType) :
-        this()
-    {
-      foreach (var p in anonymousType.GetType().GetProperties())
-      {
-        var value = p.GetValue(anonymousType, null);
-        var name = p.Name.ToLower();
-
-        if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
-        {
-          value = new Microsoft.Xrm.Sdk.OptionSetValue((int)value);
-          name = name.Remove(name.Length - "enum".Length);
-        }
-
-        switch (name)
-        {
-          case "id":
-            base.Id = (System.Guid)value;
-            Attributes["solutioncomponentid"] = base.Id;
-            break;
-          case "solutioncomponentid":
-            var id = (System.Nullable<System.Guid>)value;
-            if (id == null) { continue; }
-            base.Id = id.Value;
-            Attributes[name] = base.Id;
-            break;
-          case "formattedvalues":
-            // Add Support for FormattedValues
-            FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
-            break;
-          default:
-            Attributes[name] = value;
-            break;
-        }
-      }
-    }
-  }
-
-  /// <summary>
-  /// Represents a source of entities bound to a CRM service. It tracks and manages changes made to the retrieved entities.
-  /// </summary>
-  public partial class CrmServiceContext : Microsoft.Xrm.Sdk.Client.OrganizationServiceContext
-  {
-
-    /// <summary>
-    /// Constructor.
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public CrmServiceContext(Microsoft.Xrm.Sdk.IOrganizationService service) :
-        base(service)
-    {
-    }
-
-    /// <summary>
-    /// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.PluginAssembly"/> entities.
-    /// </summary>
-    public System.Linq.IQueryable<sdk_wrapper.Entities.PluginAssembly> PluginAssemblySet
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.CreateQuery<sdk_wrapper.Entities.PluginAssembly>();
-      }
-    }
-
-    /// <summary>
-    /// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.PluginType"/> entities.
-    /// </summary>
-    public System.Linq.IQueryable<sdk_wrapper.Entities.PluginType> PluginTypeSet
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.CreateQuery<sdk_wrapper.Entities.PluginType>();
-      }
-    }
-
-    /// <summary>
-    /// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.SolutionComponent"/> entities.
-    /// </summary>
-    public System.Linq.IQueryable<sdk_wrapper.Entities.SolutionComponent> SolutionComponentSet
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.CreateQuery<sdk_wrapper.Entities.SolutionComponent>();
-      }
-    }
-  }
-
-  internal sealed class EntityOptionSetEnum
-  {
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public static System.Nullable<int> GetEnum(Microsoft.Xrm.Sdk.Entity entity, string attributeLogicalName)
-    {
-      if (entity.Attributes.ContainsKey(attributeLogicalName))
-      {
-        Microsoft.Xrm.Sdk.OptionSetValue value = entity.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>(attributeLogicalName);
-        if (value != null)
-        {
-          return value.Value;
-        }
-      }
-      return null;
-    }
-  }
-
-  /// <summary>
-  /// Attribute to handle storing the OptionSet's Metadata.
-  /// </summary>
-  [System.AttributeUsageAttribute(System.AttributeTargets.Field)]
-  public sealed class OptionSetMetadataAttribute : System.Attribute
-  {
-
-    /// <summary>
-    /// Color of the OptionSetValue.
-    /// </summary>
-    public string Color { get; set; }
-
-    /// <summary>
-    /// Description of the OptionSetValue.
-    /// </summary>
-    public string Description { get; set; }
-
-    /// <summary>
-    /// Display order index of the OptionSetValue.
-    /// </summary>
-    public int DisplayIndex { get; set; }
-
-    /// <summary>
-    /// External value of the OptionSetValue.
-    /// </summary>
-    public string ExternalValue { get; set; }
-
-    /// <summary>
-    /// Name of the OptionSetValue.
-    /// </summary>
-    public string Name { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="OptionSetMetadataAttribute"/> class.
-    /// </summary>
-    /// <param name="name">Name of the value.</param>
-    /// <param name="displayIndex">Display order index of the value.</param>
-    /// <param name="color">Color of the value.</param>
-    /// <param name="description">Description of the value.</param>
-    /// <param name="externalValue">External value of the value.</param>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public OptionSetMetadataAttribute(string name, int displayIndex, string color = null, string description = null, string externalValue = null)
-    {
-      this.Color = color;
-      this.Description = description;
-      this.ExternalValue = externalValue;
-      this.DisplayIndex = displayIndex;
-      this.Name = name;
-    }
-  }
-
-  /// <summary>
-  /// Extension class to handle retrieving of OptionSetMetadataAttribute.
-  /// </summary>
-  public static class OptionSetExtension
-  {
-
-    /// <summary>
-    /// Returns the OptionSetMetadataAttribute for the given enum value
-    /// </summary>
-    /// <typeparam name="T">OptionSet Enum Type</typeparam>
-    /// <param name="value">Enum Value with OptionSetMetadataAttribute</param>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public static OptionSetMetadataAttribute GetMetadata<T>(this T value)
-      where T : struct, System.IConvertible
-    {
-      System.Type enumType = typeof(T);
-      if (!enumType.IsEnum)
-      {
-        throw new System.ArgumentException("T must be an enum!");
-      }
-      System.Reflection.MemberInfo[] members = enumType.GetMember(value.ToString());
-      for (int i = 0; (i < members.Length); i++
-      )
-      {
-        System.Attribute attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(members[i], typeof(OptionSetMetadataAttribute));
-        if (attribute != null)
-        {
-          return ((OptionSetMetadataAttribute)(attribute));
-        }
-      }
-      throw new System.ArgumentException("T must be an enum adorned with an OptionSetMetadataAttribute!");
-    }
-  }
+	
+	
+	/// <summary>
+	/// Assembly that contains one or more plug-in types.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("pluginassembly")]
+	public partial class PluginAssembly : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+	{
+		
+		public static class Fields
+		{
+			public const string AuthType = "authtype";
+			public const string ComponentState = "componentstate";
+			public const string Content = "content";
+			public const string CreatedBy = "createdby";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string Culture = "culture";
+			public const string CustomizationLevel = "customizationlevel";
+			public const string Description = "description";
+			public const string IntroducedVersion = "introducedversion";
+			public const string IsCustomizable = "iscustomizable";
+			public const string IsHidden = "ishidden";
+			public const string IsManaged = "ismanaged";
+			public const string IsolationMode = "isolationmode";
+			public const string IsPasswordSet = "ispasswordset";
+			public const string Major = "major";
+			public const string ManagedIdentityId = "managedidentityid";
+			public const string Minor = "minor";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string Name = "name";
+			public const string OrganizationId = "organizationid";
+			public const string OverwriteTime = "overwritetime";
+			public const string PackageId = "packageid";
+			public const string Password = "password";
+			public const string Path = "path";
+			public const string PluginAssemblyId = "pluginassemblyid";
+			public const string Id = "pluginassemblyid";
+			public const string PluginAssemblyIdUnique = "pluginassemblyidunique";
+			public const string PublicKeyToken = "publickeytoken";
+			public const string SolutionId = "solutionid";
+			public const string SourceHash = "sourcehash";
+			public const string SourceType = "sourcetype";
+			public const string Url = "url";
+			public const string UserName = "username";
+			public const string Version = "version";
+			public const string VersionNumber = "versionnumber";
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public PluginAssembly() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string EntityLogicalName = "pluginassembly";
+		
+		public const string EntitySchemaName = "PluginAssembly";
+		
+		public const string PrimaryIdAttribute = "pluginassemblyid";
+		
+		public const string PrimaryNameAttribute = "name";
+		
+		public const string EntityLogicalCollectionName = "pluginassemblies";
+		
+		public const string EntitySetName = "pluginassemblies";
+		
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+		
+		public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanged(string propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanging(string propertyName)
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+			}
+		}
+		
+		/// <summary>
+		/// Specifies mode of authentication with web sources like WebApp
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("authtype")]
+		public Microsoft.Xrm.Sdk.OptionSetValue AuthType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("authtype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("AuthType");
+				this.SetAttributeValue("authtype", value);
+				this.OnPropertyChanged("AuthType");
+			}
+		}
+		
+		/// <summary>
+		/// Specifies mode of authentication with web sources like WebApp
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("authtype")]
+		public virtual PluginAssembly_AuthType? AuthTypeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((PluginAssembly_AuthType?)(EntityOptionSetEnum.GetEnum(this, "authtype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("AuthType");
+				this.SetAttributeValue("authtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("AuthType");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public virtual ComponentState? ComponentStateEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ComponentState?)(EntityOptionSetEnum.GetEnum(this, "componentstate")));
+			}
+		}
+		
+		/// <summary>
+		/// Bytes of the assembly, in Base64 format.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("content")]
+		public string Content
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("content");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Content");
+				this.SetAttributeValue("content", value);
+				this.OnPropertyChanged("Content");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the plug-in assembly was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the pluginassembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CreatedOnBehalfBy");
+				this.SetAttributeValue("createdonbehalfby", value);
+				this.OnPropertyChanged("CreatedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Culture code for the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("culture")]
+		public string Culture
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("culture");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Culture");
+				this.SetAttributeValue("culture", value);
+				this.OnPropertyChanged("Culture");
+			}
+		}
+		
+		/// <summary>
+		/// Customization Level.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+		public System.Nullable<int> CustomizationLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+			}
+		}
+		
+		/// <summary>
+		/// Description of the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+		public string Description
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("description");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Description");
+				this.SetAttributeValue("description", value);
+				this.OnPropertyChanged("Description");
+			}
+		}
+		
+		/// <summary>
+		/// Version in which the form is introduced.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("introducedversion")]
+		public string IntroducedVersion
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("introducedversion");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IntroducedVersion");
+				this.SetAttributeValue("introducedversion", value);
+				this.OnPropertyChanged("IntroducedVersion");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component can be customized.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("iscustomizable")]
+		public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsCustomizable");
+				this.SetAttributeValue("iscustomizable", value);
+				this.OnPropertyChanged("IsCustomizable");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component should be hidden.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ishidden")]
+		public Microsoft.Xrm.Sdk.BooleanManagedProperty IsHidden
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("ishidden");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsHidden");
+				this.SetAttributeValue("ishidden", value);
+				this.OnPropertyChanged("IsHidden");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component is managed.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+		public System.Nullable<bool> IsManaged
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+			}
+		}
+		
+		/// <summary>
+		/// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isolationmode")]
+		public Microsoft.Xrm.Sdk.OptionSetValue IsolationMode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("isolationmode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsolationMode");
+				this.SetAttributeValue("isolationmode", value);
+				this.OnPropertyChanged("IsolationMode");
+			}
+		}
+		
+		/// <summary>
+		/// Information about how the plugin assembly is to be isolated at execution time; None / Sandboxed.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isolationmode")]
+		public virtual PluginAssembly_IsolationMode? IsolationModeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((PluginAssembly_IsolationMode?)(EntityOptionSetEnum.GetEnum(this, "isolationmode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsolationMode");
+				this.SetAttributeValue("isolationmode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("IsolationMode");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ispasswordset")]
+		public System.Nullable<bool> IsPasswordSet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ispasswordset");
+			}
+		}
+		
+		/// <summary>
+		/// Major of the assembly version.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("major")]
+		public System.Nullable<int> Major
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("major");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for managedidentity associated with pluginassembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("managedidentityid")]
+		public Microsoft.Xrm.Sdk.EntityReference ManagedIdentityId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("managedidentityid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ManagedIdentityId");
+				this.SetAttributeValue("managedidentityid", value);
+				this.OnPropertyChanged("ManagedIdentityId");
+			}
+		}
+		
+		/// <summary>
+		/// Minor of the assembly version.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("minor")]
+		public System.Nullable<int> Minor
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("minor");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who last modified the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the plug-in assembly was last modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who last modified the pluginassembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ModifiedOnBehalfBy");
+				this.SetAttributeValue("modifiedonbehalfby", value);
+				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Name of the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+		public string Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Name");
+				this.SetAttributeValue("name", value);
+				this.OnPropertyChanged("Name");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the organization with which the plug-in assembly is associated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+		public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
+		public System.Nullable<System.DateTime> OverwriteTime
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Plugin Package associated with Plug-in Assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("packageid")]
+		public Microsoft.Xrm.Sdk.EntityReference PackageId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("packageid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("PackageId");
+				this.SetAttributeValue("packageid", value);
+				this.OnPropertyChanged("PackageId");
+			}
+		}
+		
+		/// <summary>
+		/// User Password
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("password")]
+		public string Password
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("password");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Password");
+				this.SetAttributeValue("password", value);
+				this.OnPropertyChanged("Password");
+			}
+		}
+		
+		/// <summary>
+		/// File name of the plug-in assembly. Used when the source type is set to 1.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("path")]
+		public string Path
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("path");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Path");
+				this.SetAttributeValue("path", value);
+				this.OnPropertyChanged("Path");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
+		public System.Nullable<System.Guid> PluginAssemblyId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("pluginassemblyid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("PluginAssemblyId");
+				this.SetAttributeValue("pluginassemblyid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+				this.OnPropertyChanged("PluginAssemblyId");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.PluginAssemblyId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyidunique")]
+		public System.Nullable<System.Guid> PluginAssemblyIdUnique
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("pluginassemblyidunique");
+			}
+		}
+		
+		/// <summary>
+		/// Public key token of the assembly. This value can be obtained from the assembly by using reflection.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("publickeytoken")]
+		public string PublicKeyToken
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("publickeytoken");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("PublicKeyToken");
+				this.SetAttributeValue("publickeytoken", value);
+				this.OnPropertyChanged("PublicKeyToken");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the associated solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+		public System.Nullable<System.Guid> SolutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+			}
+		}
+		
+		/// <summary>
+		/// Hash of the source of the assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcehash")]
+		public string SourceHash
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("sourcehash");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SourceHash");
+				this.SetAttributeValue("sourcehash", value);
+				this.OnPropertyChanged("SourceHash");
+			}
+		}
+		
+		/// <summary>
+		/// Location of the assembly, for example 0=database, 1=on-disk.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcetype")]
+		public Microsoft.Xrm.Sdk.OptionSetValue SourceType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("sourcetype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SourceType");
+				this.SetAttributeValue("sourcetype", value);
+				this.OnPropertyChanged("SourceType");
+			}
+		}
+		
+		/// <summary>
+		/// Location of the assembly, for example 0=database, 1=on-disk.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sourcetype")]
+		public virtual PluginAssembly_SourceType? SourceTypeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((PluginAssembly_SourceType?)(EntityOptionSetEnum.GetEnum(this, "sourcetype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SourceType");
+				this.SetAttributeValue("sourcetype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("SourceType");
+			}
+		}
+		
+		/// <summary>
+		/// Web Url
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("url")]
+		public string Url
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("url");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Url");
+				this.SetAttributeValue("url", value);
+				this.OnPropertyChanged("Url");
+			}
+		}
+		
+		/// <summary>
+		/// User Name
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("username")]
+		public string UserName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("username");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("UserName");
+				this.SetAttributeValue("username", value);
+				this.OnPropertyChanged("UserName");
+			}
+		}
+		
+		/// <summary>
+		/// Version number of the assembly. The value can be obtained from the assembly through reflection.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("version")]
+		public string Version
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("version");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Version");
+				this.SetAttributeValue("version", value);
+				this.OnPropertyChanged("Version");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+		public System.Nullable<long> VersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N pluginassembly_plugintype
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("pluginassembly_plugintype")]
+		public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.PluginType> pluginassembly_plugintype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<sdk_wrapper.Entities.PluginType>("pluginassembly_plugintype", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("pluginassembly_plugintype");
+				this.SetRelatedEntities<sdk_wrapper.Entities.PluginType>("pluginassembly_plugintype", null, value);
+				this.OnPropertyChanged("pluginassembly_plugintype");
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public PluginAssembly(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["pluginassemblyid"] = base.Id;
+                        break;
+                    case "pluginassemblyid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
+	
+	/// <summary>
+	/// Type that inherits from the IPlugin interface and is contained within a plug-in assembly.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("plugintype")]
+	public partial class PluginType : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+	{
+		
+		public static class Fields
+		{
+			public const string AssemblyName = "assemblyname";
+			public const string ComponentState = "componentstate";
+			public const string CreatedBy = "createdby";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string Culture = "culture";
+			public const string CustomizationLevel = "customizationlevel";
+			public const string CustomWorkflowActivityInfo = "customworkflowactivityinfo";
+			public const string Description = "description";
+			public const string FriendlyName = "friendlyname";
+			public const string IsManaged = "ismanaged";
+			public const string IsWorkflowActivity = "isworkflowactivity";
+			public const string Major = "major";
+			public const string Minor = "minor";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string Name = "name";
+			public const string OrganizationId = "organizationid";
+			public const string OverwriteTime = "overwritetime";
+			public const string PluginAssemblyId = "pluginassemblyid";
+			public const string PluginTypeId = "plugintypeid";
+			public const string Id = "plugintypeid";
+			public const string PluginTypeIdUnique = "plugintypeidunique";
+			public const string PublicKeyToken = "publickeytoken";
+			public const string SolutionId = "solutionid";
+			public const string TypeName = "typename";
+			public const string Version = "version";
+			public const string VersionNumber = "versionnumber";
+			public const string WorkflowActivityGroupName = "workflowactivitygroupname";
+			public const string pluginassembly_plugintype = "pluginassembly_plugintype";
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public PluginType() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string EntityLogicalName = "plugintype";
+		
+		public const string EntitySchemaName = "PluginType";
+		
+		public const string PrimaryIdAttribute = "plugintypeid";
+		
+		public const string PrimaryNameAttribute = "name";
+		
+		public const string EntityLogicalCollectionName = "plugintypes";
+		
+		public const string EntitySetName = "plugintypes";
+		
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+		
+		public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanged(string propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanging(string propertyName)
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+			}
+		}
+		
+		/// <summary>
+		/// Full path name of the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("assemblyname")]
+		public string AssemblyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("assemblyname");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public virtual ComponentState? ComponentStateEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ComponentState?)(EntityOptionSetEnum.GetEnum(this, "componentstate")));
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the plug-in type was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the plugintype.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CreatedOnBehalfBy");
+				this.SetAttributeValue("createdonbehalfby", value);
+				this.OnPropertyChanged("CreatedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Culture code for the plug-in assembly.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("culture")]
+		public string Culture
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("culture");
+			}
+		}
+		
+		/// <summary>
+		/// Customization level of the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+		public System.Nullable<int> CustomizationLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+			}
+		}
+		
+		/// <summary>
+		/// Serialized Custom Activity Type information, including required arguments. For more information, see SandboxCustomActivityInfo.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customworkflowactivityinfo")]
+		public string CustomWorkflowActivityInfo
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("customworkflowactivityinfo");
+			}
+		}
+		
+		/// <summary>
+		/// Description of the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+		public string Description
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("description");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Description");
+				this.SetAttributeValue("description", value);
+				this.OnPropertyChanged("Description");
+			}
+		}
+		
+		/// <summary>
+		/// User friendly name for the plug-in.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("friendlyname")]
+		public string FriendlyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("friendlyname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("FriendlyName");
+				this.SetAttributeValue("friendlyname", value);
+				this.OnPropertyChanged("FriendlyName");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+		public System.Nullable<bool> IsManaged
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+			}
+		}
+		
+		/// <summary>
+		/// Indicates if the plug-in is a custom activity for workflows.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isworkflowactivity")]
+		public System.Nullable<bool> IsWorkflowActivity
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("isworkflowactivity");
+			}
+		}
+		
+		/// <summary>
+		/// Major of the version number of the assembly for the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("major")]
+		public System.Nullable<int> Major
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("major");
+			}
+		}
+		
+		/// <summary>
+		/// Minor of the version number of the assembly for the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("minor")]
+		public System.Nullable<int> Minor
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("minor");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who last modified the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the plug-in type was last modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who last modified the plugintype.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ModifiedOnBehalfBy");
+				this.SetAttributeValue("modifiedonbehalfby", value);
+				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Name of the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+		public string Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Name");
+				this.SetAttributeValue("name", value);
+				this.OnPropertyChanged("Name");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the organization with which the plug-in type is associated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+		public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
+		public System.Nullable<System.DateTime> OverwriteTime
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the plug-in assembly that contains this plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
+		public Microsoft.Xrm.Sdk.EntityReference PluginAssemblyId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("pluginassemblyid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("PluginAssemblyId");
+				this.SetAttributeValue("pluginassemblyid", value);
+				this.OnPropertyChanged("PluginAssemblyId");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
+		public System.Nullable<System.Guid> PluginTypeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("plugintypeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("PluginTypeId");
+				this.SetAttributeValue("plugintypeid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+				this.OnPropertyChanged("PluginTypeId");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.PluginTypeId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeidunique")]
+		public System.Nullable<System.Guid> PluginTypeIdUnique
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("plugintypeidunique");
+			}
+		}
+		
+		/// <summary>
+		/// Public key token of the assembly for the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("publickeytoken")]
+		public string PublicKeyToken
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("publickeytoken");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the associated solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+		public System.Nullable<System.Guid> SolutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+			}
+		}
+		
+		/// <summary>
+		/// Fully qualified type name of the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("typename")]
+		public string TypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("typename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("TypeName");
+				this.SetAttributeValue("typename", value);
+				this.OnPropertyChanged("TypeName");
+			}
+		}
+		
+		/// <summary>
+		/// Version number of the assembly for the plug-in type.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("version")]
+		public string Version
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("version");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+		public System.Nullable<long> VersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// Group name of workflow custom activity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("workflowactivitygroupname")]
+		public string WorkflowActivityGroupName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("workflowactivitygroupname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("WorkflowActivityGroupName");
+				this.SetAttributeValue("workflowactivitygroupname", value);
+				this.OnPropertyChanged("WorkflowActivityGroupName");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N plugintype_sdkmessageprocessingstep
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("plugintype_sdkmessageprocessingstep")]
+		public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.SdkMessageProcessingStep> plugintype_sdkmessageprocessingstep
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStep>("plugintype_sdkmessageprocessingstep", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("plugintype_sdkmessageprocessingstep");
+				this.SetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStep>("plugintype_sdkmessageprocessingstep", null, value);
+				this.OnPropertyChanged("plugintype_sdkmessageprocessingstep");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N plugintypeid_sdkmessageprocessingstep
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("plugintypeid_sdkmessageprocessingstep")]
+		public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.SdkMessageProcessingStep> plugintypeid_sdkmessageprocessingstep
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStep>("plugintypeid_sdkmessageprocessingstep", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("plugintypeid_sdkmessageprocessingstep");
+				this.SetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStep>("plugintypeid_sdkmessageprocessingstep", null, value);
+				this.OnPropertyChanged("plugintypeid_sdkmessageprocessingstep");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 pluginassembly_plugintype
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("pluginassemblyid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("pluginassembly_plugintype")]
+		public sdk_wrapper.Entities.PluginAssembly pluginassembly_plugintype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<sdk_wrapper.Entities.PluginAssembly>("pluginassembly_plugintype", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("pluginassembly_plugintype");
+				this.SetRelatedEntity<sdk_wrapper.Entities.PluginAssembly>("pluginassembly_plugintype", null, value);
+				this.OnPropertyChanged("pluginassembly_plugintype");
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public PluginType(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["plugintypeid"] = base.Id;
+                        break;
+                    case "plugintypeid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	public enum SdkMessageProcessingStepState
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Enabled = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Disabled = 1,
+	}
+	
+	/// <summary>
+	/// Stage in the execution pipeline that a plug-in is to execute.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessageprocessingstep")]
+	public partial class SdkMessageProcessingStep : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+	{
+		
+		public static class Fields
+		{
+			public const string AsyncAutoDelete = "asyncautodelete";
+			public const string CanUseReadOnlyConnection = "canusereadonlyconnection";
+			public const string Category = "category";
+			public const string ComponentState = "componentstate";
+			public const string Configuration = "configuration";
+			public const string CreatedBy = "createdby";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string CustomizationLevel = "customizationlevel";
+			public const string Description = "description";
+			public const string EventExpander = "eventexpander";
+			public const string EventHandler = "eventhandler";
+			public const string FilteringAttributes = "filteringattributes";
+			public const string ImpersonatingUserId = "impersonatinguserid";
+			public const string IntroducedVersion = "introducedversion";
+			public const string InvocationSource = "invocationsource";
+			public const string IsCustomizable = "iscustomizable";
+			public const string IsHidden = "ishidden";
+			public const string IsManaged = "ismanaged";
+			public const string Mode = "mode";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string Name = "name";
+			public const string OrganizationId = "organizationid";
+			public const string OverwriteTime = "overwritetime";
+			public const string PluginTypeId = "plugintypeid";
+			public const string Rank = "rank";
+			public const string RuntimeIntegrationProperties = "runtimeintegrationproperties";
+			public const string SdkMessageFilterId = "sdkmessagefilterid";
+			public const string SdkMessageId = "sdkmessageid";
+			public const string SdkMessageProcessingStepId = "sdkmessageprocessingstepid";
+			public const string Id = "sdkmessageprocessingstepid";
+			public const string SdkMessageProcessingStepIdUnique = "sdkmessageprocessingstepidunique";
+			public const string SdkMessageProcessingStepSecureConfigId = "sdkmessageprocessingstepsecureconfigid";
+			public const string SolutionId = "solutionid";
+			public const string Stage = "stage";
+			public const string StateCode = "statecode";
+			public const string StatusCode = "statuscode";
+			public const string SupportedDeployment = "supporteddeployment";
+			public const string VersionNumber = "versionnumber";
+			public const string plugintype_sdkmessageprocessingstep = "plugintype_sdkmessageprocessingstep";
+			public const string plugintypeid_sdkmessageprocessingstep = "plugintypeid_sdkmessageprocessingstep";
+			public const string sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep = "sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep";
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SdkMessageProcessingStep() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string EntityLogicalName = "sdkmessageprocessingstep";
+		
+		public const string EntitySchemaName = "SdkMessageProcessingStep";
+		
+		public const string PrimaryIdAttribute = "sdkmessageprocessingstepid";
+		
+		public const string PrimaryNameAttribute = "name";
+		
+		public const string EntityLogicalCollectionName = "sdkmessageprocessingsteps";
+		
+		public const string EntitySetName = "sdkmessageprocessingsteps";
+		
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+		
+		public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanged(string propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanging(string propertyName)
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+			}
+		}
+		
+		/// <summary>
+		/// Indicates whether the asynchronous system job is automatically deleted on completion.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("asyncautodelete")]
+		public System.Nullable<bool> AsyncAutoDelete
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("asyncautodelete");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("AsyncAutoDelete");
+				this.SetAttributeValue("asyncautodelete", value);
+				this.OnPropertyChanged("AsyncAutoDelete");
+			}
+		}
+		
+		/// <summary>
+		/// Identifies whether a SDK Message Processing Step type will be ReadOnly or Read Write. false - ReadWrite, true - ReadOnly 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("canusereadonlyconnection")]
+		public System.Nullable<bool> CanUseReadOnlyConnection
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("canusereadonlyconnection");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CanUseReadOnlyConnection");
+				this.SetAttributeValue("canusereadonlyconnection", value);
+				this.OnPropertyChanged("CanUseReadOnlyConnection");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("category")]
+		public string Category
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("category");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Category");
+				this.SetAttributeValue("category", value);
+				this.OnPropertyChanged("Category");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public virtual ComponentState? ComponentStateEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ComponentState?)(EntityOptionSetEnum.GetEnum(this, "componentstate")));
+			}
+		}
+		
+		/// <summary>
+		/// Step-specific configuration for the plug-in type. Passed to the plug-in constructor at run time.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("configuration")]
+		public string Configuration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("configuration");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Configuration");
+				this.SetAttributeValue("configuration", value);
+				this.OnPropertyChanged("Configuration");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the SDK message processing step was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the sdkmessageprocessingstep.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CreatedOnBehalfBy");
+				this.SetAttributeValue("createdonbehalfby", value);
+				this.OnPropertyChanged("CreatedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Customization level of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+		public System.Nullable<int> CustomizationLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+			}
+		}
+		
+		/// <summary>
+		/// Description of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+		public string Description
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("description");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Description");
+				this.SetAttributeValue("description", value);
+				this.OnPropertyChanged("Description");
+			}
+		}
+		
+		/// <summary>
+		/// Configuration for sending pipeline events to the Event Expander service.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("eventexpander")]
+		public string EventExpander
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("eventexpander");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("EventExpander");
+				this.SetAttributeValue("eventexpander", value);
+				this.OnPropertyChanged("EventExpander");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the associated event handler.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("eventhandler")]
+		public Microsoft.Xrm.Sdk.EntityReference EventHandler
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("eventhandler");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("EventHandler");
+				this.SetAttributeValue("eventhandler", value);
+				this.OnPropertyChanged("EventHandler");
+			}
+		}
+		
+		/// <summary>
+		/// Comma-separated list of attributes. If at least one of these attributes is modified, the plug-in should execute.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("filteringattributes")]
+		public string FilteringAttributes
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("filteringattributes");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("FilteringAttributes");
+				this.SetAttributeValue("filteringattributes", value);
+				this.OnPropertyChanged("FilteringAttributes");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user to impersonate context when step is executed.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("impersonatinguserid")]
+		public Microsoft.Xrm.Sdk.EntityReference ImpersonatingUserId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("impersonatinguserid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ImpersonatingUserId");
+				this.SetAttributeValue("impersonatinguserid", value);
+				this.OnPropertyChanged("ImpersonatingUserId");
+			}
+		}
+		
+		/// <summary>
+		/// Version in which the form is introduced.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("introducedversion")]
+		public string IntroducedVersion
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("introducedversion");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IntroducedVersion");
+				this.SetAttributeValue("introducedversion", value);
+				this.OnPropertyChanged("IntroducedVersion");
+			}
+		}
+		
+		/// <summary>
+		/// Identifies if a plug-in should be executed from a parent pipeline, a child pipeline, or both.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("invocationsource")]
+		[System.ObsoleteAttribute()]
+		public Microsoft.Xrm.Sdk.OptionSetValue InvocationSource
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("invocationsource");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("InvocationSource");
+				this.SetAttributeValue("invocationsource", value);
+				this.OnPropertyChanged("InvocationSource");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component can be customized.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("iscustomizable")]
+		public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsCustomizable");
+				this.SetAttributeValue("iscustomizable", value);
+				this.OnPropertyChanged("IsCustomizable");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component should be hidden.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ishidden")]
+		public Microsoft.Xrm.Sdk.BooleanManagedProperty IsHidden
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("ishidden");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsHidden");
+				this.SetAttributeValue("ishidden", value);
+				this.OnPropertyChanged("IsHidden");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component is managed.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+		public System.Nullable<bool> IsManaged
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+			}
+		}
+		
+		/// <summary>
+		/// Run-time mode of execution, for example, synchronous or asynchronous.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mode")]
+		public Microsoft.Xrm.Sdk.OptionSetValue Mode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("mode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Mode");
+				this.SetAttributeValue("mode", value);
+				this.OnPropertyChanged("Mode");
+			}
+		}
+		
+		/// <summary>
+		/// Run-time mode of execution, for example, synchronous or asynchronous.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mode")]
+		public virtual SdkMessageProcessingStep_Mode? ModeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((SdkMessageProcessingStep_Mode?)(EntityOptionSetEnum.GetEnum(this, "mode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Mode");
+				this.SetAttributeValue("mode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("Mode");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who last modified the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the SDK message processing step was last modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who last modified the sdkmessageprocessingstep.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ModifiedOnBehalfBy");
+				this.SetAttributeValue("modifiedonbehalfby", value);
+				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Name of SdkMessage processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+		public string Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Name");
+				this.SetAttributeValue("name", value);
+				this.OnPropertyChanged("Name");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the organization with which the SDK message processing step is associated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+		public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
+		public System.Nullable<System.DateTime> OverwriteTime
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the plug-in type associated with the step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
+		[System.ObsoleteAttribute()]
+		public Microsoft.Xrm.Sdk.EntityReference PluginTypeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("plugintypeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("PluginTypeId");
+				this.SetAttributeValue("plugintypeid", value);
+				this.OnPropertyChanged("PluginTypeId");
+			}
+		}
+		
+		/// <summary>
+		/// Processing order within the stage.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rank")]
+		public System.Nullable<int> Rank
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("rank");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Rank");
+				this.SetAttributeValue("rank", value);
+				this.OnPropertyChanged("Rank");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only. Holds miscellaneous properties related to runtime integration.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("runtimeintegrationproperties")]
+		public string RuntimeIntegrationProperties
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("runtimeintegrationproperties");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("RuntimeIntegrationProperties");
+				this.SetAttributeValue("runtimeintegrationproperties", value);
+				this.OnPropertyChanged("RuntimeIntegrationProperties");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message filter.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessagefilterid")]
+		public Microsoft.Xrm.Sdk.EntityReference SdkMessageFilterId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessagefilterid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageFilterId");
+				this.SetAttributeValue("sdkmessagefilterid", value);
+				this.OnPropertyChanged("SdkMessageFilterId");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageid")]
+		public Microsoft.Xrm.Sdk.EntityReference SdkMessageId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessageid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageId");
+				this.SetAttributeValue("sdkmessageid", value);
+				this.OnPropertyChanged("SdkMessageId");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepid")]
+		public System.Nullable<System.Guid> SdkMessageProcessingStepId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageprocessingstepid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageProcessingStepId");
+				this.SetAttributeValue("sdkmessageprocessingstepid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+				this.OnPropertyChanged("SdkMessageProcessingStepId");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SdkMessageProcessingStepId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepidunique")]
+		public System.Nullable<System.Guid> SdkMessageProcessingStepIdUnique
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageprocessingstepidunique");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the Sdk message processing step secure configuration.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepsecureconfigid")]
+		public Microsoft.Xrm.Sdk.EntityReference SdkMessageProcessingStepSecureConfigId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessageprocessingstepsecureconfigid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageProcessingStepSecureConfigId");
+				this.SetAttributeValue("sdkmessageprocessingstepsecureconfigid", value);
+				this.OnPropertyChanged("SdkMessageProcessingStepSecureConfigId");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the associated solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+		public System.Nullable<System.Guid> SolutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+			}
+		}
+		
+		/// <summary>
+		/// Stage in the execution pipeline that the SDK message processing step is in.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stage")]
+		public Microsoft.Xrm.Sdk.OptionSetValue Stage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("stage");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Stage");
+				this.SetAttributeValue("stage", value);
+				this.OnPropertyChanged("Stage");
+			}
+		}
+		
+		/// <summary>
+		/// Stage in the execution pipeline that the SDK message processing step is in.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stage")]
+		public virtual SdkMessageProcessingStep_Stage? StageEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((SdkMessageProcessingStep_Stage?)(EntityOptionSetEnum.GetEnum(this, "stage")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Stage");
+				this.SetAttributeValue("stage", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("Stage");
+			}
+		}
+		
+		/// <summary>
+		/// Status of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
+		public System.Nullable<sdk_wrapper.Entities.SdkMessageProcessingStepState> StateCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				Microsoft.Xrm.Sdk.OptionSetValue optionSet = this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("statecode");
+				if ((optionSet != null))
+				{
+					return ((sdk_wrapper.Entities.SdkMessageProcessingStepState)(System.Enum.ToObject(typeof(sdk_wrapper.Entities.SdkMessageProcessingStepState), optionSet.Value)));
+				}
+				else
+				{
+					return null;
+				}
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("StateCode");
+				if ((value == null))
+				{
+					this.SetAttributeValue("statecode", null);
+				}
+				else
+				{
+					this.SetAttributeValue("statecode", new Microsoft.Xrm.Sdk.OptionSetValue(((int)(value))));
+				}
+				this.OnPropertyChanged("StateCode");
+			}
+		}
+		
+		/// <summary>
+		/// Reason for the status of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
+		public Microsoft.Xrm.Sdk.OptionSetValue StatusCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("statuscode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("StatusCode");
+				this.SetAttributeValue("statuscode", value);
+				this.OnPropertyChanged("StatusCode");
+			}
+		}
+		
+		/// <summary>
+		/// Reason for the status of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
+		public virtual SdkMessageProcessingStep_StatusCode? StatusCodeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((SdkMessageProcessingStep_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("StatusCode");
+				this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("StatusCode");
+			}
+		}
+		
+		/// <summary>
+		/// Deployment that the SDK message processing step should be executed on; server, client, or both.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("supporteddeployment")]
+		public Microsoft.Xrm.Sdk.OptionSetValue SupportedDeployment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("supporteddeployment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SupportedDeployment");
+				this.SetAttributeValue("supporteddeployment", value);
+				this.OnPropertyChanged("SupportedDeployment");
+			}
+		}
+		
+		/// <summary>
+		/// Deployment that the SDK message processing step should be executed on; server, client, or both.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("supporteddeployment")]
+		public virtual SdkMessageProcessingStep_SupportedDeployment? SupportedDeploymentEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((SdkMessageProcessingStep_SupportedDeployment?)(EntityOptionSetEnum.GetEnum(this, "supporteddeployment")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SupportedDeployment");
+				this.SetAttributeValue("supporteddeployment", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("SupportedDeployment");
+			}
+		}
+		
+		/// <summary>
+		/// Number that identifies a specific revision of the SDK message processing step. 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+		public System.Nullable<long> VersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepid_sdkmessageprocessingstepimage")]
+		public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.SdkMessageProcessingStepImage> sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStepImage>("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
+				this.SetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStepImage>("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null, value);
+				this.OnPropertyChanged("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 plugintype_sdkmessageprocessingstep
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("eventhandler")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("plugintype_sdkmessageprocessingstep")]
+		public sdk_wrapper.Entities.PluginType plugintype_sdkmessageprocessingstep
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<sdk_wrapper.Entities.PluginType>("plugintype_sdkmessageprocessingstep", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("plugintype_sdkmessageprocessingstep");
+				this.SetRelatedEntity<sdk_wrapper.Entities.PluginType>("plugintype_sdkmessageprocessingstep", null, value);
+				this.OnPropertyChanged("plugintype_sdkmessageprocessingstep");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 plugintypeid_sdkmessageprocessingstep
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("plugintypeid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("plugintypeid_sdkmessageprocessingstep")]
+		public sdk_wrapper.Entities.PluginType plugintypeid_sdkmessageprocessingstep
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<sdk_wrapper.Entities.PluginType>("plugintypeid_sdkmessageprocessingstep", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("plugintypeid_sdkmessageprocessingstep");
+				this.SetRelatedEntity<sdk_wrapper.Entities.PluginType>("plugintypeid_sdkmessageprocessingstep", null, value);
+				this.OnPropertyChanged("plugintypeid_sdkmessageprocessingstep");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepsecureconfigid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
+		public sdk_wrapper.Entities.SdkMessageProcessingStepSecureConfig sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<sdk_wrapper.Entities.SdkMessageProcessingStepSecureConfig>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+				this.SetRelatedEntity<sdk_wrapper.Entities.SdkMessageProcessingStepSecureConfig>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null, value);
+				this.OnPropertyChanged("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SdkMessageProcessingStep(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["sdkmessageprocessingstepid"] = base.Id;
+                        break;
+                    case "sdkmessageprocessingstepid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
+	
+	/// <summary>
+	/// Copy of an entity's attributes before or after the core system operation.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessageprocessingstepimage")]
+	public partial class SdkMessageProcessingStepImage : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+	{
+		
+		public static class Fields
+		{
+			public const string Attributes1 = "attributes";
+			public const string ComponentState = "componentstate";
+			public const string CreatedBy = "createdby";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string CustomizationLevel = "customizationlevel";
+			public const string Description = "description";
+			public const string EntityAlias = "entityalias";
+			public const string ImageType = "imagetype";
+			public const string IntroducedVersion = "introducedversion";
+			public const string IsCustomizable = "iscustomizable";
+			public const string IsManaged = "ismanaged";
+			public const string MessagePropertyName = "messagepropertyname";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string Name = "name";
+			public const string OrganizationId = "organizationid";
+			public const string OverwriteTime = "overwritetime";
+			public const string RelatedAttributeName = "relatedattributename";
+			public const string SdkMessageProcessingStepId = "sdkmessageprocessingstepid";
+			public const string SdkMessageProcessingStepImageId = "sdkmessageprocessingstepimageid";
+			public const string Id = "sdkmessageprocessingstepimageid";
+			public const string SdkMessageProcessingStepImageIdUnique = "sdkmessageprocessingstepimageidunique";
+			public const string SolutionId = "solutionid";
+			public const string VersionNumber = "versionnumber";
+			public const string sdkmessageprocessingstepid_sdkmessageprocessingstepimage = "sdkmessageprocessingstepid_sdkmessageprocessingstepimage";
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SdkMessageProcessingStepImage() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string EntityLogicalName = "sdkmessageprocessingstepimage";
+		
+		public const string EntitySchemaName = "SdkMessageProcessingStepImage";
+		
+		public const string PrimaryIdAttribute = "sdkmessageprocessingstepimageid";
+		
+		public const string PrimaryNameAttribute = "name";
+		
+		public const string EntityLogicalCollectionName = "sdkmessageprocessingstepimages";
+		
+		public const string EntitySetName = "sdkmessageprocessingstepimages";
+		
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+		
+		public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanged(string propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanging(string propertyName)
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+			}
+		}
+		
+		/// <summary>
+		/// Comma-separated list of attributes that are to be passed into the SDK message processing step image.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("attributes")]
+		public string Attributes1
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("attributes");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Attributes1");
+				this.SetAttributeValue("attributes", value);
+				this.OnPropertyChanged("Attributes1");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public Microsoft.Xrm.Sdk.OptionSetValue ComponentState
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componentstate");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componentstate")]
+		public virtual ComponentState? ComponentStateEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ComponentState?)(EntityOptionSetEnum.GetEnum(this, "componentstate")));
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the SDK message processing step image.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the SDK message processing step image was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the sdkmessageprocessingstepimage.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CreatedOnBehalfBy");
+				this.SetAttributeValue("createdonbehalfby", value);
+				this.OnPropertyChanged("CreatedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Customization level of the SDK message processing step image.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+		public System.Nullable<int> CustomizationLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+			}
+		}
+		
+		/// <summary>
+		/// Description of the SDK message processing step image.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("description")]
+		public string Description
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("description");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Description");
+				this.SetAttributeValue("description", value);
+				this.OnPropertyChanged("Description");
+			}
+		}
+		
+		/// <summary>
+		/// Key name used to access the pre-image or post-image property bags in a step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("entityalias")]
+		public string EntityAlias
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("entityalias");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("EntityAlias");
+				this.SetAttributeValue("entityalias", value);
+				this.OnPropertyChanged("EntityAlias");
+			}
+		}
+		
+		/// <summary>
+		/// Type of image requested.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("imagetype")]
+		public Microsoft.Xrm.Sdk.OptionSetValue ImageType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("imagetype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ImageType");
+				this.SetAttributeValue("imagetype", value);
+				this.OnPropertyChanged("ImageType");
+			}
+		}
+		
+		/// <summary>
+		/// Type of image requested.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("imagetype")]
+		public virtual SdkMessageProcessingStepImage_ImageType? ImageTypeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((SdkMessageProcessingStepImage_ImageType?)(EntityOptionSetEnum.GetEnum(this, "imagetype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ImageType");
+				this.SetAttributeValue("imagetype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.OnPropertyChanged("ImageType");
+			}
+		}
+		
+		/// <summary>
+		/// Version in which the form is introduced.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("introducedversion")]
+		public string IntroducedVersion
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("introducedversion");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IntroducedVersion");
+				this.SetAttributeValue("introducedversion", value);
+				this.OnPropertyChanged("IntroducedVersion");
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies whether this component can be customized.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("iscustomizable")]
+		public Microsoft.Xrm.Sdk.BooleanManagedProperty IsCustomizable
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.BooleanManagedProperty>("iscustomizable");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("IsCustomizable");
+				this.SetAttributeValue("iscustomizable", value);
+				this.OnPropertyChanged("IsCustomizable");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismanaged")]
+		public System.Nullable<bool> IsManaged
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ismanaged");
+			}
+		}
+		
+		/// <summary>
+		/// Name of the property on the Request message.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("messagepropertyname")]
+		public string MessagePropertyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("messagepropertyname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("MessagePropertyName");
+				this.SetAttributeValue("messagepropertyname", value);
+				this.OnPropertyChanged("MessagePropertyName");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who last modified the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the SDK message processing step was last modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who last modified the sdkmessageprocessingstepimage.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ModifiedOnBehalfBy");
+				this.SetAttributeValue("modifiedonbehalfby", value);
+				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Name of SdkMessage processing step image.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("name")]
+		public string Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Name");
+				this.SetAttributeValue("name", value);
+				this.OnPropertyChanged("Name");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the organization with which the SDK message processing step is associated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+		public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overwritetime")]
+		public System.Nullable<System.DateTime> OverwriteTime
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("overwritetime");
+			}
+		}
+		
+		/// <summary>
+		/// Name of the related entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("relatedattributename")]
+		public string RelatedAttributeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("relatedattributename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("RelatedAttributeName");
+				this.SetAttributeValue("relatedattributename", value);
+				this.OnPropertyChanged("RelatedAttributeName");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepid")]
+		public Microsoft.Xrm.Sdk.EntityReference SdkMessageProcessingStepId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("sdkmessageprocessingstepid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageProcessingStepId");
+				this.SetAttributeValue("sdkmessageprocessingstepid", value);
+				this.OnPropertyChanged("SdkMessageProcessingStepId");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step image entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepimageid")]
+		public System.Nullable<System.Guid> SdkMessageProcessingStepImageId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageprocessingstepimageid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageProcessingStepImageId");
+				this.SetAttributeValue("sdkmessageprocessingstepimageid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+				this.OnPropertyChanged("SdkMessageProcessingStepImageId");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepimageid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SdkMessageProcessingStepImageId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step image.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepimageidunique")]
+		public System.Nullable<System.Guid> SdkMessageProcessingStepImageIdUnique
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageprocessingstepimageidunique");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the associated solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+		public System.Nullable<System.Guid> SolutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("solutionid");
+			}
+		}
+		
+		/// <summary>
+		/// Number that identifies a specific revision of the step image. 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+		public System.Nullable<long> VersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepid_sdkmessageprocessingstepimage")]
+		public sdk_wrapper.Entities.SdkMessageProcessingStep sdkmessageprocessingstepid_sdkmessageprocessingstepimage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<sdk_wrapper.Entities.SdkMessageProcessingStep>("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
+				this.SetRelatedEntity<sdk_wrapper.Entities.SdkMessageProcessingStep>("sdkmessageprocessingstepid_sdkmessageprocessingstepimage", null, value);
+				this.OnPropertyChanged("sdkmessageprocessingstepid_sdkmessageprocessingstepimage");
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SdkMessageProcessingStepImage(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["sdkmessageprocessingstepimageid"] = base.Id;
+                        break;
+                    case "sdkmessageprocessingstepimageid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
+	
+	/// <summary>
+	/// Non-public custom configuration that is passed to a plug-in's constructor.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("sdkmessageprocessingstepsecureconfig")]
+	public partial class SdkMessageProcessingStepSecureConfig : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+	{
+		
+		public static class Fields
+		{
+			public const string CreatedBy = "createdby";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string CustomizationLevel = "customizationlevel";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string OrganizationId = "organizationid";
+			public const string SdkMessageProcessingStepSecureConfigId = "sdkmessageprocessingstepsecureconfigid";
+			public const string Id = "sdkmessageprocessingstepsecureconfigid";
+			public const string SdkMessageProcessingStepSecureConfigIdUnique = "sdkmessageprocessingstepsecureconfigidunique";
+			public const string SecureConfig = "secureconfig";
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SdkMessageProcessingStepSecureConfig() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string EntityLogicalName = "sdkmessageprocessingstepsecureconfig";
+		
+		public const string EntitySchemaName = "SdkMessageProcessingStepSecureConfig";
+		
+		public const string PrimaryIdAttribute = "sdkmessageprocessingstepsecureconfigid";
+		
+		public const string EntityLogicalCollectionName = "sdkmessageprocessingstepsecureconfigs";
+		
+		public const string EntitySetName = "sdkmessageprocessingstepsecureconfigs";
+		
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+		
+		public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanged(string propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanging(string propertyName)
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the SDK message processing step was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the sdkmessageprocessingstepsecureconfig.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CreatedOnBehalfBy");
+				this.SetAttributeValue("createdonbehalfby", value);
+				this.OnPropertyChanged("CreatedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Customization level of the SDK message processing step secure configuration.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customizationlevel")]
+		public System.Nullable<int> CustomizationLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("customizationlevel");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who last modified the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the SDK message processing step was last modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who last modified the sdkmessageprocessingstepsecureconfig.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ModifiedOnBehalfBy");
+				this.SetAttributeValue("modifiedonbehalfby", value);
+				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the organization with which the SDK message processing step is associated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+		public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step secure configuration.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepsecureconfigid")]
+		public System.Nullable<System.Guid> SdkMessageProcessingStepSecureConfigId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageprocessingstepsecureconfigid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SdkMessageProcessingStepSecureConfigId");
+				this.SetAttributeValue("sdkmessageprocessingstepsecureconfigid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+				this.OnPropertyChanged("SdkMessageProcessingStepSecureConfigId");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepsecureconfigid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SdkMessageProcessingStepSecureConfigId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the SDK message processing step.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("sdkmessageprocessingstepsecureconfigidunique")]
+		public System.Nullable<System.Guid> SdkMessageProcessingStepSecureConfigIdUnique
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("sdkmessageprocessingstepsecureconfigidunique");
+			}
+		}
+		
+		/// <summary>
+		/// Secure step-specific configuration for the plug-in type that is passed to the plug-in's constructor at run time.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("secureconfig")]
+		public string SecureConfig
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("secureconfig");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("SecureConfig");
+				this.SetAttributeValue("secureconfig", value);
+				this.OnPropertyChanged("SecureConfig");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep")]
+		public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.SdkMessageProcessingStep> sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStep>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+				this.SetRelatedEntities<sdk_wrapper.Entities.SdkMessageProcessingStep>("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep", null, value);
+				this.OnPropertyChanged("sdkmessageprocessingstepsecureconfigid_sdkmessageprocessingstep");
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SdkMessageProcessingStepSecureConfig(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["sdkmessageprocessingstepsecureconfigid"] = base.Id;
+                        break;
+                    case "sdkmessageprocessingstepsecureconfigid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
+	
+	/// <summary>
+	/// A component of a CRM solution.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("solutioncomponent")]
+	public partial class SolutionComponent : Microsoft.Xrm.Sdk.Entity, System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
+	{
+		
+		public static class Fields
+		{
+			public const string ComponentType = "componenttype";
+			public const string CreatedBy = "createdby";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string IsMetadata = "ismetadata";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string ObjectId = "objectid";
+			public const string RootComponentBehavior = "rootcomponentbehavior";
+			public const string RootSolutionComponentId = "rootsolutioncomponentid";
+			public const string SolutionComponentId = "solutioncomponentid";
+			public const string Id = "solutioncomponentid";
+			public const string SolutionId = "solutionid";
+			public const string VersionNumber = "versionnumber";
+			public const string Referencingsolutioncomponent_parent_solutioncomponent = "solutioncomponent_parent_solutioncomponent";
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SolutionComponent() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string EntityLogicalName = "solutioncomponent";
+		
+		public const string EntitySchemaName = "SolutionComponent";
+		
+		public const string PrimaryIdAttribute = "solutioncomponentid";
+		
+		public const string EntityLogicalCollectionName = "solutioncomponentss";
+		
+		public const string EntitySetName = "solutioncomponents";
+		
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+		
+		public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanged(string propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		private void OnPropertyChanging(string propertyName)
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+			}
+		}
+		
+		/// <summary>
+		/// The object type code of the component.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componenttype")]
+		public Microsoft.Xrm.Sdk.OptionSetValue ComponentType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("componenttype");
+			}
+		}
+		
+		/// <summary>
+		/// The object type code of the component.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("componenttype")]
+		public virtual ComponentType? ComponentTypeEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ComponentType?)(EntityOptionSetEnum.GetEnum(this, "componenttype")));
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the solution
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the solution was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("CreatedOnBehalfBy");
+				this.SetAttributeValue("createdonbehalfby", value);
+				this.OnPropertyChanged("CreatedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Indicates whether this component is metadata or data.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ismetadata")]
+		public System.Nullable<bool> IsMetadata
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ismetadata");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who last modified the solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the solution was last modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who modified the solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("ModifiedOnBehalfBy");
+				this.SetAttributeValue("modifiedonbehalfby", value);
+				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the object with which the component is associated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objectid")]
+		public System.Nullable<System.Guid> ObjectId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("objectid");
+			}
+		}
+		
+		/// <summary>
+		/// Indicates the include behavior of the root component.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootcomponentbehavior")]
+		public Microsoft.Xrm.Sdk.OptionSetValue RootComponentBehavior
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>("rootcomponentbehavior");
+			}
+		}
+		
+		/// <summary>
+		/// Indicates the include behavior of the root component.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootcomponentbehavior")]
+		public virtual SolutionComponent_RootComponentBehavior? RootComponentBehaviorEnum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((SolutionComponent_RootComponentBehavior?)(EntityOptionSetEnum.GetEnum(this, "rootcomponentbehavior")));
+			}
+		}
+		
+		/// <summary>
+		/// The parent ID of the subcomponent, which will be a root
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootsolutioncomponentid")]
+		public System.Nullable<System.Guid> RootSolutionComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("rootsolutioncomponentid");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the solution component.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutioncomponentid")]
+		public System.Nullable<System.Guid> SolutionComponentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("solutioncomponentid");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutioncomponentid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				base.Id = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the solution.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("solutionid")]
+		public Microsoft.Xrm.Sdk.EntityReference SolutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("solutionid");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+		public System.Nullable<long> VersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N solutioncomponent_parent_solutioncomponent
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
+		public System.Collections.Generic.IEnumerable<sdk_wrapper.Entities.SolutionComponent> Referencedsolutioncomponent_parent_solutioncomponent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<sdk_wrapper.Entities.SolutionComponent>("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referenced);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Referencedsolutioncomponent_parent_solutioncomponent");
+				this.SetRelatedEntities<sdk_wrapper.Entities.SolutionComponent>("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
+				this.OnPropertyChanged("Referencedsolutioncomponent_parent_solutioncomponent");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 solutioncomponent_parent_solutioncomponent
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("rootsolutioncomponentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
+		public sdk_wrapper.Entities.SolutionComponent Referencingsolutioncomponent_parent_solutioncomponent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<sdk_wrapper.Entities.SolutionComponent>("solutioncomponent_parent_solutioncomponent", Microsoft.Xrm.Sdk.EntityRole.Referencing);
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public SolutionComponent(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["solutioncomponentid"] = base.Id;
+                        break;
+                    case "solutioncomponentid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
+	
+	/// <summary>
+	/// Represents a source of entities bound to a CRM service. It tracks and manages changes made to the retrieved entities.
+	/// </summary>
+	public partial class CrmServiceContext : Microsoft.Xrm.Sdk.Client.OrganizationServiceContext
+	{
+		
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public CrmServiceContext(Microsoft.Xrm.Sdk.IOrganizationService service) : 
+				base(service)
+		{
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.PluginAssembly"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<sdk_wrapper.Entities.PluginAssembly> PluginAssemblySet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.CreateQuery<sdk_wrapper.Entities.PluginAssembly>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.PluginType"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<sdk_wrapper.Entities.PluginType> PluginTypeSet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.CreateQuery<sdk_wrapper.Entities.PluginType>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.SdkMessageProcessingStep"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<sdk_wrapper.Entities.SdkMessageProcessingStep> SdkMessageProcessingStepSet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.CreateQuery<sdk_wrapper.Entities.SdkMessageProcessingStep>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.SdkMessageProcessingStepImage"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<sdk_wrapper.Entities.SdkMessageProcessingStepImage> SdkMessageProcessingStepImageSet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.CreateQuery<sdk_wrapper.Entities.SdkMessageProcessingStepImage>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.SdkMessageProcessingStepSecureConfig"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<sdk_wrapper.Entities.SdkMessageProcessingStepSecureConfig> SdkMessageProcessingStepSecureConfigSet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.CreateQuery<sdk_wrapper.Entities.SdkMessageProcessingStepSecureConfig>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="sdk_wrapper.Entities.SolutionComponent"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<sdk_wrapper.Entities.SolutionComponent> SolutionComponentSet
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.CreateQuery<sdk_wrapper.Entities.SolutionComponent>();
+			}
+		}
+	}
+	
+	internal sealed class EntityOptionSetEnum
+	{
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public static System.Nullable<int> GetEnum(Microsoft.Xrm.Sdk.Entity entity, string attributeLogicalName)
+		{
+			if (entity.Attributes.ContainsKey(attributeLogicalName))
+			{
+				Microsoft.Xrm.Sdk.OptionSetValue value = entity.GetAttributeValue<Microsoft.Xrm.Sdk.OptionSetValue>(attributeLogicalName);
+				if (value != null)
+				{
+					return value.Value;
+				}
+			}
+			return null;
+		}
+	}
+	
+	/// <summary>
+	/// Attribute to handle storing the OptionSet's Metadata.
+	/// </summary>
+	[System.AttributeUsageAttribute(System.AttributeTargets.Field)]
+	public sealed class OptionSetMetadataAttribute : System.Attribute
+	{
+		
+		/// <summary>
+		/// Color of the OptionSetValue.
+		/// </summary>
+		public string Color { get; set; }
+		
+		/// <summary>
+		/// Description of the OptionSetValue.
+		/// </summary>
+		public string Description { get; set; }
+		
+		/// <summary>
+		/// Display order index of the OptionSetValue.
+		/// </summary>
+		public int DisplayIndex { get; set; }
+		
+		/// <summary>
+		/// External value of the OptionSetValue.
+		/// </summary>
+		public string ExternalValue { get; set; }
+		
+		/// <summary>
+		/// Name of the OptionSetValue.
+		/// </summary>
+		public string Name { get; set; }
+		
+		/// <summary>
+		/// Initializes a new instance of the <see cref="OptionSetMetadataAttribute"/> class.
+		/// </summary>
+		/// <param name="name">Name of the value.</param>
+		/// <param name="displayIndex">Display order index of the value.</param>
+		/// <param name="color">Color of the value.</param>
+		/// <param name="description">Description of the value.</param>
+		/// <param name="externalValue">External value of the value.</param>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public OptionSetMetadataAttribute(string name, int displayIndex, string color = null, string description = null, string externalValue = null)
+		{
+			this.Color = color;
+			this.Description = description;
+			this.ExternalValue = externalValue;
+			this.DisplayIndex = displayIndex;
+			this.Name = name;
+		}
+	}
+	
+	/// <summary>
+	/// Extension class to handle retrieving of OptionSetMetadataAttribute.
+	/// </summary>
+	public static class OptionSetExtension
+	{
+		
+		/// <summary>
+		/// Returns the OptionSetMetadataAttribute for the given enum value
+		/// </summary>
+		/// <typeparam name="T">OptionSet Enum Type</typeparam>
+		/// <param name="value">Enum Value with OptionSetMetadataAttribute</param>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public static OptionSetMetadataAttribute GetMetadata<T>(this T value)
+			where T :  struct, System.IConvertible
+		{
+			System.Type enumType = typeof(T);
+			if (!enumType.IsEnum)
+			{
+				throw new System.ArgumentException("T must be an enum!");
+			}
+			System.Reflection.MemberInfo[] members = enumType.GetMember(value.ToString());
+			for (int i = 0; (i < members.Length); i++
+			)
+			{
+				System.Attribute attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(members[i], typeof(OptionSetMetadataAttribute));
+				if (attribute != null)
+				{
+					return ((OptionSetMetadataAttribute)(attribute));
+				}
+			}
+			throw new System.ArgumentException("T must be an enum adorned with an OptionSetMetadataAttribute!");
+		}
+	}
 }
