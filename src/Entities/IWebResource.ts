@@ -1,5 +1,9 @@
+import { WebResourceTypes } from "../Core/Enums/WebResourceTypes";
+
 export default interface IWebResource {
+  webresourceid?: string;
   displayname: string;
-  uniquename: string;
-  file: string;
+  name: string;
+  solutionid?: string;
+  webresourcetype?: WebResourceTypes;
 }

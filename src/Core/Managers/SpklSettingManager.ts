@@ -3,7 +3,7 @@ import * as fs from "fs";
 import ISolution from "../../Entities/ISolution";
 import ISpklPlugin from "../../Entities/ISpklPlugin";
 import ISpklSettings from "../../Entities/ISpklSettings";
-import ISpklWebResource from "../../Entities/ISpklWebResource";
+import ISpklWebResources from "../../Entities/ISpklWebResources";
 
 export default class SpklSettingManager {
   private context: vscode.ExtensionContext;
@@ -133,7 +133,7 @@ export default class SpklSettingManager {
   }
 
   private async setWebResources(settings: ISpklSettings): Promise<ISpklSettings> {
-    const changedWebResources = new Array<ISpklWebResource>();
+    const changedWebResources = new Array<ISpklWebResources>();
 
     const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
     const config = vscode.workspace.getConfiguration('cha0s2nd-vscode-cds.webresource');

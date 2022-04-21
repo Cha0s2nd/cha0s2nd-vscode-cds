@@ -82,11 +82,13 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.5]
+### [0.1.6]
 Added
-- Added links to PowerApps for Treeview items
+- Added Web Resources to Treeview
+- Added Security Roles to Treeview
 Changed
-- Treeview icons
+- Login aggressiveness reduced
+- Added ability to manually enter auth codes
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 

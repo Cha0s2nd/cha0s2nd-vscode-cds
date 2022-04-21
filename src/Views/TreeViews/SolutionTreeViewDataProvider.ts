@@ -9,10 +9,12 @@ import IOrganization from '../../Entities/IOrganization';
 import IPluginAssembly from '../../Entities/IPluginAssembly';
 import IPluginType from '../../Entities/IPluginType';
 import IRelationship from '../../Entities/IRelationship';
+import IRole from '../../Entities/IRole';
 import ISDKMessageProcessingStep from '../../Entities/ISDKMessageProcessingStep';
 import ISDKMessageProcessingStepImage from '../../Entities/ISDKMessageProcessingStepImage';
 import ISolution from '../../Entities/ISolution';
 import ISolutionComponent from '../../Entities/ISolutionComponent';
+import IWebResource from '../../Entities/IWebResource';
 import AttributeTreeItem from './TreeItems/AttributeTreeItem';
 import ContainerTreeItem from './TreeItems/ContainerTreeItem';
 import EntityTreeItem from './TreeItems/EntityTreeItem';
@@ -23,7 +25,9 @@ import PluginImageTreeItem from './TreeItems/PluginImageTreeItem';
 import PluginStepTreeItem from './TreeItems/PluginStepTreeItem';
 import PluginTreeItem from './TreeItems/PluginTreeItem';
 import RelationshipTreeItem from './TreeItems/RelationshipTreeItem';
+import RoleTreeItem from './TreeItems/RoleTreeItem';
 import ValueTreeItem from './TreeItems/ValueTreeItem';
+import WebResourceTreeItem from './TreeItems/WebResourceTreeItem';
 
 export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
@@ -60,9 +64,17 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         const globalOptionSets = await this.getGlobalOptionSets(this.solution?.solutionId);
         children = globalOptionSets.map(globalOptionSet => new OptionSetTreeItem(globalOptionSet, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
+      case 'webResourceContainer':
+        const webResources = await this.getWebResources(this.solution?.solutionId);
+        children = webResources.map(webResource => new WebResourceTreeItem(webResource, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
+        break;
       case 'assemblyContainer':
         const assemblies = await this.getPluginAssemblies(this.solution?.solutionId);
-        children = assemblies.map(assembly => new PluginAssemblyTreeItem(assembly)).sort((a, b) => a.name.localeCompare(b.name));
+        children = assemblies.map(assembly => new PluginAssemblyTreeItem(assembly, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'roleContainer':
+        const roles = await this.getRoles(this.solution?.solutionId);
+        children = roles.map(role => new RoleTreeItem(role, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'pluginAssembly':
         if (element) {
@@ -75,7 +87,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
         if (element) {
           const pluginTreeItem = <PluginTreeItem>element;
           const pluginSteps = await this.getPluginSteps(pluginTreeItem.pluginId);
-          children = pluginSteps.map(pluginStep => new PluginStepTreeItem(pluginStep)).sort((a, b) => a.name.localeCompare(b.name));
+          children = pluginSteps.map(pluginStep => new PluginStepTreeItem(pluginStep, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
         }
         break;
       case 'pluginStep':
@@ -128,7 +140,9 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       default:
         children.push(new ContainerTreeItem('Tables', 'solutioncomponents', 'entityContainer'));
         children.push(new ContainerTreeItem('Choices', 'solutioncomponents', 'globalOptionSetContainer'));
-        children.push(new ContainerTreeItem('Plugin Assemblies', 'solutioncomponents', 'assemblyContainer'));
+        children.push(new ContainerTreeItem('Web Resources', 'solutioncomponents', 'webResourceContainer'));
+        children.push(new ContainerTreeItem('Plug-in Assemblies', 'solutioncomponents', 'assemblyContainer'));
+        children.push(new ContainerTreeItem('Security Roles', 'solutioncomponents', 'roleContainer'));
         break;
     }
 
@@ -255,6 +269,92 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
     else {
       return <IOptionSet[]>(await WebApi.retrieveMultiplePaged(
         `GlobalOptionSetDefinitions`
+      ));
+    }
+  }
+
+  async getRoles(solutionId?: string): Promise<IRole[]> {
+    if (solutionId) {
+      const components = await this.getSolutionComponents(solutionId, SolutionComponentTypes.Role);
+
+      let roles = new Array<IRole>();
+
+      for (let i = 0; i < components.length; i += 20) {
+        let filter = new Array<string>();
+
+        for (let c = 0; c < 20; c++) {
+          if (components[c + i]) {
+            filter = filter.concat(`roleid eq ${components[c + i].objectid}`);
+          }
+        }
+
+        roles = roles.concat(<IRole[]>(await WebApi.retrieveMultiplePaged(
+          `roles`,
+          [
+            'roleid',
+            'name',
+            'solutionid',
+            'organizationid'
+          ],
+          `${filter.join(' or ')}`
+        )));
+      }
+
+      return roles;
+    }
+    else {
+      return <IRole[]>(await WebApi.retrieveMultiplePaged(
+        `roles`,
+        [
+          'roleid',
+          'name',
+          'solutionid',
+          'organizationid'
+        ]
+      ));
+    }
+  }
+
+  async getWebResources(solutionId?: string): Promise<IWebResource[]> {
+    if (solutionId) {
+      const components = await this.getSolutionComponents(solutionId, SolutionComponentTypes.WebResource);
+
+      let webResources = new Array<IWebResource>();
+
+      for (let i = 0; i < components.length; i += 20) {
+        let filter = new Array<string>();
+
+        for (let c = 0; c < 20; c++) {
+          if (components[c + i]) {
+            filter = filter.concat(`webresourceid eq ${components[c + i].objectid}`);
+          }
+        }
+
+        webResources = webResources.concat(<IWebResource[]>(await WebApi.retrieveMultiplePaged(
+          `webresourceset`,
+          [
+            'webresourceid',
+            'displayname',
+            'name',
+            'solutionid',
+            'webresourcetype'
+          ],
+          `${filter.join(' or ')}`
+        )));
+      }
+
+      return webResources;
+    }
+    else {
+      return <IWebResource[]>(await WebApi.retrieveMultiplePaged(
+        `webresourceset`,
+        [
+          'webresourceid',
+          'displayname',
+          'name',
+          'solutionid',
+          'webresourcetype'
+        ],
       ));
     }
   }

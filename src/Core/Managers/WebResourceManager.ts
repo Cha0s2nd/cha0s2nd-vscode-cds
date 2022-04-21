@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import IWebResource from '../../Entities/IWebResource';
 import ISolution from '../../Entities/ISolution';
 import WebApi from '../Xrm/WebApi';
 import { SolutionComponentTypes } from '../Enums/SolutionComponentTypes';
 import { WebResourceTypes } from '../Enums/WebResourceTypes';
 import ISpklSettings from '../../Entities/ISpklSettings';
+import ISpklWebResources from '../../Entities/ISpklWebResources';
 import ISpklWebResource from '../../Entities/ISpklWebResource';
 
 export default class WebResourceManager {
@@ -55,12 +55,12 @@ export default class WebResourceManager {
     return vscode.Uri.joinPath(vscode.Uri.parse(await vscode.commands.executeCommand<string>('cha0s2nd-vscode-cds.spkl.setting.getPath') || ''), '..');
   }
 
-  private async getAllWebResourceMetadata(): Promise<ISpklWebResource[]> {
+  private async getAllWebResourceMetadata(): Promise<ISpklWebResources[]> {
     const settings = await vscode.commands.executeCommand<ISpklSettings>('cha0s2nd-vscode-cds.spkl.setting.get');
     return settings?.webresources || [];
   }
 
-  private async saveWebResourceMetadata(metadata: ISpklWebResource[]) {
+  private async saveWebResourceMetadata(metadata: ISpklWebResources[]) {
     const settings = await vscode.commands.executeCommand<ISpklSettings>('cha0s2nd-vscode-cds.spkl.setting.get');
     if (settings) {
       settings.webresources = metadata;
@@ -68,13 +68,14 @@ export default class WebResourceManager {
     }
   }
 
-  private async getWebResourceMetadata(resources: vscode.Uri[]): Promise<IWebResource[]> {
+  private async getWebResourceMetadata(resources: vscode.Uri[]): Promise<ISpklWebResource[]> {
     const webResources = [];
     const webResourceMeta = await this.getAllWebResourceMetadata();
+    const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
     for (let resource of resources) {
       const root = await this.getWebResourceRoot();
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resource.fsPath.startsWith(vscode.Uri.joinPath(root, resourceFolder.root).fsPath));
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResources) => resource.fsPath.startsWith(vscode.Uri.joinPath(root, resourceFolder.root).fsPath));
 
       if (webResourceFolder) {
         let webResource = webResourceFolder.files.find(wr => wr.file === path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath));
@@ -89,7 +90,7 @@ export default class WebResourceManager {
           webResource = {
             displayname: path.basename(resource.fsPath),
             uniquename: uniqueName,
-            file: path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath)
+            file: path.relative(vscode.Uri.joinPath(root, webResourceFolder.root).fsPath, resource.fsPath),
           };
 
           webResources.push(webResource);
@@ -106,13 +107,13 @@ export default class WebResourceManager {
     return webResources;
   }
 
-  private async mapResourcesToFiles(resources: IWebResource[]): Promise<vscode.Uri[]> {
+  private async mapResourcesToFiles(resources: ISpklWebResource[]): Promise<vscode.Uri[]> {
     const webResourceMeta = await this.getAllWebResourceMetadata();
     const files = new Array<vscode.Uri>();
 
     for (let resource of resources) {
       const root = await this.getWebResourceRoot();
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file === resource.file));
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResources) => resourceFolder.files.find(file => file.file === resource.file));
 
       if (webResourceFolder) {
         files.push(vscode.Uri.joinPath(root, webResourceFolder.root, resource.file));
@@ -122,13 +123,13 @@ export default class WebResourceManager {
     return files;
   }
 
-  private async setWebResourceDetails(resources: IWebResource[]): Promise<void> {
+  private async setWebResourceDetails(resources: ISpklWebResource[]): Promise<void> {
     const webResourceMeta = await this.getAllWebResourceMetadata();
 
     for (let resource of resources) {
-      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResource) => resourceFolder.files.find(file => file.file === resource.file));
+      const webResourceFolder = webResourceMeta.find((resourceFolder: ISpklWebResources) => resourceFolder.files.find(file => file.file === resource.file));
       if (webResourceFolder) {
-        const index = webResourceFolder.files.findIndex((file: IWebResource) => file.file === resource.file);
+        const index = webResourceFolder.files.findIndex((file: ISpklWebResource) => file.file === resource.file);
 
         if (index != null && index > -1) {
           webResourceFolder.files.splice(index, 1, resource);
@@ -186,7 +187,7 @@ export default class WebResourceManager {
     });
   }
 
-  private async createOrUpdateWebResource(webResource: IWebResource) {
+  private async createOrUpdateWebResource(webResource: ISpklWebResource) {
     try {
       const resources = await WebApi.retrieveMultiple(
         'webresourceset',

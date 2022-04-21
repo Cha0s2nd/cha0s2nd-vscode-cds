@@ -1,11 +1,11 @@
 import * as vscode from "vscode";
-import IWebResource from "../../Entities/IWebResource";
+import ISpklWebResource from "../../Entities/ISpklWebResource";
 
 export class WebResourceCodeLensProvider implements vscode.CodeLensProvider {
   onDidChangeCodeLenses?: vscode.Event<void> | undefined;
 
   public async resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken) {
-    const metadata = await vscode.commands.executeCommand<IWebResource[]>('cha0s2nd-vscode-cds.webresource.getMetadata', [codeLens.command?.arguments?.find(arg => arg)]) || [];
+    const metadata = await vscode.commands.executeCommand<ISpklWebResource[]>('cha0s2nd-vscode-cds.webresource.getMetadata', [codeLens.command?.arguments?.find(arg => arg)]) || [];
 
     switch (codeLens.command?.command) {
       case 'cha0s2nd-vscode-cds.webresource.setName':
@@ -20,7 +20,7 @@ export class WebResourceCodeLensProvider implements vscode.CodeLensProvider {
   }
 
   public async provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): Promise<vscode.CodeLens[]> {
-    const metadata = await vscode.commands.executeCommand<IWebResource[]>('cha0s2nd-vscode-cds.webresource.getMetadata', [document.uri]) || [];
+    const metadata = await vscode.commands.executeCommand<ISpklWebResource[]>('cha0s2nd-vscode-cds.webresource.getMetadata', [document.uri]) || [];
 
     return [
       new vscode.CodeLens(new vscode.Range(0, 0, 0, 0), {

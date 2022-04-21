@@ -1,10 +1,7 @@
-import IWebResource from "./IWebResource";
+import { WebResourceTypes } from "../Core/Enums/WebResourceTypes";
 
-export default interface ISpklWebResource {
-  profile: string,
-  root: string,
-  solution: string,
-  autodetect?: string,
-  deleteaction?: string,
-  files: IWebResource[]
+export default interface IWebResource {
+  displayname: string;
+  uniquename: string;
+  file: string;
 }

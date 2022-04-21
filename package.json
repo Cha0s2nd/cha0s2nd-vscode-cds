@@ -49,7 +49,7 @@
       "activitybar": [
         {
           "id": "cds-treeview",
-          "title": "CDS Explorer",
+          "title": "Dataverse Explorer",
           "icon": "media/icon.svg"
         }
       ]
@@ -79,7 +79,7 @@
         },
         {
           "command": "cha0s2nd-vscode-cds.link.open",
-          "when": "viewItem == entity || viewItem == attribute || viewItem == optionSet || viewItem == relationship",
+          "when": "viewItem == entity || viewItem == attribute || viewItem == optionSet || viewItem == relationship || viewItem == role || viewItem == webResource || viewItem == pluginAssembly || viewItem == pluginStep",
           "group": "inline"
         },
         {

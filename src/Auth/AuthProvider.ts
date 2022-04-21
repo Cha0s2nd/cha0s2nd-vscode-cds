@@ -54,13 +54,22 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
-    this.session = await this.createOrUpdateSession(scopes, this.session);
+    this.session = await this.retrieveSession(scopes, this.session);
 
-    return [this.session.session];
+    if (this.session) {
+      return [this.session.session];
+    }
+    else {
+      return [];
+    }
   }
 
   public async createSession(scopes: string[]): Promise<vscode.AuthenticationSession> {
-    this.session = await this.createOrUpdateSession(scopes, this.session);
+    this.session = await this.retrieveSession(scopes, this.session);
+
+    if (!this.session) {
+      this.session = await this.createNewSession(scopes);
+    }
 
     return this.session.session;
   }
@@ -72,7 +81,37 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     }
   }
 
-  private async createOrUpdateSession(scopes: string[], session?: IAuthSession): Promise<IAuthSession> {
+  private async createNewSession(scopes: string[]): Promise<IAuthSession> {
+    let tokenResponse = null;
+
+    const authCode = await this.getAuthCode();
+
+    tokenResponse = await this.client.acquireTokenByCode({
+      code: authCode,
+      redirectUri: Constants.REDIRECT_URL,
+      scopes: scopes,
+    });
+
+    const newSession = {
+      result: tokenResponse,
+      session: {
+        id: tokenResponse?.uniqueId || uuid.v4(),
+        accessToken: tokenResponse?.accessToken || '',
+        account: { label: tokenResponse?.account?.name || '', id: tokenResponse?.uniqueId || uuid.v4() },
+        scopes: tokenResponse?.scopes || []
+      }
+    };
+
+    this.sessionChangeEventEmitter.fire({ added: [newSession.session], removed: [], changed: [] });
+
+    this.session = newSession;
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.session', this.session);
+    this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.tokenCache', this.client.getTokenCache().serialize());
+
+    return newSession;
+  }
+
+  private async retrieveSession(scopes: string[], session?: IAuthSession): Promise<IAuthSession | undefined> {
     let tokenResponse = null;
 
     if (session && session.result && session.result.account) {
@@ -83,22 +122,11 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
         });
       }
       catch (error) {
-        const authCode = await this.getAuthCode();
-
-        tokenResponse = await this.client.acquireTokenByCode({
-          code: authCode,
-          redirectUri: Constants.REDIRECT_URL,
-          scopes: scopes,
-        });
+        return;
       }
-    } else {
-      const authCode = await this.getAuthCode();
-
-      tokenResponse = await this.client.acquireTokenByCode({
-        code: authCode,
-        redirectUri: Constants.REDIRECT_URL,
-        scopes: scopes,
-      });
+    }
+    else {
+      return;
     }
 
     const newSession = {
@@ -111,11 +139,7 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
       }
     };
 
-    if (this.session) {
-      this.sessionChangeEventEmitter.fire({ added: [], removed: [], changed: [newSession.session] });
-    } else {
-      this.sessionChangeEventEmitter.fire({ added: [newSession.session], removed: [], changed: [] });
-    }
+    this.sessionChangeEventEmitter.fire({ added: [], removed: [], changed: [newSession.session] });
 
     this.session = newSession;
     this.context.workspaceState.update('cha0s2nd-vscode-cds.auth.session', this.session);
@@ -161,6 +185,17 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
         }
         else {
           reject(`Login failed: The response was not from the request send by this application - invalid_state`);
+        }
+      });
+
+      vscode.window.showInputBox({
+        ignoreFocusOut: true,
+        password: true,
+        placeHolder: 'Authorization Code',
+        prompt: 'Follow the prompts and wait for the login to complete from the browser or paste in the Authorization Code given on the site.'
+      }).then((token) => {
+        if (token) {
+          resolve(token);
         }
       });
     });
