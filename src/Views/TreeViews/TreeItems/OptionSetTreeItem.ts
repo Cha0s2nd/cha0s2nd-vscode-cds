@@ -8,7 +8,7 @@ import ISolution from '../../../Entities/ISolution';
 export default class OptionSetTreeItem extends vscode.TreeItem {
   public logicalName: string;
 
-  constructor(public optionSet: IOptionSet, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public optionSet: IOptionSet, private organization?: IOrganization, public solution?: ISolution) {
     super(optionSet.Name, vscode.TreeItemCollapsibleState.Collapsed);
 
     this.contextValue = 'optionSet';

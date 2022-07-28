@@ -26,6 +26,7 @@ import PluginStepTreeItem from './TreeItems/PluginStepTreeItem';
 import PluginTreeItem from './TreeItems/PluginTreeItem';
 import RelationshipTreeItem from './TreeItems/RelationshipTreeItem';
 import RoleTreeItem from './TreeItems/RoleTreeItem';
+import SolutionTreeItem from './TreeItems/SolutionTreeItem';
 import ValueTreeItem from './TreeItems/ValueTreeItem';
 import WebResourceTreeItem from './TreeItems/WebResourceTreeItem';
 
@@ -33,15 +34,11 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
   readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> = this._onDidChangeTreeData.event;
 
-  constructor(private organization?: IOrganization, private solution?: ISolution) { }
+  constructor(private organization?: IOrganization, private isDefault?: boolean) { }
 
-  changeSolution(organization?: IOrganization, solution?: ISolution): void {
+  changeOrganization(organization?: IOrganization): void {
     this.organization = organization;
-
-    if (this.solution?.uniqueName !== solution?.uniqueName) {
-      this.solution = solution;
-      this._onDidChangeTreeData.fire();
-    }
+    this._onDidChangeTreeData.fire();
   }
 
   refresh(): void {
@@ -56,97 +53,179 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
     let children = new Array<vscode.TreeItem>();
 
     switch (element?.contextValue) {
+      case 'solution':
+        const solutionTreeItem = <SolutionTreeItem>element;
+        children.push(new ContainerTreeItem('Tables', 'solutioncomponents', 'entityContainer', this.organization, solutionTreeItem.solution));
+        children.push(new ContainerTreeItem('Choices', 'solutioncomponents', 'globalOptionSetContainer', this.organization, solutionTreeItem.solution));
+        children.push(new ContainerTreeItem('Web Resources', 'solutioncomponents', 'webResourceContainer', this.organization, solutionTreeItem.solution));
+        children.push(new ContainerTreeItem('Plug-in Assemblies', 'solutioncomponents', 'assemblyContainer', this.organization, solutionTreeItem.solution));
+        children.push(new ContainerTreeItem('Security Roles', 'solutioncomponents', 'roleContainer', this.organization, solutionTreeItem.solution));
+        break;
       case 'entityContainer':
-        const entities = await this.getEntities(this.solution?.solutionId);
-        children = entities.map(entity => new EntityTreeItem(entity, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const entityContainerTreeItem = <ContainerTreeItem>element;
+        const entities = await this.getEntities(entityContainerTreeItem.solution?.solutionId);
+        children = entities.map(entity => new EntityTreeItem(entity, this.organization, entityContainerTreeItem.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'globalOptionSetContainer':
-        const globalOptionSets = await this.getGlobalOptionSets(this.solution?.solutionId);
-        children = globalOptionSets.map(globalOptionSet => new OptionSetTreeItem(globalOptionSet, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const globalOptionSetContainerTreeItem = <ContainerTreeItem>element;
+        const globalOptionSets = await this.getGlobalOptionSets(globalOptionSetContainerTreeItem.solution?.solutionId);
+        children = globalOptionSets.map(globalOptionSet => new OptionSetTreeItem(globalOptionSet, this.organization, globalOptionSetContainerTreeItem.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'webResourceContainer':
-        const webResources = await this.getWebResources(this.solution?.solutionId);
-        children = webResources.map(webResource => new WebResourceTreeItem(webResource, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
+        const webResourceContainerTreeItem = <ContainerTreeItem>element;
+        const webResources = await this.getWebResources(webResourceContainerTreeItem.solution?.solutionId);
+        children = webResources.map(webResource => new WebResourceTreeItem(webResource, this.organization, webResourceContainerTreeItem.solution)).sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'assemblyContainer':
-        const assemblies = await this.getPluginAssemblies(this.solution?.solutionId);
-        children = assemblies.map(assembly => new PluginAssemblyTreeItem(assembly, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
+        const assemblyContainerTreeItem = <ContainerTreeItem>element;
+        const assemblies = await this.getPluginAssemblies(assemblyContainerTreeItem.solution?.solutionId);
+        children = assemblies.map(assembly => new PluginAssemblyTreeItem(assembly, this.organization, assemblyContainerTreeItem.solution)).sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'roleContainer':
-        const roles = await this.getRoles(this.solution?.solutionId);
-        children = roles.map(role => new RoleTreeItem(role, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
+        const roleContainerTreeItem = <ContainerTreeItem>element;
+        const roles = await this.getRoles(roleContainerTreeItem.solution?.solutionId);
+        children = roles.map(role => new RoleTreeItem(role, this.organization, roleContainerTreeItem.solution)).sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'pluginAssembly':
         if (element) {
           const assemblyTreeItem = <PluginAssemblyTreeItem>element;
           const plugins = await this.getPluginTypes(assemblyTreeItem.pluginAssemblyId);
-          children = plugins.map(plugin => new PluginTreeItem(plugin)).sort((a, b) => a.typename.localeCompare(b.typename));
+          children = plugins.map(plugin => new PluginTreeItem(plugin, this.organization, assemblyTreeItem.solution)).sort((a, b) => a.typename.localeCompare(b.typename));
         }
         break;
       case 'plugin':
         if (element) {
           const pluginTreeItem = <PluginTreeItem>element;
           const pluginSteps = await this.getPluginSteps(pluginTreeItem.pluginId);
-          children = pluginSteps.map(pluginStep => new PluginStepTreeItem(pluginStep, this.organization, this.solution)).sort((a, b) => a.name.localeCompare(b.name));
+          children = pluginSteps.map(pluginStep => new PluginStepTreeItem(pluginStep, this.organization, pluginTreeItem.solution)).sort((a, b) => a.name.localeCompare(b.name));
         }
         break;
       case 'pluginStep':
         if (element) {
           const pluginStepTreeItem = <PluginStepTreeItem>element;
           const pluginImages = await this.getPluginImages(pluginStepTreeItem.pluginStepId);
-          children = pluginImages.map(pluginImage => new PluginImageTreeItem(pluginImage)).sort((a, b) => a.name.localeCompare(b.name));
+          children = pluginImages.map(pluginImage => new PluginImageTreeItem(pluginImage, this.organization, pluginStepTreeItem.solution)).sort((a, b) => a.name.localeCompare(b.name));
         }
         break;
       case 'entity':
         if (element) {
           const entityTreeItem = <EntityTreeItem>element;
-          children.push(new ValueTreeItem('Display Name: ' + entityTreeItem.entity.DisplayName?.UserLocalizedLabel?.Label));
-          children.push(new ValueTreeItem('Schema Name: ' + entityTreeItem.entity.SchemaName));
+          children.push(new ValueTreeItem('Display Name: ' + entityTreeItem.entity.DisplayName?.UserLocalizedLabel?.Label, this.organization, entityTreeItem.solution));
+          children.push(new ValueTreeItem('Schema Name: ' + entityTreeItem.entity.SchemaName, this.organization, entityTreeItem.solution));
 
-          children.push(new ContainerTreeItem('Columns', entityTreeItem.logicalName, 'attributeContainer'));
-          children.push(new ContainerTreeItem('Choices', entityTreeItem.logicalName, 'optionSetContainer'));
-          children.push(new ContainerTreeItem('1:N Relationships', entityTreeItem.logicalName, 'oneToManyContainer'));
-          children.push(new ContainerTreeItem('N:1 Relationships', entityTreeItem.logicalName, 'manyToOneContainer'));
-          children.push(new ContainerTreeItem('N:N Relationships', entityTreeItem.logicalName, 'manyToManyContainer'));
+          children.push(new ContainerTreeItem('Columns', entityTreeItem.logicalName, 'attributeContainer', this.organization, entityTreeItem.solution));
+          children.push(new ContainerTreeItem('Choices', entityTreeItem.logicalName, 'optionSetContainer', this.organization, entityTreeItem.solution));
+          children.push(new ContainerTreeItem('1:N Relationships', entityTreeItem.logicalName, 'oneToManyContainer', this.organization, entityTreeItem.solution));
+          children.push(new ContainerTreeItem('N:1 Relationships', entityTreeItem.logicalName, 'manyToOneContainer', this.organization, entityTreeItem.solution));
+          children.push(new ContainerTreeItem('N:N Relationships', entityTreeItem.logicalName, 'manyToManyContainer', this.organization, entityTreeItem.solution));
         }
         break;
       case 'optionSet':
-        children = (<OptionSetTreeItem>element).optionSet.Options.map(option => new OptionTreeItem(option)).sort((a, b) => a.option.Value - b.option.Value);
+        const optionSetTreeItem = <OptionSetTreeItem>element;
+        children = optionSetTreeItem.optionSet.Options.map(option => new OptionTreeItem(option, this.organization, optionSetTreeItem.solution)).sort((a, b) => a.option.Value - b.option.Value);
         break;
       case 'attributeContainer':
-        const attributes = await this.getAttributes((<ContainerTreeItem>element).logicalName);
-        children = attributes.map((attribute: IAttributeMetaData) => new AttributeTreeItem(attribute, this.organization, this.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const attributeContainerTreeItem = <ContainerTreeItem>element;
+        const attributes = await this.getAttributes(attributeContainerTreeItem.logicalName);
+        children = attributes.map((attribute: IAttributeMetaData) => new AttributeTreeItem(attribute, this.organization, attributeContainerTreeItem.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'optionSetContainer':
-        const optionSets = await this.getOptionSets((<ContainerTreeItem>element).logicalName);
-        children = optionSets.map(optionSet => new OptionSetTreeItem(optionSet)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const optionSetContainerTreeItem = <ContainerTreeItem>element;
+        const optionSets = await this.getOptionSets(optionSetContainerTreeItem.logicalName);
+        children = optionSets.map(optionSet => new OptionSetTreeItem(optionSet, this.organization, optionSetContainerTreeItem.solution)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'oneToManyContainer':
-        const oneNRelationships = await this.getRelationships(RelationshipTypes.OneToManyRelationship, (<ContainerTreeItem>element).logicalName);
-        children = oneNRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, this.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const oneToManyContainerTreeItem = <ContainerTreeItem>element;
+        const oneNRelationships = await this.getRelationships(RelationshipTypes.OneToManyRelationship, oneToManyContainerTreeItem.logicalName);
+        children = oneNRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, oneToManyContainerTreeItem.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'manyToOneContainer':
-        const nOneRelationships = await this.getRelationships(RelationshipTypes.ManyToOneRelationship, (<ContainerTreeItem>element).logicalName);
-        children = nOneRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, this.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const manyToOneContainerTreeItem = <ContainerTreeItem>element;
+        const nOneRelationships = await this.getRelationships(RelationshipTypes.ManyToOneRelationship, manyToOneContainerTreeItem.logicalName);
+        children = nOneRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, manyToOneContainerTreeItem.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'manyToManyContainer':
-        const nnRelationships = await this.getRelationships(RelationshipTypes.ManyToManyRelationship, (<ContainerTreeItem>element).logicalName);
-        children = nnRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, this.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
+        const manyToManyContainerTreeItem = <ContainerTreeItem>element;
+        const nnRelationships = await this.getRelationships(RelationshipTypes.ManyToManyRelationship, manyToManyContainerTreeItem.logicalName);
+        children = nnRelationships.map(relationship => new RelationshipTreeItem(relationship, this.organization, manyToManyContainerTreeItem.solution, (<ContainerTreeItem>element).logicalName)).sort((a, b) => a.logicalName.localeCompare(b.logicalName));
         break;
       case 'pluginImage':
       case 'value':
         // No children
         break;
       default:
-        children.push(new ContainerTreeItem('Tables', 'solutioncomponents', 'entityContainer'));
-        children.push(new ContainerTreeItem('Choices', 'solutioncomponents', 'globalOptionSetContainer'));
-        children.push(new ContainerTreeItem('Web Resources', 'solutioncomponents', 'webResourceContainer'));
-        children.push(new ContainerTreeItem('Plug-in Assemblies', 'solutioncomponents', 'assemblyContainer'));
-        children.push(new ContainerTreeItem('Security Roles', 'solutioncomponents', 'roleContainer'));
+        if (this.isDefault) {
+          const solution = await this.getDefaultSolution();
+          children.push(new ContainerTreeItem('Tables', 'solutioncomponents', 'entityContainer', this.organization, solution));
+          children.push(new ContainerTreeItem('Choices', 'solutioncomponents', 'globalOptionSetContainer', this.organization, solution));
+          children.push(new ContainerTreeItem('Web Resources', 'solutioncomponents', 'webResourceContainer', this.organization, solution));
+          children.push(new ContainerTreeItem('Plug-in Assemblies', 'solutioncomponents', 'assemblyContainer', this.organization, solution));
+          children.push(new ContainerTreeItem('Security Roles', 'solutioncomponents', 'roleContainer', this.organization, solution));
+        }
+        else {
+          const solutions = await this.getSolutions();
+          children = solutions.map(solution => new SolutionTreeItem(solution, this.organization)).sort((a, b) => a.uniqueName.localeCompare(b.uniqueName));
+        }
         break;
     }
 
     return children;
+  }
+
+  async getSolutions(): Promise<ISolution[]> {
+    const response = <ISolution[]>(await WebApi.retrieveMultiplePaged(
+      'solutions',
+      [
+        '_organizationid_value',
+        'uniquename',
+        'friendlyname',
+        'version'
+      ],
+      "uniquename ne 'Default' and ismanaged eq false and isvisible eq true"
+    ));
+
+    return response.map((solution: any) => {
+      return {
+        uniqueName: solution.uniquename,
+        friendlyName: solution.friendlyname,
+        solutionId: solution.solutionid,
+        organizationId: solution['_organizationid_value'],
+        organizationName: solution['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
+        version: solution.version,
+        label: solution.friendlyname,
+        description: solution.uniquename,
+        detail: solution.version,
+        alwaysShow: true
+      };
+    });
+  }
+
+  async getDefaultSolution(): Promise<ISolution> {
+    const response = <ISolution[]>(await WebApi.retrieveMultiplePaged(
+      'solutions',
+      [
+        '_organizationid_value',
+        'uniquename',
+        'friendlyname',
+        'version'
+      ],
+      "uniquename eq 'Default'"
+    ));
+
+    return response.map((solution: any) => {
+      return {
+        uniqueName: solution.uniquename,
+        friendlyName: solution.friendlyname,
+        solutionId: solution.solutionid,
+        organizationId: solution['_organizationid_value'],
+        organizationName: solution['_organizationid_value@OData.Community.Display.V1.FormattedValue'],
+        version: solution.version,
+        label: solution.friendlyname,
+        description: solution.uniquename,
+        detail: solution.version,
+        alwaysShow: true
+      };
+    })[0];
   }
 
   async getSolutionComponents(solutionId?: string, type?: SolutionComponentTypes): Promise<ISolutionComponent[]> {

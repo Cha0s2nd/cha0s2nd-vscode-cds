@@ -10,7 +10,7 @@ export default class PluginStepTreeItem extends vscode.TreeItem {
   public pluginStepId: string;
   public name: string;
 
-  constructor(public pluginStep: ISDKMessageProcessingStep, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public pluginStep: ISDKMessageProcessingStep, private organization?: IOrganization, public solution?: ISolution) {
     super(pluginStep.name, vscode.TreeItemCollapsibleState.Collapsed);
 
     this.contextValue = 'pluginStep';

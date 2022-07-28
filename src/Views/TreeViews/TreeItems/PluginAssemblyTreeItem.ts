@@ -9,7 +9,7 @@ export default class PluginAssemblyTreeItem extends vscode.TreeItem {
   public pluginAssemblyId: string;
   public name: string;
 
-  constructor(public pluginAssembly: IPluginAssembly, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public pluginAssembly: IPluginAssembly, private organization?: IOrganization, public solution?: ISolution) {
     super(pluginAssembly.name, vscode.TreeItemCollapsibleState.Collapsed);
 
     this.contextValue = 'pluginAssembly';

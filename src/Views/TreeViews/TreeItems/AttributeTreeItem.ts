@@ -8,7 +8,7 @@ import ISolution from '../../../Entities/ISolution';
 export default class AttributeTreeItem extends vscode.TreeItem {
   public logicalName: string;
 
-  constructor(public attribute: IAttributeMetaData, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public attribute: IAttributeMetaData, private organization?: IOrganization, public solution?: ISolution) {
     super(attribute.LogicalName);
 
     this.contextValue = 'attribute';

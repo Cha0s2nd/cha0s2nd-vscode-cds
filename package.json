@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -31,7 +31,11 @@
   ],
   "activationEvents": [
     "workspaceContains:**/spkl.json",
-    "onCommand:cha0s2nd-vscode-cds.auth.login"
+    "onView:solution",
+    "onView:defaultSolution",
+    "onCommand:cha0s2nd-vscode-cds.auth.login",
+    "onAuthenticationRequest:crm",
+    "onAuthenticationRequest:crm-onprem"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -58,7 +62,7 @@
       "cds-treeview": [
         {
           "id": "solution",
-          "name": "Solution",
+          "name": "Solutions",
           "icon": "media/icon.svg",
           "contextualTitle": "Solution Explorer"
         },

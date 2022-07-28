@@ -8,7 +8,7 @@ import ISolution from '../../../Entities/ISolution';
 export default class EntityTreeItem extends vscode.TreeItem {
   public logicalName: string;
 
-  constructor(public entity: IEntityMetadata, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public entity: IEntityMetadata, private organization?: IOrganization, public solution?: ISolution) {
     super(entity.LogicalName, vscode.TreeItemCollapsibleState.Collapsed);
 
     this.contextValue = 'entity';

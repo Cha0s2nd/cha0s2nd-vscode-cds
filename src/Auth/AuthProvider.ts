@@ -172,6 +172,8 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
 
   private async waitForCodeResponse(authState: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
+      const cancellationTokenSource = new vscode.CancellationTokenSource();
+
       this.uriHandler.event((uri: vscode.Uri) => {
         const query = this.parseQuery(uri);
         if (query.code && query.state === decodeURIComponent(authState)) {
@@ -186,17 +188,20 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
         else {
           reject(`Login failed: The response was not from the request send by this application - invalid_state`);
         }
+        cancellationTokenSource.cancel();
+        cancellationTokenSource.dispose();
       });
 
       vscode.window.showInputBox({
         ignoreFocusOut: true,
         password: true,
         placeHolder: 'Authorization Code',
-        prompt: 'Follow the prompts and wait for the login to complete from the browser or paste in the Authorization Code given on the site.'
-      }).then((token) => {
+        prompt: 'Follow the prompts and wait for the login to complete from the browser or paste in the Authorization Code given on the site.',
+      }, cancellationTokenSource.token).then((token) => {
         if (token) {
           resolve(token);
         }
+        cancellationTokenSource.dispose();
       });
     });
   }

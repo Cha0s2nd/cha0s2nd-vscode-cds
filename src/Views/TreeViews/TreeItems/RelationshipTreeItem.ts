@@ -8,7 +8,7 @@ import ISolution from '../../../Entities/ISolution';
 export default class RelationshipTreeItem extends vscode.TreeItem {
   public logicalName: string;
 
-  constructor(public relationship: IRelationship, private organization?: IOrganization, private solution?: ISolution, private entityLogicalName?: string) {
+  constructor(public relationship: IRelationship, private organization?: IOrganization, public solution?: ISolution, private entityLogicalName?: string) {
     super(relationship.SchemaName);
 
     this.contextValue = 'relationship';

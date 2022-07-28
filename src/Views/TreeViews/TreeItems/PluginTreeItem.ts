@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import IPluginType from '../../../Entities/IPluginType';
+import IOrganization from '../../../Entities/IOrganization';
+import ISolution from '../../../Entities/ISolution';
 
 export default class PluginTreeItem extends vscode.TreeItem {
   public pluginId: string;
   public typename: string;
 
-  constructor(public plugin: IPluginType) {
+  constructor(public plugin: IPluginType, private organization?: IOrganization, public solution?: ISolution) {
     super(plugin.typename, vscode.TreeItemCollapsibleState.Collapsed);
 
     this.contextValue = 'plugin';

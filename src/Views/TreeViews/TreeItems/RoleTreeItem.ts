@@ -8,7 +8,7 @@ import ISolution from '../../../Entities/ISolution';
 export default class RoleTreeItem extends vscode.TreeItem {
   public name: string;
 
-  constructor(public role: IRole, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public role: IRole, private organization?: IOrganization, public solution?: ISolution) {
     super(role.name);
 
     this.contextValue = 'role';

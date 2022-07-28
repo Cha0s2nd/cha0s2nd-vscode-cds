@@ -8,7 +8,7 @@ import ISolution from '../../../Entities/ISolution';
 export default class WebResourceTreeItem extends vscode.TreeItem {
   public name: string;
 
-  constructor(public webResource: IWebResource, private organization?: IOrganization, private solution?: ISolution) {
+  constructor(public webResource: IWebResource, private organization?: IOrganization, public solution?: ISolution) {
     super(webResource.displayname);
 
     this.contextValue = 'webResource';
