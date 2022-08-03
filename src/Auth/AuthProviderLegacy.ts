@@ -36,9 +36,12 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
-    this.session = await this.createOrUpdateSession(scopes, this.session);
-
-    return [this.session.session];
+    if (await this.validateSession(this.session) && this.session) {
+      return [this.session.session];
+    }
+    else {
+      return [];
+    }
   }
 
   public async createSession(scopes: string[]): Promise<vscode.AuthenticationSession> {
@@ -54,18 +57,26 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
     }
   }
 
-  private async createOrUpdateSession(scopes: string[], session?: IAuthSession): Promise<IAuthSession> {
-    let newSession: IAuthSession | null | undefined = null;
-
+  private async validateSession(session?: IAuthSession) {
     if (session && session.result) {
       try {
         const loginRedirect = await rp(session.result, { method: 'GET', jar: true, followRedirect: false, resolveWithFullResponse: true });
 
-        newSession = session;
+        return true;
       }
       catch (err: any) {
-        newSession = await this.retrieveCookies(scopes, session.result, session.session.account?.id);
+        return false;
       }
+    }
+
+    return false;
+  }
+
+  private async createOrUpdateSession(scopes: string[], session?: IAuthSession): Promise<IAuthSession> {
+    let newSession: IAuthSession | null | undefined = null;
+
+    if (session && session.result && await this.validateSession(session)) {
+      newSession = session;
     }
     else {
       newSession = await this.retrieveCookies(scopes);

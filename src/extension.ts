@@ -26,7 +26,6 @@ export async function activate(context: vscode.ExtensionContext) {
   if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
     const authProviderLegacy = new AuthProviderLegacy(context);
     authProviderLegacy.registerCommands();
-
     vscode.authentication.registerAuthenticationProvider(AuthProviderType.crmonprem, "Dynamics 365 (Legacy)", authProviderLegacy, { supportsMultipleAccounts: false });
   }
   else {
