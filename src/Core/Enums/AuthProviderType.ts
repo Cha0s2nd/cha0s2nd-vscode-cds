@@ -1,4 +1,4 @@
 export enum AuthProviderType {
-  crm = 'crm',
+  microsoft = 'microsoft',
   crmonprem = 'crm-onprem',
 }

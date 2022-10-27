@@ -8,7 +8,6 @@ import SpklManager from './Core/Managers/SpklManager';
 import SpklSettingManager from './Core/Managers/SpklSettingManager';
 import TreeViewManager from './Core/Managers/TreeViewManager';
 import WebResourceManager from './Core/Managers/WebResourceManager';
-import AuthProvider from './Auth/AuthProvider';
 import { WebResourceCodeLensProvider } from './Core/Providers/WebResourceCodeLensProvider';
 import IOrganization from './Entities/IOrganization';
 import AuthProviderLegacy from './Auth/AuthProviderLegacy';
@@ -26,12 +25,7 @@ export async function activate(context: vscode.ExtensionContext) {
   if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
     const authProviderLegacy = new AuthProviderLegacy(context);
     authProviderLegacy.registerCommands();
-    vscode.authentication.registerAuthenticationProvider(AuthProviderType.crmonprem, "Dynamics 365 (Legacy)", authProviderLegacy, { supportsMultipleAccounts: false });
-  }
-  else {
-    const authProvider = new AuthProvider(context);
-    authProvider.registerCommands();
-    vscode.authentication.registerAuthenticationProvider(AuthProviderType.crm, "Dynamics 365", authProvider, { supportsMultipleAccounts: false });
+    vscode.authentication.registerAuthenticationProvider(AuthProviderType.crmonprem, "Dynamics 365 (On-Prem)", authProviderLegacy, { supportsMultipleAccounts: false });
   }
 
   // Global commands

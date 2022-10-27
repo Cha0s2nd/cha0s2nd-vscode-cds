@@ -43,11 +43,11 @@
     "viewsWelcome": [
       {
         "view": "solution",
-        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.auth.login)"
+        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.solutionTreeView.refresh)"
       },
       {
         "view": "defaultSolution",
-        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.auth.login)"
+        "contents": "Please log in to Dynamics 365 to start\n[Login](command:cha0s2nd-vscode-cds.defaultSolutionTreeView.refresh)"
       }
     ],
     "viewsContainers": {
@@ -376,16 +376,6 @@
       }
     ],
     "commands": [
-      {
-        "command": "cha0s2nd-vscode-cds.auth.login",
-        "title": "Login",
-        "category": "Cha0s Data"
-      },
-      {
-        "command": "cha0s2nd-vscode-cds.auth.logout",
-        "title": "Logout",
-        "category": "Cha0s Data"
-      },
       {
         "command": "cha0s2nd-vscode-cds.link.open",
         "title": "Open Link",

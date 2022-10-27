@@ -42,7 +42,7 @@ export default class OrganizationManager {
           'Prefer': 'odata.include-annotations="*"',
           'OData-Version': '4.0',
           'OData-MaxVersion': '4.0',
-          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.crm, [Constants.DISCOVERY_URL + '//user_impersonation'], { createIfNone: true })).accessToken
+          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.microsoft, [Constants.DISCOVERY_URL + '//user_impersonation'], { createIfNone: true })).accessToken
         },
         json: true
       });
