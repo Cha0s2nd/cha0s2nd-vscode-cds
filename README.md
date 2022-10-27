@@ -82,11 +82,10 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.7]
-Added
-- Added Solutions to Treeview
-Changed
-- Automatically hide manual auth code input after opening via link
+### [0.1.8]
+Fixed
+- Login issues
+- Plugin Solution defaulting to 'default'
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 

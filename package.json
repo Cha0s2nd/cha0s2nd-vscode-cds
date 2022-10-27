@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.1.7",
+  "version": "0.1.8",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -33,9 +33,7 @@
     "workspaceContains:**/spkl.json",
     "onView:solution",
     "onView:defaultSolution",
-    "onCommand:cha0s2nd-vscode-cds.auth.login",
-    "onAuthenticationRequest:crm",
-    "onAuthenticationRequest:crm-onprem"
+    "onCommand:*"
   ],
   "main": "./dist/extension.js",
   "contributes": {

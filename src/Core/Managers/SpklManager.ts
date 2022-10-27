@@ -2,12 +2,12 @@ import * as vscode from "vscode";
 import * as Constants from "../Constants/Constants";
 import * as child_process from 'child_process';
 import * as jwt_decode from "jwt-decode";
-import * as path from "path";
 import IOrganization from "../../Entities/IOrganization";
 import { SpklActions } from "../Enums/SpklActions";
 import ISpklSettings from "../../Entities/ISpklSettings";
 import ISolution from "../../Entities/ISolution";
 import { AuthProviderType } from "../Enums/AuthProviderType";
+import PluginAssemblyTreeItem from "../../Views/TreeViews/TreeItems/PluginAssemblyTreeItem";
 
 export default class SpklManager {
   private context: vscode.ExtensionContext;
@@ -22,7 +22,7 @@ export default class SpklManager {
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.download', () => this.downloadWebResources()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.webresource.get', () => this.getWebResources()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.deploy', () => this.deployAssemblies()));
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.file', () => this.deployAssembly()));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.assembly.file', (treeItem?: PluginAssemblyTreeItem) => this.deployAssembly(treeItem?.solution)));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.instrument', () => this.instrumentPlugins()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.plugin.deploy', () => this.deployPlugins()));
     this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.spkl.workflow.deploy', () => this.deployWorkflows()));
@@ -200,8 +200,8 @@ export default class SpklManager {
     this.executeSpkl(SpklActions.deployWebResources, ...params);
   }
 
-  private async deployAssembly() {
-    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.plugin.assembly.file');
+  private async deployAssembly(solution?: ISolution) {
+    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.plugin.assembly.file', solution);
 
     // const assemblyFile = await this.pickAssembly();
 

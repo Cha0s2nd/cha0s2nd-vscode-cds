@@ -36,7 +36,7 @@ export default class AuthProvider implements vscode.AuthenticationProvider {
   }
 
   public async getSessions(scopes: string[]): Promise<readonly vscode.AuthenticationSession[]> {
-    if (await this.validateSession(this.session) && this.session) {
+    if (this.session && await this.validateSession(this.session)) {
       return [this.session.session];
     }
     else {

@@ -14,7 +14,7 @@ export default class SolutionManager {
   }
 
   public registerCommands(): void {
-    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.assembly.file', async () => { return await this.updateAssembly(); }));
+    this.context.subscriptions.push(vscode.commands.registerCommand('cha0s2nd-vscode-cds.plugin.assembly.file', async (solution?: ISolution) => { return await this.updateAssembly(solution); }));
   }
 
   private async getConnection(): Promise<string> {
@@ -23,7 +23,7 @@ export default class SolutionManager {
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${this.context.asAbsolutePath('token_cache')}`;
   }
 
-  public async updateAssembly(): Promise<void> {
+  public async updateAssembly(solution?: ISolution): Promise<void> {
     const fileUris = await vscode.window.showOpenDialog({
       canSelectMany: false,
       openLabel: 'Plugin Assembly',
@@ -36,18 +36,20 @@ export default class SolutionManager {
         location: vscode.ProgressLocation.Notification,
         cancellable: false,
         title: "Registering Assembly"
-      }, (progress) => this.uploadAssembly(fileUris[0]));
+      }, (progress) => this.uploadAssembly(fileUris[0], solution));
     }
   }
 
-  public async uploadAssembly(fileUri: vscode.Uri): Promise<void> {
+  public async uploadAssembly(fileUri: vscode.Uri, solution?: ISolution): Promise<void> {
     try {
       const wait = setTimeout(() => {
         clearTimeout(wait);
         throw new Error('Registering Plugin Assembly timed out.');
       }, 1000 * 60 * 15);
 
-      const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
+      if (!solution) {
+        solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
+      }
 
       await this.executeSDKWrapper(
         "pluginassembly",

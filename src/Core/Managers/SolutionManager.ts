@@ -108,8 +108,6 @@ export default class SolutionManager {
     this.updateStatusBar(solution);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.solution', solution);
 
-    await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solutionTreeView.changeSolution', solution);
-
     return solution;
   }
 
