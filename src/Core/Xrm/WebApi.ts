@@ -147,7 +147,7 @@ export default class WebApi {
     else {
       return rp(url, {
         baseUrl: org!.url + '/api/data/v' + org!.version.substring(0, 3) + '/',
-        jar: vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy'),
+        jar: false,
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
           'Prefer': 'odata.include-annotations="*", return=representation',

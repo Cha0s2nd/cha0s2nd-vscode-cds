@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.1.8",
+  "version": "0.1.9",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -33,7 +33,10 @@
     "workspaceContains:**/spkl.json",
     "onView:solution",
     "onView:defaultSolution",
-    "onCommand:*"
+    "onCommand:cha0s2nd-vscode-cds.auth.*",
+    "onCommand:cha0s2nd-vscode-cds.webresource.*",
+    "onCommand:cha0s2nd-vscode-cds.spkl.*",
+    "onCommand:cha0s2nd-vscode-cds.entity.*"
   ],
   "main": "./dist/extension.js",
   "contributes": {

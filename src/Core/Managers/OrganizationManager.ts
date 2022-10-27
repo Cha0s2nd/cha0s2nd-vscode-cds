@@ -88,15 +88,16 @@ export default class OrganizationManager {
       });
     }
 
-    if (!vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
-      const orgDetails = await WebApi.get(`RetrieveCurrentOrganization(AccessType='Default')`);
-      organization!.environmentId = orgDetails.Detail.EnvironmentId;
-    }
-
-    this.updateStatusBar(organization);
     this.context.workspaceState.update('cha0s2nd-vscode-cds.organization', organization);
+    this.updateStatusBar(organization);
+    
     if (organization) {
       await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.change');
+
+      if (!vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
+        const orgDetails = await WebApi.get(`RetrieveCurrentOrganization(AccessType='Default')`);
+        organization!.environmentId = orgDetails.Detail.EnvironmentId;
+      }
     }
 
     return organization;

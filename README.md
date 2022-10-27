@@ -82,7 +82,7 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.8]
+### [0.1.9]
 Fixed
 - Login issues
 - Plugin Solution defaulting to 'default'
