@@ -42,7 +42,12 @@ export default class OrganizationManager {
           'Prefer': 'odata.include-annotations="*"',
           'OData-Version': '4.0',
           'OData-MaxVersion': '4.0',
-          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.microsoft, [Constants.DISCOVERY_URL + '//user_impersonation'], { createIfNone: true })).accessToken
+          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.microsoft, [
+            `VSCODE_CLIENT_ID:${Constants.CLIENT_ID}`,
+            'VSCODE_TENANT:common', 
+            'offline_access',
+            `${Constants.DISCOVERY_URL}//user_impersonation`
+          ], { createIfNone: true })).accessToken
         },
         json: true
       });
@@ -95,7 +100,7 @@ export default class OrganizationManager {
       await vscode.commands.executeCommand('cha0s2nd-vscode-cds.solution.change');
 
       if (!vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
-        const orgDetails = await WebApi.get(`RetrieveCurrentOrganization(AccessType='Default')`);
+        const orgDetails = await new WebApi(this.context).get(`RetrieveCurrentOrganization(AccessType='Default')`);
         organization!.environmentId = orgDetails.Detail.EnvironmentId;
       }
     }

@@ -189,7 +189,7 @@ export default class WebResourceManager {
 
   private async createOrUpdateWebResource(webResource: ISpklWebResource) {
     try {
-      const resources = await WebApi.retrieveMultiple(
+      const resources = await new WebApi(this.context).retrieveMultiple(
         'webresourceset',
         ['webresourceid'],
         `name eq '${webResource.uniquename}'`,
@@ -249,7 +249,7 @@ export default class WebResourceManager {
       let response = null;
 
       if (resources.length > 0) {
-        response = await WebApi.patch(`webresourceset(${resources[0].webresourceid})`, {
+        response = await new WebApi(this.context).patch(`webresourceset(${resources[0].webresourceid})`, {
           name: webResource.uniquename,
           displayname: webResource.displayname,
           webresourcetype: webResourceType,
@@ -259,7 +259,7 @@ export default class WebResourceManager {
       else {
         const solution = await vscode.commands.executeCommand<ISolution>('cha0s2nd-vscode-cds.solution.get');
 
-        response = await WebApi.post('webresourceset', {
+        response = await new WebApi(this.context).post('webresourceset', {
           name: webResource.uniquename,
           displayname: webResource.displayname,
           webresourcetype: webResourceType,
@@ -268,7 +268,7 @@ export default class WebResourceManager {
         });
 
         if (response) {
-          await WebApi.post('AddSolutionComponent', {
+          await new WebApi(this.context).post('AddSolutionComponent', {
             ComponentId: response.webresourceid,
             ComponentType: SolutionComponentTypes.WebResource,
             SolutionUniqueName: solution?.uniqueName,
@@ -279,7 +279,7 @@ export default class WebResourceManager {
         }
       }
 
-      await WebApi.post('PublishXml', {
+      await new WebApi(this.context).post('PublishXml', {
         ParameterXml: `<importexportxml><webresources><webresource>{${response.webresourceid}}</webresource></webresources></importexportxml>`
       });
     }

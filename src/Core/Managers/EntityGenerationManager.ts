@@ -43,7 +43,7 @@ export default class EntityGenerationManager {
   }
 
   private async generateEntity(logicalName: string): Promise<any> {
-    const entityMetadata: IEntityMetadata = await WebApi.retrieve('EntityDefinitions', `LogicalName='${logicalName}'`, ['SchemaName', 'LogicalCollectionName', 'LogicalName']);
+    const entityMetadata: IEntityMetadata = await new WebApi(this.context).retrieve('EntityDefinitions', `LogicalName='${logicalName}'`, ['SchemaName', 'LogicalCollectionName', 'LogicalName']);
 
     const entity: any = {
       LogicalName: entityMetadata.LogicalName,
@@ -53,7 +53,7 @@ export default class EntityGenerationManager {
       ODataAttributes: {}
     };
 
-    const attributeMetadata: IAttributeMetadata[] = await WebApi.retrieveMultiplePaged(`EntityDefinitions(LogicalName='${logicalName}')/Attributes`, ['LogicalName', 'SchemaName', 'AttributeType'], 'AttributeOf eq null');
+    const attributeMetadata: IAttributeMetadata[] = await new WebApi(this.context).retrieveMultiplePaged(`EntityDefinitions(LogicalName='${logicalName}')/Attributes`, ['LogicalName', 'SchemaName', 'AttributeType'], 'AttributeOf eq null');
 
     for (let attribute of attributeMetadata) {
       if (attribute.LogicalName.indexOf("_base") < 0) {

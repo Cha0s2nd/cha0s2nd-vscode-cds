@@ -1,11 +1,17 @@
 import * as vscode from 'vscode';
 import * as rp from 'request-promise';
-import * as Constants from '../../Core/Constants/Constants';
+import * as Constants from '../Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
 import { AuthProviderType } from '../Enums/AuthProviderType';
 
 export default class WebApi {
-  public static async retrieve(entitySet: string, id: string, columnSet?: string[] | null, filter?: string | null, additionalQuery?: string | null) {
+  private context: vscode.ExtensionContext;
+
+  constructor(context: vscode.ExtensionContext) {
+    this.context = context;
+  }
+
+  public async retrieve(entitySet: string, id: string, columnSet?: string[] | null, filter?: string | null, additionalQuery?: string | null) {
     const query: string[] = [];
     let url: string = entitySet + '(' + id + ')';
 
@@ -28,7 +34,7 @@ export default class WebApi {
     return this.get(url);
   }
 
-  public static async retrieveMultiple(entitySet: string, columnSet?: string[] | null, filter?: string | null, top?: number | null, additionalQuery?: string | null): Promise<any[]> {
+  public async retrieveMultiple(entitySet: string, columnSet?: string[] | null, filter?: string | null, top?: number | null, additionalQuery?: string | null): Promise<any[]> {
     const query: string[] = [];
     let url: string = entitySet;
 
@@ -56,7 +62,7 @@ export default class WebApi {
     return response.value;
   }
 
-  public static async retrieveMultiplePaged(entitySet: string, columnSet?: string[] | null, filter?: string | null, top?: number | null, additionalQuery?: string | null): Promise<any[]> {
+  public async retrieveMultiplePaged(entitySet: string, columnSet?: string[] | null, filter?: string | null, top?: number | null, additionalQuery?: string | null): Promise<any[]> {
     const query: string[] = [];
     let url: string = entitySet;
     let entities: any[] = [];
@@ -91,7 +97,7 @@ export default class WebApi {
     return entities;
   }
 
-  public static async remove(entitySet: string, id: string) {
+  public async remove(entitySet: string, id: string) {
     const query: string[] = [];
     let url: string = entitySet + '(' + id + ')';
 
@@ -102,31 +108,31 @@ export default class WebApi {
     return this.delete(url);
   }
 
-  public static async create(entitySet: string, entity: any) {
+  public async create(entitySet: string, entity: any) {
     return this.post(entitySet, entity);
   }
 
-  public static async update(entitySet: string, entity: any) {
+  public async update(entitySet: string, entity: any) {
     return this.patch(entitySet, { entity });
   }
 
-  public static async get(url: string) {
+  public async get(url: string) {
     return this.request(url, 'GET', null);
   }
 
-  public static async patch(url: string, body: any) {
+  public async patch(url: string, body: any) {
     return this.request(url, 'PATCH', body);
   }
 
-  public static async post(url: string, body: any) {
+  public async post(url: string, body: any) {
     return this.request(url, 'POST', body);
   }
 
-  public static async delete(url: string) {
+  public async delete(url: string) {
     return this.request(url, 'DELETE', null);
   }
 
-  public static async request(url: string, method: string, body: any) {
+  public async request(url: string, method: string, body: any) {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
 
     if (vscode.workspace.getConfiguration().get<boolean>('cha0s2nd-vscode-cds.auth.useLegacy')) {
@@ -145,6 +151,19 @@ export default class WebApi {
       });
     }
     else {
+      let authToken = await this.context.secrets.get("authToken");
+
+      if(!authToken){
+        authToken = (await vscode.authentication.getSession(AuthProviderType.microsoft, [
+          `VSCODE_CLIENT_ID:${Constants.CLIENT_ID}`,
+          'VSCODE_TENANT:common', 
+          'offline_access',
+          `${org!.url}//user_impersonation`
+        ], { createIfNone: true })).accessToken;
+
+        this.context.secrets.store("authToken", authToken);
+      }
+
       return rp(url, {
         baseUrl: org!.url + '/api/data/v' + org!.version.substring(0, 3) + '/',
         jar: false,
@@ -153,7 +172,7 @@ export default class WebApi {
           'Prefer': 'odata.include-annotations="*", return=representation',
           'OData-Version': '4.0',
           'OData-MaxVersion': '4.0',
-          'Authorization': 'Bearer ' + (await vscode.authentication.getSession(AuthProviderType.microsoft, [org?.url + '//user_impersonation'], { createIfNone: true })).accessToken
+          'Authorization': 'Bearer ' + authToken
         },
         json: true,
         method: method,

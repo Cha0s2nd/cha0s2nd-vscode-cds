@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as Constants from './Core/Constants/Constants';
 import { AuthProviderType } from './Core/Enums/AuthProviderType';
 import DependencyManager from './Core/Managers/DependencyManager';
 import EarlyBoundManager from './Core/Managers/EarlyBoundManager';
@@ -47,7 +48,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.languages.registerCodeLensProvider({ pattern: '**/*.{css,gif,html,htm,ico,jpg,jpeg,js,png,resx,svg,xap,xml,xsl}' }, new WebResourceCodeLensProvider());
 
-  if (await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get')) {
+  const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
+
+  if (org) {
+    context.secrets.store("authToken", (await vscode.authentication.getSession(AuthProviderType.microsoft, [
+      `VSCODE_CLIENT_ID:${Constants.CLIENT_ID}`,
+      'VSCODE_TENANT:common', 
+      'offline_access',
+      `${org!.url}//user_impersonation`
+    ], { createIfNone: true })).accessToken);
+    
     const treeViewManager = new TreeViewManager(context);
     treeViewManager.registerCommands();
     treeViewManager.registerViews();

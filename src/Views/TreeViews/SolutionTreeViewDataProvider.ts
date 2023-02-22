@@ -34,7 +34,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
   readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> = this._onDidChangeTreeData.event;
 
-  constructor(private organization?: IOrganization, private isDefault?: boolean) { }
+  constructor(private context: vscode.ExtensionContext, private organization?: IOrganization, private isDefault?: boolean) { }
 
   changeOrganization(organization?: IOrganization): void {
     this.organization = organization;
@@ -173,7 +173,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getSolutions(): Promise<ISolution[]> {
-    const response = <ISolution[]>(await WebApi.retrieveMultiplePaged(
+    const response = <ISolution[]>(await new WebApi(this.context).retrieveMultiplePaged(
       'solutions',
       [
         '_organizationid_value',
@@ -201,7 +201,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getDefaultSolution(): Promise<ISolution> {
-    const response = <ISolution[]>(await WebApi.retrieveMultiplePaged(
+    const response = <ISolution[]>(await new WebApi(this.context).retrieveMultiplePaged(
       'solutions',
       [
         '_organizationid_value',
@@ -229,7 +229,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getSolutionComponents(solutionId?: string, type?: SolutionComponentTypes): Promise<ISolutionComponent[]> {
-    return <ISolutionComponent[]>(await WebApi.retrieveMultiplePaged(
+    return <ISolutionComponent[]>(await new WebApi(this.context).retrieveMultiplePaged(
       'solutioncomponents',
       [
         'solutioncomponentid',
@@ -257,7 +257,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
           }
         }
 
-        entities = entities.concat(<IEntityMetadata[]>(await WebApi.retrieveMultiple(
+        entities = entities.concat(<IEntityMetadata[]>(await new WebApi(this.context).retrieveMultiple(
           'EntityDefinitions',
           [
             'MetadataId',
@@ -278,7 +278,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       return entities;
     }
     else {
-      return <IEntityMetadata[]>(await WebApi.retrieveMultiplePaged(
+      return <IEntityMetadata[]>(await new WebApi(this.context).retrieveMultiplePaged(
         'EntityDefinitions',
         [
           'MetadataId',
@@ -297,7 +297,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getAttributes(logicalName: string): Promise<IAttributeMetaData[]> {
-    return <IAttributeMetaData[]>(await WebApi.retrieveMultiplePaged(
+    return <IAttributeMetaData[]>(await new WebApi(this.context).retrieveMultiplePaged(
       `EntityDefinitions(LogicalName='${logicalName}')/Attributes`,
       [
         'MetadataId',
@@ -313,7 +313,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getOptionSets(logicalName: string): Promise<IOptionSet[]> {
-    return <IOptionSet[]>(await WebApi.retrieveMultiplePaged(
+    return <IOptionSet[]>(await new WebApi(this.context).retrieveMultiplePaged(
       `EntityDefinitions(LogicalName='${logicalName}')/Attributes/Microsoft.Dynamics.CRM.PicklistAttributeMetadata`,
       ['OptionSet'],
       null,
@@ -323,7 +323,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getRelationships(relationshipType: RelationshipTypes, logicalName: string): Promise<IRelationship[]> {
-    return <IRelationship[]>(await WebApi.retrieveMultiplePaged(
+    return <IRelationship[]>(await new WebApi(this.context).retrieveMultiplePaged(
       `EntityDefinitions(LogicalName='${logicalName}')/${relationshipType}s`,
       null,
       'IsCustomizable/Value eq true'
@@ -337,7 +337,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       let globalOptionSets = new Array<IOptionSet>();
 
       for (let component of components) {
-        globalOptionSets = globalOptionSets.concat(<IOptionSet>(await WebApi.retrieve(
+        globalOptionSets = globalOptionSets.concat(<IOptionSet>(await new WebApi(this.context).retrieve(
           `GlobalOptionSetDefinitions`,
           component.objectid,
         )));
@@ -346,7 +346,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       return globalOptionSets;
     }
     else {
-      return <IOptionSet[]>(await WebApi.retrieveMultiplePaged(
+      return <IOptionSet[]>(await new WebApi(this.context).retrieveMultiplePaged(
         `GlobalOptionSetDefinitions`
       ));
     }
@@ -367,7 +367,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
           }
         }
 
-        roles = roles.concat(<IRole[]>(await WebApi.retrieveMultiplePaged(
+        roles = roles.concat(<IRole[]>(await new WebApi(this.context).retrieveMultiplePaged(
           `roles`,
           [
             'roleid',
@@ -382,7 +382,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       return roles;
     }
     else {
-      return <IRole[]>(await WebApi.retrieveMultiplePaged(
+      return <IRole[]>(await new WebApi(this.context).retrieveMultiplePaged(
         `roles`,
         [
           'roleid',
@@ -409,7 +409,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
           }
         }
 
-        webResources = webResources.concat(<IWebResource[]>(await WebApi.retrieveMultiplePaged(
+        webResources = webResources.concat(<IWebResource[]>(await new WebApi(this.context).retrieveMultiplePaged(
           `webresourceset`,
           [
             'webresourceid',
@@ -425,7 +425,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       return webResources;
     }
     else {
-      return <IWebResource[]>(await WebApi.retrieveMultiplePaged(
+      return <IWebResource[]>(await new WebApi(this.context).retrieveMultiplePaged(
         `webresourceset`,
         [
           'webresourceid',
@@ -453,7 +453,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
           }
         }
 
-        assemblies = assemblies.concat(<IPluginAssembly[]>(await WebApi.retrieveMultiplePaged(
+        assemblies = assemblies.concat(<IPluginAssembly[]>(await new WebApi(this.context).retrieveMultiplePaged(
           `pluginassemblies`,
           [
             'pluginassemblyid',
@@ -473,7 +473,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
       return assemblies;
     }
     else {
-      return <IPluginAssembly[]>(await WebApi.retrieveMultiplePaged(
+      return <IPluginAssembly[]>(await new WebApi(this.context).retrieveMultiplePaged(
         `pluginassemblies`,
         [
           'pluginassemblyid',
@@ -485,7 +485,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getPluginTypes(assemblyId: string): Promise<IPluginType[]> {
-    return <IPluginType[]>(await WebApi.retrieveMultiplePaged(
+    return <IPluginType[]>(await new WebApi(this.context).retrieveMultiplePaged(
       `plugintypes`,
       [
         'plugintypeid',
@@ -500,7 +500,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getPluginSteps(pluginId: string): Promise<ISDKMessageProcessingStep[]> {
-    return <ISDKMessageProcessingStep[]>(await WebApi.retrieveMultiplePaged(
+    return <ISDKMessageProcessingStep[]>(await new WebApi(this.context).retrieveMultiplePaged(
       `sdkmessageprocessingsteps`,
       [
         'sdkmessageprocessingstepid',
@@ -513,7 +513,7 @@ export class SolutionTreeViewDataProvider implements vscode.TreeDataProvider<vsc
   }
 
   async getPluginImages(pluginStepId: string): Promise<ISDKMessageProcessingStepImage[]> {
-    return <ISDKMessageProcessingStepImage[]>(await WebApi.retrieveMultiplePaged(
+    return <ISDKMessageProcessingStepImage[]>(await new WebApi(this.context).retrieveMultiplePaged(
       `sdkmessageprocessingstepimages`,
       [
         'sdkmessageprocessingstepimageid',

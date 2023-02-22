@@ -21,7 +21,7 @@ export default class TreeViewManager {
   public async registerViews(): Promise<void> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
 
-    this.solutionProvider = new SolutionTreeViewDataProvider(org, false);
+    this.solutionProvider = new SolutionTreeViewDataProvider(this.context, org, false);
 
     this.solutionTreeView = vscode.window.createTreeView('solution', {
       treeDataProvider: this.solutionProvider
@@ -34,7 +34,7 @@ export default class TreeViewManager {
       }
     });
 
-    this.defaultSolutionProvider = new SolutionTreeViewDataProvider(org, true);
+    this.defaultSolutionProvider = new SolutionTreeViewDataProvider(this.context, org, true);
     vscode.window.createTreeView('defaultSolution', {
       treeDataProvider: this.defaultSolutionProvider
     });

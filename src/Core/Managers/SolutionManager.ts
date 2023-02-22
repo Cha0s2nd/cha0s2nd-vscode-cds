@@ -32,7 +32,7 @@ export default class SolutionManager {
   public async getAvailableSolutions(): Promise<ISolution[]> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
 
-    const response = await WebApi.retrieveMultiple(
+    const response = await new WebApi(this.context).retrieveMultiple(
       'solutions',
       [
         '_organizationid_value',
@@ -72,7 +72,7 @@ export default class SolutionManager {
   }
 
   private async getDefaultSolution(): Promise<ISolution | undefined> {
-    const solution = await WebApi.retrieveMultiple(
+    const solution = await new WebApi(this.context).retrieveMultiple(
       'solutions', [
       '_organizationid_value',
       'uniquename',
@@ -167,7 +167,7 @@ export default class SolutionManager {
 
     if (solution) {
       try {
-        const response = await WebApi.post('ExportSolution',
+        const response = await new WebApi(this.context).post('ExportSolution',
           {
             SolutionName: solution.uniqueName,
             ExportAutoNumberingSettings: false,
@@ -272,7 +272,7 @@ export default class SolutionManager {
             reject('Importing Solution timed out.');
           }, 1000 * 60 * 60);
 
-          WebApi.post('ImportSolution',
+          new WebApi(this.context).post('ImportSolution',
             {
               OverwriteUnmanagedCustomizations: true,
               PublishWorkflows: true,
@@ -284,7 +284,7 @@ export default class SolutionManager {
           let prevProgress = 0;
 
           const interval = setInterval(async (jobId, progress) => {
-            const job = await WebApi.retrieve(
+            const job = await new WebApi(this.context).retrieve(
               'importjobs',
               jobId,
               [
