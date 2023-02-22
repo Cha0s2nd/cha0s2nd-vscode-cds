@@ -82,10 +82,9 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.9]
-Fixed
-- Login issues
-- Plugin Solution defaulting to 'default'
+### [0.1.10]
+Changed
+- Now uses the built in Microsoft account provider
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 
