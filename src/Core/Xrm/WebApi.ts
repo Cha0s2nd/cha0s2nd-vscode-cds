@@ -3,12 +3,15 @@ import * as rp from 'request-promise';
 import * as Constants from '../Constants/Constants';
 import IOrganization from '../../Entities/IOrganization';
 import { AuthProviderType } from '../Enums/AuthProviderType';
+import SessionManager from '../Managers/SessionManager';
 
 export default class WebApi {
   private context: vscode.ExtensionContext;
+  private sessionManager: SessionManager;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
+    this.sessionManager = new SessionManager(context);
   }
 
   public async retrieve(entitySet: string, id: string, columnSet?: string[] | null, filter?: string | null, additionalQuery?: string | null) {
@@ -151,19 +154,6 @@ export default class WebApi {
       });
     }
     else {
-      let authToken = await this.context.secrets.get("authToken");
-
-      if (!authToken) {
-        authToken = (await vscode.authentication.getSession(AuthProviderType.microsoft, [
-          `VSCODE_CLIENT_ID:${Constants.CLIENT_ID}`,
-          'VSCODE_TENANT:common',
-          'offline_access',
-          `${org!.url}//user_impersonation`
-        ], { createIfNone: true })).accessToken;
-
-        this.context.secrets.store("authToken", authToken);
-      }
-
       return rp(url, {
         baseUrl: org!.url + '/api/data/v' + org!.version.substring(0, 3) + '/',
         jar: false,
@@ -172,13 +162,16 @@ export default class WebApi {
           'Prefer': 'odata.include-annotations="*", return=representation',
           'OData-Version': '4.0',
           'OData-MaxVersion': '4.0',
-          'Authorization': 'Bearer ' + authToken
+          'Authorization': 'Bearer ' + await this.sessionManager.getAuthToken()
         },
         json: true,
         method: method,
         body: body
-      }).catch(err => {
-        this.context.secrets.store("authToken", "");
+      }).catch(async err => {
+        if (err.statusCode === 401) {
+          await this.sessionManager.refreshSession();
+        }
+
         throw err;
       });
     }

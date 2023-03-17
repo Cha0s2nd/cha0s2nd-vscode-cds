@@ -14,6 +14,7 @@ import IOrganization from './Entities/IOrganization';
 import AuthProviderLegacy from './Auth/AuthProviderLegacy';
 import PluginManager from './Core/Managers/PluginManager';
 import EntityGenerationManager from './Core/Managers/EntityGenerationManager';
+import SessionManager from './Core/Managers/SessionManager';
 
 export async function activate(context: vscode.ExtensionContext) {
   new DependencyManager(context).checkAll();
@@ -51,13 +52,6 @@ export async function activate(context: vscode.ExtensionContext) {
   const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
 
   if (org) {
-    context.secrets.store("authToken", (await vscode.authentication.getSession(AuthProviderType.microsoft, [
-      `VSCODE_CLIENT_ID:${Constants.CLIENT_ID}`,
-      'VSCODE_TENANT:common', 
-      'offline_access',
-      `${org!.url}//user_impersonation`
-    ], { createIfNone: true })).accessToken);
-    
     const treeViewManager = new TreeViewManager(context);
     treeViewManager.registerCommands();
     treeViewManager.registerViews();

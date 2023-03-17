@@ -22,7 +22,7 @@
     }
   ],
   "preview": true,
-  "version": "0.1.11",
+  "version": "0.1.12",
   "engines": {
     "vscode": "^1.60.0"
   },

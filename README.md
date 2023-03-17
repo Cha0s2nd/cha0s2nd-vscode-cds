@@ -82,9 +82,9 @@ Spkl only updates plugin assemblies with the CrmPluginRegistrationAttribute
 
 ## Release Notes
 
-### [0.1.11]
+### [0.1.12]
 Fixes
-- Login constantly asking to choose account
+- Auto Refresh sessions
 
 Please refer to [CHANGELOG.md](https://github.com/Cha0s2nd/cha0s2nd-vscode-cds/blob/master/CHANGELOG.md) for more detail.
 

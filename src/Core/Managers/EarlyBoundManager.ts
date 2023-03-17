@@ -6,12 +6,15 @@ import * as Constants from '../Constants/Constants';
 import { EarlyboundActions } from '../Enums/EarlyboundActions';
 import IOrganization from '../../Entities/IOrganization';
 import { AuthProviderType } from '../Enums/AuthProviderType';
+import SessionManager from './SessionManager';
 
 export default class EarlyBoundManager {
   private context: vscode.ExtensionContext;
+  private sessionManager: SessionManager;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
+    this.sessionManager = new SessionManager(context);
   }
 
   public registerCommands(): void {
@@ -64,7 +67,7 @@ export default class EarlyBoundManager {
 
   private async getConnection(): Promise<string> {
     const org = await vscode.commands.executeCommand<IOrganization>('cha0s2nd-vscode-cds.organization.get');
-    const token = jwt_decode.default<any>(await this.context.secrets.get("authToken") || '');
+    const token = jwt_decode.default<any>(await this.sessionManager.refreshSession() || '');
     return `AuthType=OAuth;Url=${org?.url};AppId=${Constants.CLIENT_ID};RedirectUri=${Constants.REDIRECT_URL};Username=${token.unique_name};TokenCacheStorePath=${vscode.Uri.joinPath(this.context.extensionUri, 'token_cache').fsPath}`;
   }
 
