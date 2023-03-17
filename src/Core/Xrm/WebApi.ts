@@ -153,10 +153,10 @@ export default class WebApi {
     else {
       let authToken = await this.context.secrets.get("authToken");
 
-      if(!authToken){
+      if (!authToken) {
         authToken = (await vscode.authentication.getSession(AuthProviderType.microsoft, [
           `VSCODE_CLIENT_ID:${Constants.CLIENT_ID}`,
-          'VSCODE_TENANT:common', 
+          'VSCODE_TENANT:common',
           'offline_access',
           `${org!.url}//user_impersonation`
         ], { createIfNone: true })).accessToken;
@@ -177,6 +177,9 @@ export default class WebApi {
         json: true,
         method: method,
         body: body
+      }).catch(err => {
+        this.context.secrets.store("authToken", "");
+        throw err;
       });
     }
   }
